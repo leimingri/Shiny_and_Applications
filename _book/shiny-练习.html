@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 shiny 练习 | Rmarkdown and Shiny</title>
+  <meta name="description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 shiny 练习 | Rmarkdown and Shiny" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 shiny 练习 | Rmarkdown and Shiny" />
+  
+  <meta name="twitter:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  
+
+<meta name="author" content="Lei mingri" />
+
+
+<meta name="date" content="2021-12-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="plots-and-maps.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/core-js-2.5.3/shim.min.js"></script>
+<script src="libs/react-17.0.0/react.min.js"></script>
+<script src="libs/react-17.0.0/react-dom.min.js"></script>
+<script src="libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/reactable-binding-0.2.3.9000/reactable.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Learning Process Record</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#布局书"><i class="fa fa-check"></i><b>1.1</b> 布局书</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#运行书"><i class="fa fa-check"></i><b>1.2</b> 运行书</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#预览书"><i class="fa fa-check"></i><b>1.3</b> 预览书</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="前期工作.html"><a href="前期工作.html"><i class="fa fa-check"></i><b>2</b> 前期工作</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="前期工作.html"><a href="前期工作.html#软件准备工作"><i class="fa fa-check"></i><b>2.1</b> 软件准备工作</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="前期工作.html"><a href="前期工作.html#注册github账号"><i class="fa fa-check"></i><b>2.1.1</b> 注册Github账号</a></li>
+<li class="chapter" data-level="2.1.2" data-path="前期工作.html"><a href="前期工作.html#连接git-githubrstudio"><i class="fa fa-check"></i><b>2.1.2</b> 连接Git GitHub,RStudio</a></li>
+<li class="chapter" data-level="2.1.3" data-path="前期工作.html"><a href="前期工作.html#可能遇到的问题"><i class="fa fa-check"></i><b>2.1.3</b> 可能遇到的问题</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="前期工作.html"><a href="前期工作.html#熟悉rmarkdown利用rmarkdown制作简历"><i class="fa fa-check"></i><b>2.2</b> 熟悉Rmarkdown（利用Rmarkdown制作简历）</a></li>
+<li class="chapter" data-level="2.3" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘图入门"><i class="fa fa-check"></i><b>2.3</b> ggplot2绘图入门</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="前期工作.html"><a href="前期工作.html#基本概念"><i class="fa fa-check"></i><b>2.3.1</b> 基本概念</a></li>
+<li class="chapter" data-level="2.3.2" data-path="前期工作.html"><a href="前期工作.html#一个例子"><i class="fa fa-check"></i><b>2.3.2</b> 一个例子</a></li>
+<li class="chapter" data-level="2.3.3" data-path="前期工作.html"><a href="前期工作.html#相关图形"><i class="fa fa-check"></i><b>2.3.3</b> 相关图形</a></li>
+<li class="chapter" data-level="2.3.4" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘制时间序列变化图"><i class="fa fa-check"></i><b>2.3.4</b> ggplot2绘制时间序列变化图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html"><i class="fa fa-check"></i><b>3</b> Shiny APP整体介绍</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#基本介绍"><i class="fa fa-check"></i><b>3.1</b> 基本介绍</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#添加用户界面控件"><i class="fa fa-check"></i><b>3.1.1</b> 添加用户界面控件</a></li>
+<li class="chapter" data-level="3.1.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#在服务器函数中定义输出添加行为"><i class="fa fa-check"></i><b>3.1.2</b> 在服务器函数中定义输出（添加行为）</a></li>
+<li class="chapter" data-level="3.1.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#创建shiny应用程序"><i class="fa fa-check"></i><b>3.1.3</b> 创建Shiny应用程序</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#前端介绍用户端ui"><i class="fa fa-check"></i><b>3.2</b> 前端介绍（用户端UI）</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs"><i class="fa fa-check"></i><b>3.2.1</b> inputs</a></li>
+<li class="chapter" data-level="3.2.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#outputs"><i class="fa fa-check"></i><b>3.2.2</b> outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#反应式编程"><i class="fa fa-check"></i><b>3.3</b> 反应式编程</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs-1"><i class="fa fa-check"></i><b>3.3.1</b> inputs</a></li>
+<li class="chapter" data-level="3.3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#output"><i class="fa fa-check"></i><b>3.3.2</b> output</a></li>
+<li class="chapter" data-level="3.3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#reactive-programming"><i class="fa fa-check"></i><b>3.3.3</b> Reactive programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="shiny-feedback.html"><a href="shiny-feedback.html"><i class="fa fa-check"></i><b>4</b> Shiny feedback</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validation"><i class="fa fa-check"></i><b>4.1</b> Validation</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validating-input"><i class="fa fa-check"></i><b>4.1.1</b> Validating input</a></li>
+<li class="chapter" data-level="4.1.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#cancelling-execution-with-req"><i class="fa fa-check"></i><b>4.1.2</b> Cancelling execution with req()</a></li>
+<li class="chapter" data-level="4.1.3" data-path="shiny-feedback.html"><a href="shiny-feedback.html#req-and-validation"><i class="fa fa-check"></i><b>4.1.3</b> req() and validation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validate-output"><i class="fa fa-check"></i><b>4.1.4</b> Validate output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#notifications"><i class="fa fa-check"></i><b>4.2</b> Notifications</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#transient-notification"><i class="fa fa-check"></i><b>4.2.1</b> Transient notification</a></li>
+<li class="chapter" data-level="4.2.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#removing-on-completion"><i class="fa fa-check"></i><b>4.2.2</b> Removing on completion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html"><i class="fa fa-check"></i><b>5</b> Shiny uploads and downloads</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#upload"><i class="fa fa-check"></i><b>5.1</b> upload</a></li>
+<li class="chapter" data-level="5.2" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#download"><i class="fa fa-check"></i><b>5.2</b> Download</a></li>
+<li class="chapter" data-level="5.3" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#downloading-reports"><i class="fa fa-check"></i><b>5.3</b> Downloading reports</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html"><i class="fa fa-check"></i><b>6</b> Shiny Dynamic UI</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#updating-inputs"><i class="fa fa-check"></i><b>6.1</b> Updating inputs</a></li>
+<li class="chapter" data-level="6.2" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#dynamic-visibility"><i class="fa fa-check"></i><b>6.2</b> Dynamic visibility</a></li>
+<li class="chapter" data-level="6.3" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#creating-ui-with-code"><i class="fa fa-check"></i><b>6.3</b> Creating UI with code</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html"><i class="fa fa-check"></i><b>7</b> Shiny Bookmarking</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#basic"><i class="fa fa-check"></i><b>7.1</b> Basic</a></li>
+<li class="chapter" data-level="7.2" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#storing-richer-state"><i class="fa fa-check"></i><b>7.2</b> Storing richer state</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="covid-19-data.html"><a href="covid-19-data.html"><i class="fa fa-check"></i><b>8</b> COVID-19 data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="covid-19-data.html"><a href="covid-19-data.html#us-data"><i class="fa fa-check"></i><b>8.1</b> US data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="covid-19-data.html"><a href="covid-19-data.html#load-libraries"><i class="fa fa-check"></i><b>8.1.1</b> Load libraries</a></li>
+<li class="chapter" data-level="8.1.2" data-path="covid-19-data.html"><a href="covid-19-data.html#load-data-and-processing-data"><i class="fa fa-check"></i><b>8.1.2</b> Load data and Processing data</a></li>
+<li class="chapter" data-level="8.1.3" data-path="covid-19-data.html"><a href="covid-19-data.html#combine-data"><i class="fa fa-check"></i><b>8.1.3</b> Combine data</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="covid-19-data.html"><a href="covid-19-data.html#global-data"><i class="fa fa-check"></i><b>8.2</b> Global data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="covid-19-data.html"><a href="covid-19-data.html#周维度全球确诊数据"><i class="fa fa-check"></i><b>8.2.1</b> 周维度全球确诊数据</a></li>
+<li class="chapter" data-level="8.2.2" data-path="covid-19-data.html"><a href="covid-19-data.html#日维度全球死亡数据"><i class="fa fa-check"></i><b>8.2.2</b> 日维度全球死亡数据</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="plots-and-maps.html"><a href="plots-and-maps.html"><i class="fa fa-check"></i><b>9</b> Plots and Maps</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plots-1"><i class="fa fa-check"></i><b>9.1</b> Plots</a></li>
+<li class="chapter" data-level="9.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#maps"><i class="fa fa-check"></i><b>9.2</b> Maps</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#使用maps包绘制地图"><i class="fa fa-check"></i><b>9.2.1</b> 使用Maps包绘制地图</a></li>
+<li class="chapter" data-level="9.2.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plotly绘制地图"><i class="fa fa-check"></i><b>9.2.2</b> plotly绘制地图</a></li>
+<li class="chapter" data-level="9.2.3" data-path="plots-and-maps.html"><a href="plots-and-maps.html#leaflet绘制地图"><i class="fa fa-check"></i><b>9.2.3</b> leaflet绘制地图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="shiny-练习.html"><a href="shiny-练习.html"><i class="fa fa-check"></i><b>10</b> shiny 练习</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny时间序列交互"><i class="fa fa-check"></i><b>10.1</b> shiny时间序列交互</a></li>
+<li class="chapter" data-level="10.2" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny交互式地图"><i class="fa fa-check"></i><b>10.2</b> shiny交互式地图</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rmarkdown and Shiny</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="shiny-练习" class="section level1" number="10">
+<h1><span class="header-section-number">Chapter 10</span> shiny 练习</h1>
+<div id="shiny时间序列交互" class="section level2" number="10.1">
+<h2><span class="header-section-number">10.1</span> shiny时间序列交互</h2>
+<p>导入数据以及处理数据：</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="shiny-练习.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co">#导入包</span></span>
+<span id="cb109-2"><a href="shiny-练习.html#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb109-3"><a href="shiny-练习.html#cb109-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
+<span id="cb109-4"><a href="shiny-练习.html#cb109-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb109-5"><a href="shiny-练习.html#cb109-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb109-6"><a href="shiny-练习.html#cb109-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb109-7"><a href="shiny-练习.html#cb109-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;shinydashboard&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     box</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="shiny-练习.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co">#死亡数据</span></span>
+<span id="cb112-2"><a href="shiny-练习.html#cb112-2" aria-hidden="true" tabindex="-1"></a>deaths_US <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="fu">fread</span>(<span class="st">&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv&quot;</span>))</span>
+<span id="cb112-3"><a href="shiny-练习.html#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-4"><a href="shiny-练习.html#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="co"># #处理数据</span></span>
+<span id="cb112-5"><a href="shiny-练习.html#cb112-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(deaths_US)</span>
+<span id="cb112-6"><a href="shiny-练习.html#cb112-6" aria-hidden="true" tabindex="-1"></a>death<span class="ot">&lt;-</span> deaths_US[, <span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">11</span><span class="sc">:</span><span class="dv">12</span>, p <span class="sc">-</span> <span class="dv">14</span>, p)]</span>
+<span id="cb112-7"><a href="shiny-练习.html#cb112-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(death) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;province&quot;</span>,<span class="st">&quot;Combined_Key&quot;</span>,<span class="st">&quot;population&quot;</span>, <span class="st">&quot;total_death_14&quot;</span>, <span class="st">&quot;total_death&quot;</span>)</span>
+<span id="cb112-8"><a href="shiny-练习.html#cb112-8" aria-hidden="true" tabindex="-1"></a>death1 <span class="ot">&lt;-</span> death  <span class="sc">%&gt;%</span></span>
+<span id="cb112-9"><a href="shiny-练习.html#cb112-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_death_14 =</span> total_death <span class="sc">-</span> total_death_14) <span class="sc">%&gt;%</span></span>
+<span id="cb112-10"><a href="shiny-练习.html#cb112-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>total_death_14)</span>
+<span id="cb112-11"><a href="shiny-练习.html#cb112-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-12"><a href="shiny-练习.html#cb112-12" aria-hidden="true" tabindex="-1"></a><span class="co">#周维度全球确诊数据</span></span>
+<span id="cb112-13"><a href="shiny-练习.html#cb112-13" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv&quot;</span></span>
+<span id="cb112-14"><a href="shiny-练习.html#cb112-14" aria-hidden="true" tabindex="-1"></a>confirmed_global <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">fread</span>(url) <span class="sc">%&gt;%</span> tibble<span class="sc">::</span><span class="fu">tibble</span>() <span class="co"># readr::read_csv(url) # utils::read.csv(url)</span></span>
+<span id="cb112-15"><a href="shiny-练习.html#cb112-15" aria-hidden="true" tabindex="-1"></a><span class="co">#处理数据</span></span>
+<span id="cb112-16"><a href="shiny-练习.html#cb112-16" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="fu">ncol</span>(confirmed_global)</span>
+<span id="cb112-17"><a href="shiny-练习.html#cb112-17" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> confirmed_global[, <span class="fu">seq</span>(<span class="dv">9</span>, nc, <span class="dv">7</span>)]</span>
+<span id="cb112-18"><a href="shiny-练习.html#cb112-18" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(M[, <span class="dv">1</span>], M[, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> M[, <span class="sc">-</span><span class="fu">ncol</span>(M)])</span>
+<span id="cb112-19"><a href="shiny-练习.html#cb112-19" aria-hidden="true" tabindex="-1"></a>new_cases_global_weekly <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb112-20"><a href="shiny-练习.html#cb112-20" aria-hidden="true" tabindex="-1"></a>  confirmed_global[, <span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>], </span>
+<span id="cb112-21"><a href="shiny-练习.html#cb112-21" aria-hidden="true" tabindex="-1"></a>  M2[, <span class="fu">rev</span>(<span class="fu">colnames</span>(M2))] </span>
+<span id="cb112-22"><a href="shiny-练习.html#cb112-22" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">tibble</span>()</span>
+<span id="cb112-23"><a href="shiny-练习.html#cb112-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-24"><a href="shiny-练习.html#cb112-24" aria-hidden="true" tabindex="-1"></a>covid19_global <span class="ot">&lt;-</span> new_cases_global_weekly <span class="sc">%&gt;%</span> <span class="co"># 导入全球数据</span></span>
+<span id="cb112-25"><a href="shiny-练习.html#cb112-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Province/State</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span> <span class="co"># 筛选行 </span></span>
+<span id="cb112-26"><a href="shiny-练习.html#cb112-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="st">`</span><span class="at">Province/State</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="co"># 筛选列</span></span>
+<span id="cb112-27"><a href="shiny-练习.html#cb112-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span><span class="st">`</span><span class="at">Country/Region</span><span class="st">`</span>, <span class="at">names_to =</span> <span class="st">&quot;Date&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Confirmed&quot;</span>) <span class="sc">%&gt;%</span> <span class="co"># wide to long</span></span>
+<span id="cb112-28"><a href="shiny-练习.html#cb112-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Country_Region =</span> <span class="st">`</span><span class="at">Country/Region</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="co"># 左新右旧</span></span>
+<span id="cb112-29"><a href="shiny-练习.html#cb112-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> lubridate<span class="sc">::</span><span class="fu">mdy</span>(Date)) <span class="sc">%&gt;%</span> <span class="co"># mutate 替换成 YMD</span></span>
+<span id="cb112-30"><a href="shiny-练习.html#cb112-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Country_Region, Date) </span>
+<span id="cb112-31"><a href="shiny-练习.html#cb112-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-32"><a href="shiny-练习.html#cb112-32" aria-hidden="true" tabindex="-1"></a><span class="co">#日维度全球死亡数据</span></span>
+<span id="cb112-33"><a href="shiny-练习.html#cb112-33" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv&quot;</span></span>
+<span id="cb112-34"><a href="shiny-练习.html#cb112-34" aria-hidden="true" tabindex="-1"></a>d<span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">fread</span>(url) <span class="sc">%&gt;%</span> tibble<span class="sc">::</span><span class="fu">tibble</span>()</span>
+<span id="cb112-35"><a href="shiny-练习.html#cb112-35" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb112-36"><a href="shiny-练习.html#cb112-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb112-37"><a href="shiny-练习.html#cb112-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="dv">5</span><span class="sc">:</span><span class="fu">ncol</span>(.),</span>
+<span id="cb112-38"><a href="shiny-练习.html#cb112-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;date&quot;</span>,</span>
+<span id="cb112-39"><a href="shiny-练习.html#cb112-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;cases&quot;</span></span>
+<span id="cb112-40"><a href="shiny-练习.html#cb112-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb112-41"><a href="shiny-练习.html#cb112-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> lubridate<span class="sc">::</span><span class="fu">mdy</span>(date)) <span class="sc">%&gt;%</span></span>
+<span id="cb112-42"><a href="shiny-练习.html#cb112-42" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb112-43"><a href="shiny-练习.html#cb112-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region, date) <span class="sc">%&gt;%</span></span>
+<span id="cb112-44"><a href="shiny-练习.html#cb112-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cases =</span> <span class="fu">sum</span>(cases),<span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb112-45"><a href="shiny-练习.html#cb112-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<p>添加shiny交互UI部分：</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="shiny-练习.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define UI for application that draws a histogram</span></span>
+<span id="cb113-2"><a href="shiny-练习.html#cb113-2" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(</span>
+<span id="cb113-3"><a href="shiny-练习.html#cb113-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardHeader</span>(<span class="at">title =</span> <span class="st">&quot;COVID-19_Shiny&quot;</span>),</span>
+<span id="cb113-4"><a href="shiny-练习.html#cb113-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardSidebar</span>(</span>
+<span id="cb113-5"><a href="shiny-练习.html#cb113-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarMenu</span>(</span>
+<span id="cb113-6"><a href="shiny-练习.html#cb113-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">&quot;周确诊趋势&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;周确诊趋势&quot;</span>),</span>
+<span id="cb113-7"><a href="shiny-练习.html#cb113-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">&quot;日死亡趋势&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;日死亡趋势&quot;</span>),</span>
+<span id="cb113-8"><a href="shiny-练习.html#cb113-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">&quot;table&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;table&quot;</span>),</span>
+<span id="cb113-9"><a href="shiny-练习.html#cb113-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;ggplot2&quot;</span>),</span>
+<span id="cb113-10"><a href="shiny-练习.html#cb113-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">menuItem</span>(<span class="st">&quot;Cluster&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;cluster&quot;</span>)</span>
+<span id="cb113-11"><a href="shiny-练习.html#cb113-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb113-12"><a href="shiny-练习.html#cb113-12" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb113-13"><a href="shiny-练习.html#cb113-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardBody</span>(</span>
+<span id="cb113-14"><a href="shiny-练习.html#cb113-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tabItems</span>(</span>
+<span id="cb113-15"><a href="shiny-练习.html#cb113-15" aria-hidden="true" tabindex="-1"></a>      <span class="co"># First tab content</span></span>
+<span id="cb113-16"><a href="shiny-练习.html#cb113-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;周确诊趋势&quot;</span>,</span>
+<span id="cb113-17"><a href="shiny-练习.html#cb113-17" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sidebarLayout</span>(</span>
+<span id="cb113-18"><a href="shiny-练习.html#cb113-18" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sidebarPanel</span>(</span>
+<span id="cb113-19"><a href="shiny-练习.html#cb113-19" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">selectInput</span>(</span>
+<span id="cb113-20"><a href="shiny-练习.html#cb113-20" aria-hidden="true" tabindex="-1"></a>                    <span class="at">inputId =</span> <span class="st">&quot;admin0&quot;</span>,</span>
+<span id="cb113-21"><a href="shiny-练习.html#cb113-21" aria-hidden="true" tabindex="-1"></a>                    <span class="at">label =</span> <span class="st">&quot;国家&quot;</span>,</span>
+<span id="cb113-22"><a href="shiny-练习.html#cb113-22" aria-hidden="true" tabindex="-1"></a>                    <span class="at">choices =</span> covid19_global<span class="sc">$</span>Country_Region,</span>
+<span id="cb113-23"><a href="shiny-练习.html#cb113-23" aria-hidden="true" tabindex="-1"></a>                    <span class="at">selected =</span> <span class="st">&quot;US&quot;</span></span>
+<span id="cb113-24"><a href="shiny-练习.html#cb113-24" aria-hidden="true" tabindex="-1"></a>                  ),</span>
+<span id="cb113-25"><a href="shiny-练习.html#cb113-25" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">dateRangeInput</span>(</span>
+<span id="cb113-26"><a href="shiny-练习.html#cb113-26" aria-hidden="true" tabindex="-1"></a>                    <span class="at">inputId =</span> <span class="st">&quot;daterange&quot;</span>,</span>
+<span id="cb113-27"><a href="shiny-练习.html#cb113-27" aria-hidden="true" tabindex="-1"></a>                    <span class="at">label =</span> <span class="st">&quot;时间范围&quot;</span>,</span>
+<span id="cb113-28"><a href="shiny-练习.html#cb113-28" aria-hidden="true" tabindex="-1"></a>                    <span class="at">language =</span> <span class="st">&quot;zh-CN&quot;</span>,</span>
+<span id="cb113-29"><a href="shiny-练习.html#cb113-29" aria-hidden="true" tabindex="-1"></a>                    <span class="at">weekstart =</span> <span class="dv">0</span>,</span>
+<span id="cb113-30"><a href="shiny-练习.html#cb113-30" aria-hidden="true" tabindex="-1"></a>                    <span class="at">separator =</span> <span class="st">&quot;to&quot;</span>,</span>
+<span id="cb113-31"><a href="shiny-练习.html#cb113-31" aria-hidden="true" tabindex="-1"></a>                    <span class="at">min =</span> <span class="fu">min</span>(covid19_global<span class="sc">$</span>Date),</span>
+<span id="cb113-32"><a href="shiny-练习.html#cb113-32" aria-hidden="true" tabindex="-1"></a>                    <span class="at">max =</span> <span class="fu">max</span>(covid19_global<span class="sc">$</span>Date),</span>
+<span id="cb113-33"><a href="shiny-练习.html#cb113-33" aria-hidden="true" tabindex="-1"></a>                    <span class="at">start =</span> <span class="fu">min</span>(covid19_global<span class="sc">$</span>Date),</span>
+<span id="cb113-34"><a href="shiny-练习.html#cb113-34" aria-hidden="true" tabindex="-1"></a>                    <span class="at">end =</span> <span class="fu">max</span>(covid19_global<span class="sc">$</span>Date)</span>
+<span id="cb113-35"><a href="shiny-练习.html#cb113-35" aria-hidden="true" tabindex="-1"></a>                  ),</span>
+<span id="cb113-36"><a href="shiny-练习.html#cb113-36" aria-hidden="true" tabindex="-1"></a>                  <span class="at">width=</span><span class="dv">4</span></span>
+<span id="cb113-37"><a href="shiny-练习.html#cb113-37" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb113-38"><a href="shiny-练习.html#cb113-38" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mainPanel</span>(<span class="fu">dashboardBody</span>(</span>
+<span id="cb113-39"><a href="shiny-练习.html#cb113-39" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># Boxes need to be put in a row (or column)</span></span>
+<span id="cb113-40"><a href="shiny-练习.html#cb113-40" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">fluidRow</span>(</span>
+<span id="cb113-41"><a href="shiny-练习.html#cb113-41" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">box</span>(</span>
+<span id="cb113-42"><a href="shiny-练习.html#cb113-42" aria-hidden="true" tabindex="-1"></a>                      <span class="at">title =</span> <span class="st">&quot;周新增确诊趋势&quot;</span>,</span>
+<span id="cb113-43"><a href="shiny-练习.html#cb113-43" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">plotlyOutput</span>(<span class="at">outputId =</span> <span class="st">&quot;myggplot&quot;</span>),</span>
+<span id="cb113-44"><a href="shiny-练习.html#cb113-44" aria-hidden="true" tabindex="-1"></a>                      <span class="at">width =</span> <span class="dv">250</span></span>
+<span id="cb113-45"><a href="shiny-练习.html#cb113-45" aria-hidden="true" tabindex="-1"></a>                    ))</span>
+<span id="cb113-46"><a href="shiny-练习.html#cb113-46" aria-hidden="true" tabindex="-1"></a>              )</span>
+<span id="cb113-47"><a href="shiny-练习.html#cb113-47" aria-hidden="true" tabindex="-1"></a>                ))),</span>
+<span id="cb113-48"><a href="shiny-练习.html#cb113-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;日死亡趋势&quot;</span>,</span>
+<span id="cb113-49"><a href="shiny-练习.html#cb113-49" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sidebarLayout</span>(</span>
+<span id="cb113-50"><a href="shiny-练习.html#cb113-50" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sidebarPanel</span>(</span>
+<span id="cb113-51"><a href="shiny-练习.html#cb113-51" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">selectInput</span>(</span>
+<span id="cb113-52"><a href="shiny-练习.html#cb113-52" aria-hidden="true" tabindex="-1"></a>                    <span class="at">inputId =</span> <span class="st">&quot;admin1&quot;</span>,</span>
+<span id="cb113-53"><a href="shiny-练习.html#cb113-53" aria-hidden="true" tabindex="-1"></a>                    <span class="at">label =</span> <span class="st">&quot;国家&quot;</span>,</span>
+<span id="cb113-54"><a href="shiny-练习.html#cb113-54" aria-hidden="true" tabindex="-1"></a>                    <span class="at">choices =</span>d1<span class="sc">$</span>country_region,</span>
+<span id="cb113-55"><a href="shiny-练习.html#cb113-55" aria-hidden="true" tabindex="-1"></a>                    <span class="at">selected =</span> <span class="st">&quot;US&quot;</span></span>
+<span id="cb113-56"><a href="shiny-练习.html#cb113-56" aria-hidden="true" tabindex="-1"></a>                  ),</span>
+<span id="cb113-57"><a href="shiny-练习.html#cb113-57" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">dateRangeInput</span>(</span>
+<span id="cb113-58"><a href="shiny-练习.html#cb113-58" aria-hidden="true" tabindex="-1"></a>                    <span class="at">inputId =</span> <span class="st">&quot;daterange1&quot;</span>,</span>
+<span id="cb113-59"><a href="shiny-练习.html#cb113-59" aria-hidden="true" tabindex="-1"></a>                    <span class="at">label =</span> <span class="st">&quot;时间范围&quot;</span>,</span>
+<span id="cb113-60"><a href="shiny-练习.html#cb113-60" aria-hidden="true" tabindex="-1"></a>                    <span class="at">language =</span> <span class="st">&quot;zh-CN&quot;</span>,</span>
+<span id="cb113-61"><a href="shiny-练习.html#cb113-61" aria-hidden="true" tabindex="-1"></a>                    <span class="at">separator =</span> <span class="st">&quot;to&quot;</span>,</span>
+<span id="cb113-62"><a href="shiny-练习.html#cb113-62" aria-hidden="true" tabindex="-1"></a>                    <span class="at">min =</span> <span class="fu">min</span>(d1<span class="sc">$</span>date),</span>
+<span id="cb113-63"><a href="shiny-练习.html#cb113-63" aria-hidden="true" tabindex="-1"></a>                    <span class="at">max =</span> <span class="fu">max</span>(d1<span class="sc">$</span>date),</span>
+<span id="cb113-64"><a href="shiny-练习.html#cb113-64" aria-hidden="true" tabindex="-1"></a>                    <span class="at">start =</span> <span class="fu">min</span>(d1<span class="sc">$</span>date),</span>
+<span id="cb113-65"><a href="shiny-练习.html#cb113-65" aria-hidden="true" tabindex="-1"></a>                    <span class="at">end =</span> <span class="fu">max</span>(d1<span class="sc">$</span>date)</span>
+<span id="cb113-66"><a href="shiny-练习.html#cb113-66" aria-hidden="true" tabindex="-1"></a>                  ),</span>
+<span id="cb113-67"><a href="shiny-练习.html#cb113-67" aria-hidden="true" tabindex="-1"></a>                  <span class="at">width=</span><span class="dv">4</span></span>
+<span id="cb113-68"><a href="shiny-练习.html#cb113-68" aria-hidden="true" tabindex="-1"></a>                  </span>
+<span id="cb113-69"><a href="shiny-练习.html#cb113-69" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb113-70"><a href="shiny-练习.html#cb113-70" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mainPanel</span>(<span class="fu">dashboardBody</span>(</span>
+<span id="cb113-71"><a href="shiny-练习.html#cb113-71" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># Boxes need to be put in a row (or column)</span></span>
+<span id="cb113-72"><a href="shiny-练习.html#cb113-72" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">fluidRow</span>(</span>
+<span id="cb113-73"><a href="shiny-练习.html#cb113-73" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">box</span>(</span>
+<span id="cb113-74"><a href="shiny-练习.html#cb113-74" aria-hidden="true" tabindex="-1"></a>                      <span class="at">title =</span> <span class="st">&quot;日新增死亡趋势&quot;</span>,</span>
+<span id="cb113-75"><a href="shiny-练习.html#cb113-75" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">plotlyOutput</span>(<span class="at">outputId =</span> <span class="st">&quot;myggplot1&quot;</span>),</span>
+<span id="cb113-76"><a href="shiny-练习.html#cb113-76" aria-hidden="true" tabindex="-1"></a>                      <span class="at">width =</span> <span class="dv">250</span></span>
+<span id="cb113-77"><a href="shiny-练习.html#cb113-77" aria-hidden="true" tabindex="-1"></a>                    ))</span>
+<span id="cb113-78"><a href="shiny-练习.html#cb113-78" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb113-79"><a href="shiny-练习.html#cb113-79" aria-hidden="true" tabindex="-1"></a>                ))),</span>
+<span id="cb113-80"><a href="shiny-练习.html#cb113-80" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb113-81"><a href="shiny-练习.html#cb113-81" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;table&quot;</span>,</span>
+<span id="cb113-82"><a href="shiny-练习.html#cb113-82" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sidebarLayout</span>(</span>
+<span id="cb113-83"><a href="shiny-练习.html#cb113-83" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sidebarPanel</span>(</span>
+<span id="cb113-84"><a href="shiny-练习.html#cb113-84" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">sliderInput</span>(<span class="st">&quot;number&quot;</span>,<span class="st">&quot;number of data:&quot;</span>,</span>
+<span id="cb113-85"><a href="shiny-练习.html#cb113-85" aria-hidden="true" tabindex="-1"></a>                              <span class="at">min=</span><span class="dv">0</span>,<span class="at">max=</span><span class="dv">4000</span>,<span class="at">value=</span><span class="dv">10</span>,<span class="at">animate=</span><span class="cn">TRUE</span></span>
+<span id="cb113-86"><a href="shiny-练习.html#cb113-86" aria-hidden="true" tabindex="-1"></a>                              )</span>
+<span id="cb113-87"><a href="shiny-练习.html#cb113-87" aria-hidden="true" tabindex="-1"></a>                              </span>
+<span id="cb113-88"><a href="shiny-练习.html#cb113-88" aria-hidden="true" tabindex="-1"></a>                  ),</span>
+<span id="cb113-89"><a href="shiny-练习.html#cb113-89" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mainPanel</span>(<span class="fu">dataTableOutput</span>(<span class="st">&quot;Data&quot;</span>))</span>
+<span id="cb113-90"><a href="shiny-练习.html#cb113-90" aria-hidden="true" tabindex="-1"></a>              )),     </span>
+<span id="cb113-91"><a href="shiny-练习.html#cb113-91" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Second tab content</span></span>
+<span id="cb113-92"><a href="shiny-练习.html#cb113-92" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;ggplot2&quot;</span>,</span>
+<span id="cb113-93"><a href="shiny-练习.html#cb113-93" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sidebarLayout</span>(</span>
+<span id="cb113-94"><a href="shiny-练习.html#cb113-94" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sidebarPanel</span>(</span>
+<span id="cb113-95"><a href="shiny-练习.html#cb113-95" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">selectInput</span>(<span class="st">&quot;Position&quot;</span>,<span class="st">&quot;The Type of Plot:&quot;</span>,</span>
+<span id="cb113-96"><a href="shiny-练习.html#cb113-96" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">c</span>(<span class="st">&quot;fill&quot;</span><span class="ot">=</span><span class="st">&quot;fill&quot;</span>,</span>
+<span id="cb113-97"><a href="shiny-练习.html#cb113-97" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;dodge&quot;</span><span class="ot">=</span><span class="st">&quot;dodge&quot;</span>,</span>
+<span id="cb113-98"><a href="shiny-练习.html#cb113-98" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;stack&quot;</span><span class="ot">=</span><span class="st">&quot;stack&quot;</span>)</span>
+<span id="cb113-99"><a href="shiny-练习.html#cb113-99" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb113-100"><a href="shiny-练习.html#cb113-100" aria-hidden="true" tabindex="-1"></a>                  )),</span>
+<span id="cb113-101"><a href="shiny-练习.html#cb113-101" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mainPanel</span>(<span class="fu">plotOutput</span>(<span class="st">&quot;Plot&quot;</span>))</span>
+<span id="cb113-102"><a href="shiny-练习.html#cb113-102" aria-hidden="true" tabindex="-1"></a>      )), </span>
+<span id="cb113-103"><a href="shiny-练习.html#cb113-103" aria-hidden="true" tabindex="-1"></a>      <span class="co">#third</span></span>
+<span id="cb113-104"><a href="shiny-练习.html#cb113-104" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;cluster&quot;</span>,</span>
+<span id="cb113-105"><a href="shiny-练习.html#cb113-105" aria-hidden="true" tabindex="-1"></a>              <span class="fu">titlePanel</span>(<span class="st">&quot;clustering&quot;</span>),</span>
+<span id="cb113-106"><a href="shiny-练习.html#cb113-106" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sidebarLayout</span>(</span>
+<span id="cb113-107"><a href="shiny-练习.html#cb113-107" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sidebarPanel</span>(</span>
+<span id="cb113-108"><a href="shiny-练习.html#cb113-108" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">selectInput</span>(<span class="st">&quot;xcol&quot;</span>,<span class="st">&quot;x&quot;</span>,<span class="fu">names</span>(deaths_US),</span>
+<span id="cb113-109"><a href="shiny-练习.html#cb113-109" aria-hidden="true" tabindex="-1"></a>                              <span class="at">selected=</span><span class="fu">names</span>(deaths_US[,<span class="dv">629</span>])),</span>
+<span id="cb113-110"><a href="shiny-练习.html#cb113-110" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">selectInput</span>(<span class="st">&quot;ycol&quot;</span>,<span class="st">&quot;y&quot;</span>,<span class="fu">names</span>(deaths_US),</span>
+<span id="cb113-111"><a href="shiny-练习.html#cb113-111" aria-hidden="true" tabindex="-1"></a>                              <span class="at">selected=</span><span class="fu">names</span>(deaths_US[,<span class="dv">630</span>])),</span>
+<span id="cb113-112"><a href="shiny-练习.html#cb113-112" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">numericInput</span>(<span class="st">&quot;clusters&quot;</span>,<span class="st">&quot;count&quot;</span>,<span class="dv">3</span>,<span class="at">min=</span><span class="dv">0</span>,<span class="at">max=</span><span class="dv">5000</span>)</span>
+<span id="cb113-113"><a href="shiny-练习.html#cb113-113" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb113-114"><a href="shiny-练习.html#cb113-114" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb113-115"><a href="shiny-练习.html#cb113-115" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Show a plot of the generated distribution</span></span>
+<span id="cb113-116"><a href="shiny-练习.html#cb113-116" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mainPanel</span>(</span>
+<span id="cb113-117"><a href="shiny-练习.html#cb113-117" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">plotOutput</span>(<span class="st">&quot;distPlot&quot;</span>)</span>
+<span id="cb113-118"><a href="shiny-练习.html#cb113-118" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb113-119"><a href="shiny-练习.html#cb113-119" aria-hidden="true" tabindex="-1"></a>              ))</span>
+<span id="cb113-120"><a href="shiny-练习.html#cb113-120" aria-hidden="true" tabindex="-1"></a>           )) </span>
+<span id="cb113-121"><a href="shiny-练习.html#cb113-121" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<p>添加shiny交互server部分：</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="shiny-练习.html#cb114-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
+<span id="cb114-2"><a href="shiny-练习.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#周新增确诊</span></span>
+<span id="cb114-3"><a href="shiny-练习.html#cb114-3" aria-hidden="true" tabindex="-1"></a>  mydata <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb114-4"><a href="shiny-练习.html#cb114-4" aria-hidden="true" tabindex="-1"></a>    covid19_global <span class="sc">%&gt;%</span></span>
+<span id="cb114-5"><a href="shiny-练习.html#cb114-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Country_Region <span class="sc">==</span> input<span class="sc">$</span>admin0) <span class="sc">%&gt;%</span></span>
+<span id="cb114-6"><a href="shiny-练习.html#cb114-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Date <span class="sc">&gt;=</span> input<span class="sc">$</span>daterange[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb114-7"><a href="shiny-练习.html#cb114-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Date <span class="sc">&lt;=</span> input<span class="sc">$</span>daterange[<span class="dv">2</span>])</span>
+<span id="cb114-8"><a href="shiny-练习.html#cb114-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># select(-Country_Region)</span></span>
+<span id="cb114-9"><a href="shiny-练习.html#cb114-9" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-10"><a href="shiny-练习.html#cb114-10" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>myggplot <span class="ot">&lt;-</span> <span class="fu">renderPlotly</span>({</span>
+<span id="cb114-11"><a href="shiny-练习.html#cb114-11" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">mydata</span>(), <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Confirmed)) <span class="sc">+</span></span>
+<span id="cb114-12"><a href="shiny-练习.html#cb114-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># geom_point() +</span></span>
+<span id="cb114-13"><a href="shiny-练习.html#cb114-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># geom_line() +</span></span>
+<span id="cb114-14"><a href="shiny-练习.html#cb114-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb114-15"><a href="shiny-练习.html#cb114-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_bw</span>()<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">&quot;日期(周)&quot;</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">&quot;确诊人数&quot;</span>)</span>
+<span id="cb114-16"><a href="shiny-练习.html#cb114-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplotly</span>(p)</span>
+<span id="cb114-17"><a href="shiny-练习.html#cb114-17" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-18"><a href="shiny-练习.html#cb114-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#日新增死亡</span></span>
+<span id="cb114-19"><a href="shiny-练习.html#cb114-19" aria-hidden="true" tabindex="-1"></a>  mydata1 <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb114-20"><a href="shiny-练习.html#cb114-20" aria-hidden="true" tabindex="-1"></a>   d1 <span class="sc">%&gt;%</span></span>
+<span id="cb114-21"><a href="shiny-练习.html#cb114-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(country_region <span class="sc">==</span> input<span class="sc">$</span>admin1) <span class="sc">%&gt;%</span></span>
+<span id="cb114-22"><a href="shiny-练习.html#cb114-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(date <span class="sc">&gt;=</span> input<span class="sc">$</span>daterange1[<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb114-23"><a href="shiny-练习.html#cb114-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(date <span class="sc">&lt;=</span> input<span class="sc">$</span>daterange1[<span class="dv">2</span>])</span>
+<span id="cb114-24"><a href="shiny-练习.html#cb114-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># select(-Country_Region)</span></span>
+<span id="cb114-25"><a href="shiny-练习.html#cb114-25" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-26"><a href="shiny-练习.html#cb114-26" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>myggplot1 <span class="ot">&lt;-</span> <span class="fu">renderPlotly</span>({</span>
+<span id="cb114-27"><a href="shiny-练习.html#cb114-27" aria-hidden="true" tabindex="-1"></a>    p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">mydata1</span>(), <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> cases)) <span class="sc">+</span></span>
+<span id="cb114-28"><a href="shiny-练习.html#cb114-28" aria-hidden="true" tabindex="-1"></a>      <span class="co"># geom_point() +</span></span>
+<span id="cb114-29"><a href="shiny-练习.html#cb114-29" aria-hidden="true" tabindex="-1"></a>      <span class="co"># geom_line() +</span></span>
+<span id="cb114-30"><a href="shiny-练习.html#cb114-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb114-31"><a href="shiny-练习.html#cb114-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_bw</span>()<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">&quot;日期(日)&quot;</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">&quot;死亡人数&quot;</span>)</span>
+<span id="cb114-32"><a href="shiny-练习.html#cb114-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplotly</span>(p1)</span>
+<span id="cb114-33"><a href="shiny-练习.html#cb114-33" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-34"><a href="shiny-练习.html#cb114-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-35"><a href="shiny-练习.html#cb114-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb114-36"><a href="shiny-练习.html#cb114-36" aria-hidden="true" tabindex="-1"></a>  data<span class="ot">=</span>death1[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(death1),<span class="dv">1000</span>,<span class="at">replace =</span> F),]</span>
+<span id="cb114-37"><a href="shiny-练习.html#cb114-37" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb114-38"><a href="shiny-练习.html#cb114-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">#table</span></span>
+<span id="cb114-39"><a href="shiny-练习.html#cb114-39" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>Data<span class="ot">&lt;-</span><span class="fu">renderDataTable</span>({</span>
+<span id="cb114-40"><a href="shiny-练习.html#cb114-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.table</span>(<span class="fu">head</span>(data,input<span class="sc">$</span>number))</span>
+<span id="cb114-41"><a href="shiny-练习.html#cb114-41" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-42"><a href="shiny-练习.html#cb114-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-43"><a href="shiny-练习.html#cb114-43" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggplot</span></span>
+<span id="cb114-44"><a href="shiny-练习.html#cb114-44" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>Plot<span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb114-45"><a href="shiny-练习.html#cb114-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(data,<span class="fu">aes</span>(<span class="at">x=</span><span class="st">&quot;new_death_14&quot;</span>,<span class="at">fill=</span>data<span class="sc">$</span>province))<span class="sc">+</span></span>
+<span id="cb114-46"><a href="shiny-练习.html#cb114-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_histogram</span>(<span class="at">Position=</span>input<span class="sc">$</span>Position,<span class="at">stat=</span><span class="st">&quot;count&quot;</span>)<span class="sc">+</span></span>
+<span id="cb114-47"><a href="shiny-练习.html#cb114-47" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggtitle</span>(<span class="st">&quot;histogram&quot;</span>)</span>
+<span id="cb114-48"><a href="shiny-练习.html#cb114-48" aria-hidden="true" tabindex="-1"></a>      <span class="co">#geom_bar(stat = &quot;count&quot;,Position=&quot;cut&quot;)</span></span>
+<span id="cb114-49"><a href="shiny-练习.html#cb114-49" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-50"><a href="shiny-练习.html#cb114-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-51"><a href="shiny-练习.html#cb114-51" aria-hidden="true" tabindex="-1"></a><span class="co">#cluster</span></span>
+<span id="cb114-52"><a href="shiny-练习.html#cb114-52" aria-hidden="true" tabindex="-1"></a>  selecteddata <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb114-53"><a href="shiny-练习.html#cb114-53" aria-hidden="true" tabindex="-1"></a>    deaths_US[,<span class="fu">c</span>(input<span class="sc">$</span>xcol,input<span class="sc">$</span>ycol)]</span>
+<span id="cb114-54"><a href="shiny-练习.html#cb114-54" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-55"><a href="shiny-练习.html#cb114-55" aria-hidden="true" tabindex="-1"></a>  clusters <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb114-56"><a href="shiny-练习.html#cb114-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kmeans</span>(<span class="fu">selecteddata</span>(),input<span class="sc">$</span>clusters)</span>
+<span id="cb114-57"><a href="shiny-练习.html#cb114-57" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-58"><a href="shiny-练习.html#cb114-58" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb114-59"><a href="shiny-练习.html#cb114-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb114-60"><a href="shiny-练习.html#cb114-60" aria-hidden="true" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="fl">5.1</span>,<span class="fl">4.1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb114-61"><a href="shiny-练习.html#cb114-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="fu">selecteddata</span>(),</span>
+<span id="cb114-62"><a href="shiny-练习.html#cb114-62" aria-hidden="true" tabindex="-1"></a>         <span class="at">col=</span><span class="fu">clusters</span>()<span class="sc">$</span>cluster,</span>
+<span id="cb114-63"><a href="shiny-练习.html#cb114-63" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch=</span><span class="dv">20</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb114-64"><a href="shiny-练习.html#cb114-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(<span class="fu">clusters</span>()<span class="sc">$</span>centers,<span class="at">pch=</span><span class="dv">4</span>,<span class="at">cex=</span><span class="dv">4</span>,<span class="at">lwd=</span><span class="dv">4</span>)</span>
+<span id="cb114-65"><a href="shiny-练习.html#cb114-65" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb114-66"><a href="shiny-练习.html#cb114-66" aria-hidden="true" tabindex="-1"></a> }</span></code></pre></div>
+<p>呈现的交互动态形势图如下：</p>
+<p><img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcWqp6iCnBt6LgMYnnO6B5HpXjXKlbYxFk46xki6v1zZcEaLKDpUiI.MLcBVFuPNGdKY.JLtle6Q57.*tknTqg3k!/r" width = "300" height = "180" align=center /></p>
+<p>注意：在这一部分目前还是有些问题没有解决的：</p>
+<p>当运行以上shiny时，添加<code>shinyAPP(ui=ui,server=server)</code>，运行<code>run APP</code>，会发现网站出现的很缓慢，由于添加ui控件时，进行国家和日期的选择，其中<code>choices=什么</code>的问题需要进一步明确。</p>
+</div>
+<div id="shiny交互式地图" class="section level2" number="10.2">
+<h2><span class="header-section-number">10.2</span> shiny交互式地图</h2>
+<p>在本例子中，结合shiny，利用plotly包绘制地图，从而显示出全球新冠疫情相关数据分布情况。</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="shiny-练习.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb115-2"><a href="shiny-练习.html#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb115-3"><a href="shiny-练习.html#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
+<span id="cb115-4"><a href="shiny-练习.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb115-5"><a href="shiny-练习.html#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb115-6"><a href="shiny-练习.html#cb115-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb115-7"><a href="shiny-练习.html#cb115-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb115-8"><a href="shiny-练习.html#cb115-8" aria-hidden="true" tabindex="-1"></a><span class="co">#日维度全球死亡数据</span></span>
+<span id="cb115-9"><a href="shiny-练习.html#cb115-9" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv&quot;</span></span>
+<span id="cb115-10"><a href="shiny-练习.html#cb115-10" aria-hidden="true" tabindex="-1"></a>death<span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">fread</span>(url) <span class="sc">%&gt;%</span> tibble<span class="sc">::</span><span class="fu">tibble</span>()</span>
+<span id="cb115-11"><a href="shiny-练习.html#cb115-11" aria-hidden="true" tabindex="-1"></a>death <span class="ot">&lt;-</span> death <span class="sc">%&gt;%</span></span>
+<span id="cb115-12"><a href="shiny-练习.html#cb115-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb115-13"><a href="shiny-练习.html#cb115-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="dv">5</span><span class="sc">:</span><span class="fu">ncol</span>(.),</span>
+<span id="cb115-14"><a href="shiny-练习.html#cb115-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;date&quot;</span>,</span>
+<span id="cb115-15"><a href="shiny-练习.html#cb115-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;cases&quot;</span></span>
+<span id="cb115-16"><a href="shiny-练习.html#cb115-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb115-17"><a href="shiny-练习.html#cb115-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> lubridate<span class="sc">::</span><span class="fu">mdy</span>(date)) <span class="sc">%&gt;%</span></span>
+<span id="cb115-18"><a href="shiny-练习.html#cb115-18" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
+<span id="cb115-19"><a href="shiny-练习.html#cb115-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-20"><a href="shiny-练习.html#cb115-20" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb115-21"><a href="shiny-练习.html#cb115-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;全球新冠death数据&quot;</span>),   </span>
+<span id="cb115-22"><a href="shiny-练习.html#cb115-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarPanel</span>(<span class="at">width =</span> <span class="dv">6</span>,     </span>
+<span id="cb115-23"><a href="shiny-练习.html#cb115-23" aria-hidden="true" tabindex="-1"></a>               <span class="fu">selectInput</span>(</span>
+<span id="cb115-24"><a href="shiny-练习.html#cb115-24" aria-hidden="true" tabindex="-1"></a>                 <span class="at">inputId =</span> <span class="st">&quot;date&quot;</span>,</span>
+<span id="cb115-25"><a href="shiny-练习.html#cb115-25" aria-hidden="true" tabindex="-1"></a>                 <span class="at">label =</span> <span class="st">&quot;选择日期&quot;</span>,</span>
+<span id="cb115-26"><a href="shiny-练习.html#cb115-26" aria-hidden="true" tabindex="-1"></a>                 <span class="at">choices =</span> death<span class="sc">$</span>date,</span>
+<span id="cb115-27"><a href="shiny-练习.html#cb115-27" aria-hidden="true" tabindex="-1"></a>                 <span class="at">selected =</span> <span class="st">&quot;2021-05-23&quot;</span>)),</span>
+<span id="cb115-28"><a href="shiny-练习.html#cb115-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mainPanel</span>(<span class="at">width =</span> <span class="dv">6</span>,<span class="fu">plotlyOutput</span>(<span class="st">&quot;plotly&quot;</span>)</span>
+<span id="cb115-29"><a href="shiny-练习.html#cb115-29" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb115-30"><a href="shiny-练习.html#cb115-30" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb115-31"><a href="shiny-练习.html#cb115-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-32"><a href="shiny-练习.html#cb115-32" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {  </span>
+<span id="cb115-33"><a href="shiny-练习.html#cb115-33" aria-hidden="true" tabindex="-1"></a>    output<span class="sc">$</span>plotly <span class="ot">&lt;-</span> <span class="fu">renderPlotly</span>({</span>
+<span id="cb115-34"><a href="shiny-练习.html#cb115-34" aria-hidden="true" tabindex="-1"></a>    death <span class="ot">&lt;-</span> <span class="fu">filter</span>(death, date <span class="sc">==</span>input<span class="sc">$</span>date)</span>
+<span id="cb115-35"><a href="shiny-练习.html#cb115-35" aria-hidden="true" tabindex="-1"></a>    g <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb115-36"><a href="shiny-练习.html#cb115-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">scope =</span> <span class="st">&quot;global&quot;</span>,</span>
+<span id="cb115-37"><a href="shiny-练习.html#cb115-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">showland =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb115-38"><a href="shiny-练习.html#cb115-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">landcolor =</span> <span class="fu">toRGB</span>(<span class="st">&quot;gray85&quot;</span>),</span>
+<span id="cb115-39"><a href="shiny-练习.html#cb115-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">subunitwidth =</span> <span class="dv">1</span>,</span>
+<span id="cb115-40"><a href="shiny-练习.html#cb115-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">countrywidth =</span> <span class="dv">1</span>,</span>
+<span id="cb115-41"><a href="shiny-练习.html#cb115-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">subunitcolor =</span> <span class="fu">toRGB</span>(<span class="st">&quot;white&quot;</span>),</span>
+<span id="cb115-42"><a href="shiny-练习.html#cb115-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">countrycolor =</span> <span class="fu">toRGB</span>(<span class="st">&quot;white&quot;</span>)</span>
+<span id="cb115-43"><a href="shiny-练习.html#cb115-43" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb115-44"><a href="shiny-练习.html#cb115-44" aria-hidden="true" tabindex="-1"></a>    fig<span class="ot">&lt;-</span><span class="fu">plot_geo</span>(death) <span class="sc">%&gt;%</span></span>
+<span id="cb115-45"><a href="shiny-练习.html#cb115-45" aria-hidden="true" tabindex="-1"></a>      <span class="fu">add_markers</span>(</span>
+<span id="cb115-46"><a href="shiny-练习.html#cb115-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="sc">~</span>long,</span>
+<span id="cb115-47"><a href="shiny-练习.html#cb115-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="sc">~</span>lat,</span>
+<span id="cb115-48"><a href="shiny-练习.html#cb115-48" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="sc">~</span>cases,</span>
+<span id="cb115-49"><a href="shiny-练习.html#cb115-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="sc">~</span>cases,</span>
+<span id="cb115-50"><a href="shiny-练习.html#cb115-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">hoverinfo =</span> <span class="st">&quot;text&quot;</span>,</span>
+<span id="cb115-51"><a href="shiny-练习.html#cb115-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="sc">~</span> <span class="fu">paste</span>(</span>
+<span id="cb115-52"><a href="shiny-练习.html#cb115-52" aria-hidden="true" tabindex="-1"></a>          death<span class="sc">$</span>country_region,</span>
+<span id="cb115-53"><a href="shiny-练习.html#cb115-53" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot; &quot;</span>,</span>
+<span id="cb115-54"><a href="shiny-练习.html#cb115-54" aria-hidden="true" tabindex="-1"></a>          death<span class="sc">$</span>province_state,</span>
+<span id="cb115-55"><a href="shiny-练习.html#cb115-55" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;&lt;br /&gt;&quot;</span>,</span>
+<span id="cb115-56"><a href="shiny-练习.html#cb115-56" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;deaths&quot;</span>,</span>
+<span id="cb115-57"><a href="shiny-练习.html#cb115-57" aria-hidden="true" tabindex="-1"></a>          death<span class="sc">$</span>cases</span>
+<span id="cb115-58"><a href="shiny-练习.html#cb115-58" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb115-59"><a href="shiny-练习.html#cb115-59" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb115-60"><a href="shiny-练习.html#cb115-60" aria-hidden="true" tabindex="-1"></a>      <span class="fu">layout</span>(<span class="at">title =</span> <span class="st">&quot;Global death&quot;</span>, <span class="at">geo =</span> g)</span>
+<span id="cb115-61"><a href="shiny-练习.html#cb115-61" aria-hidden="true" tabindex="-1"></a>    fig})  </span>
+<span id="cb115-62"><a href="shiny-练习.html#cb115-62" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb115-63"><a href="shiny-练习.html#cb115-63" aria-hidden="true" tabindex="-1"></a><span class="co">#shinyApp(ui=ui, server=server)</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="plots-and-maps.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/09-shiny-examples.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+# COVID-19 data
+
+## US data
+
+该部分主要处理美国US新冠数据的死亡和确诊数据，得到美国各个地区死亡总人数和近28天的死亡人数以及确诊总人数和近28天的确认总人数，数据进行结合，最后利用reactable函数进行可视化。
+
+### Load libraries
+
+```{r}
+library(data.table)
+library(reactable)
+library(tidyverse)
+```
+
+### Load data and Processing data
+
+```{r}
+confirmed_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
+confirmed_US
+```
+
+```{r}
+deaths_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
+deaths_US
+```
+
+```{r}
+p <- ncol(confirmed_US)
+confirmed <- confirmed_US[, c(11, p - 28, p)]
+colnames(confirmed) <- c("us_county", "total_cases_28", "total_cases")  
+confirmed2 <- confirmed  %>%
+  mutate(new_cases_28 = total_cases - total_cases_28) %>%
+  select(-total_cases_28)
+confirmed2
+```
+
+```{r}
+q <- ncol(deaths_US)
+deaths <- deaths_US[, c(11:12, q - 28, q)]
+colnames(deaths) <- c("us_county", "population",  "total_deaths_28", "total_deaths")
+deaths2 <- deaths %>%
+  mutate(new_deaths_28 = total_deaths - total_deaths_28) %>%
+  select(-total_deaths_28)
+deaths2
+```
+
+### Combine data 
+
+```{r}
+full_data <- full_join(confirmed2, deaths2) %>%
+  mutate(
+    incidence = round(total_cases / population * 1e5, digits = 2), 
+    case_fatality_ratio = round(total_deaths / total_cases * 100, digits = 2)
+  )
+full_data
+```
+
+```{r}
+reactable(data = full_data, searchable = TRUE, striped = TRUE, highlight = TRUE, width = "auto", height = "auto") 
+```
+
+## Global data
+
+这里面主要做了全球COVID-19数据的处理，其中利用dplyr包中的长宽数据转换函数pivot_longer()或者pivot_wider()，其中pivot_longer()将宽数据转化为长数据，pivot_wider()将长数据转化为宽数据。
+
+此外，这里面主要利用COVID-19全球数据制作*周维度全球确诊数据*和*日维度全球死亡数据*，以便进行时间序列展示，方便接下来的时间序列图以及shiny地图的制作。
+
+### 周维度全球确诊数据
+
+```{r}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+confirmed_global <- data.table::fread(url) %>% tibble::tibble() # readr::read_csv(url) # utils::read.csv(url)
+
+nc <- ncol(confirmed_global)
+M <- confirmed_global[, seq(9, nc, 7)]
+M2 <- cbind(M[, 1], M[, -1] - M[, -ncol(M)])
+new_cases_global_weekly <- cbind(
+  confirmed_global[, 2:1], 
+  M2[, rev(colnames(M2))] 
+) %>% tibble()
+
+confirmed_global_weekly <- new_cases_global_weekly %>% # 导入全球数据
+  filter(`Province/State` == "") %>% # 筛选行 
+  select(!`Province/State`) %>% # 筛选列
+  pivot_longer(!`Country/Region`, names_to = "Date", values_to = "Confirmed") %>% # wide to long
+  
+  rename(Country_Region = `Country/Region`) %>% # 左新右旧
+  mutate(Date = lubridate::mdy(Date)) %>% # mutate 替换成 YMD
+  arrange(Country_Region, Date) # 时间排序从小到大（-Date从大到小）
+confirmed_global_weekly
+```
+
+### 日维度全球死亡数据
+
+```{r}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+death_global<- data.table::fread(url) %>% tibble::tibble()
+
+death_global_daily <- death_global %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names() %>%
+  group_by(country_region, date) %>%
+  summarise(cases = sum(cases),.groups = "drop") %>%
+  ungroup()
+
+death_global_daily
+```
+

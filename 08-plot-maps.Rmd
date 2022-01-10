@@ -1,0 +1,361 @@
+# Plots and Maps
+
+## Plots
+
+利用全球COVID-19数据进行时间序列作图，分别进行全球全球周维度确诊数据以及全球日维度死亡数据的时间序列可视化作图。
+
+全球周维度确诊数据制作时间序列图如下所示：
+
+```{r  warning=FALSE}
+library(data.table)
+library(reactable)
+library(tidyverse)
+```
+
+```{r warning=FALSE}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+confirmed_global <- data.table::fread(url) %>% tibble::tibble() # readr::read_csv(url) # utils::read.csv(url)
+
+nc <- ncol(confirmed_global)
+M <- confirmed_global[, seq(9, nc, 7)]
+M2 <- cbind(M[, 1], M[, -1] - M[, -ncol(M)])
+new_cases_global_weekly <- cbind(
+  confirmed_global[, 2:1], 
+  M2[, rev(colnames(M2))] 
+) %>% tibble()
+
+confirmed_global_weekly <- new_cases_global_weekly %>% # 导入全球数据
+  filter(`Province/State` == "") %>% # 筛选行 
+  select(!`Province/State`) %>% # 筛选列
+  pivot_longer(!`Country/Region`, names_to = "Date", values_to = "Confirmed") %>% # wide to long
+  
+  rename(Country_Region = `Country/Region`) %>% # 左新右旧
+  mutate(Date = lubridate::mdy(Date)) %>% # mutate 替换成 YMD
+  arrange(Country_Region, Date) # 时间排序从小到大（-Date从大到小）
+confirmed_global_weekly<-confirmed_global_weekly %>%
+  group_by(Date) %>%
+  summarise(Confirmed = sum(Confirmed))
+```
+
+```{r warning=FALSE}
+p <- ggplot(confirmed_global_weekly, aes(x = Date, y = Confirmed)) +
+       geom_point() +
+       scale_x_date(
+           date_labels = "%m-%d",
+           date_breaks = "1 week") +
+       scale_y_continuous(
+           breaks = c(0, 50000, 100000, 200000, 300000, 500000, 900000),
+           labels = scales::comma)+
+       geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("date")+ylab("confirmed")
+p
+```
+
+
+```{r}
+p1 <- ggplot(confirmed_global_weekly, aes(x = Date, y = Confirmed)) +
+       geom_point() +
+       # scale_x_date(
+       #     date_labels = "%m-%d",
+       #     date_breaks = "1 week") +
+       # scale_y_continuous(
+       #     breaks = c(0, 50000, 100000, 200000, 300000, 500000, 900000),
+       #     labels = scales::comma)+
+       geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("date")+ylab("confirmed")
+p1
+```
+
+全球日维度死亡数据中筛选中国，查看中国的新冠日维度死亡人数趋势：
+
+```{r}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+death_global<- data.table::fread(url) %>% tibble::tibble()
+```
+
+```{r }
+death_global_daily <- death_global %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names() %>%
+  group_by(country_region, date) %>%
+  summarise(cases = sum(cases),.groups = "drop") %>%
+  ungroup()
+
+death_China_daily<-death_global_daily %>%
+  filter(country_region == "China") %>%
+  ggplot(aes(x = date, y = cases)) +
+  geom_point() +
+  # scale_x_date(date_breaks = "1 week", date_labels = "%m-%d") +
+  scale_y_log10(labels = scales::comma)
+
+death_China_daily
+```
+
+```{r}
+death200000<-death_global_daily %>%
+  group_by(country_region) %>%
+  filter(max(cases) >= 200000) %>%
+  ungroup() %>%
+  ggplot(aes(x = date, y = cases, color = country_region)) +
+  geom_point() +
+  # scale_x_date(date_breaks = "1 week", date_labels = "%m-%d") +
+  # scale_y_log10() +
+  facet_wrap(vars(country_region), ncol = 2) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  theme(legend.position = "none")
+
+death200000
+```
+
+## Maps
+
+参考[https://plotly.com/r/maps/](https://plotly.com/r/maps/)进行地图的绘制。
+
+### 使用Maps包绘制地图
+利用ggplot进行地图绘制
+
+```{r}
+#全球死亡数据
+deaths_global <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"))
+
+#处理数据
+p <- ncol(deaths_global)
+death<-deaths_global[, c(2:4, p - 14, p)]
+colnames(death) <- c("country","lat","long", "total_death_14", "total_death")  
+death_global <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+```
+
+```{r warning=FALSE}
+world <- map_data("world")
+
+ggplot() +
+  geom_polygon(
+    data = world,
+    aes(x = long, y = lat, group = group),
+    fill = "grey", alpha = 0.3
+  ) +
+  geom_point(
+    data = death_global,
+    aes(x = long, y = lat, size = new_death_14, color = new_death_14),
+    stroke = F, alpha = 0.7
+  ) +
+  scale_size_continuous(
+    name = "Cases", trans = "log",
+    range = c(1, 7),
+    breaks = c(1, 20, 100, 1000, 50000),
+    labels = c("1-19", "20-99", "100-999", "1,000-49,999", "50,000+")
+  ) +
+  scale_color_viridis_c(
+    option = "inferno",
+    name = "Cases",
+    trans = "log",
+    breaks = c(1, 20, 100, 1000, 50000),
+    labels = c("1-19", "20-99", "100-999", "1,000-49,999", "50,000+")
+  ) +
+  theme_void() +
+  guides(colour = guide_legend()) +
+  labs(
+    title = "Mapping the global new_death_14",
+    subtitle = "",
+    caption = "Source: JHU Unviersity, CSSE; FT research @www.FT.com"
+  ) +
+  theme(
+    legend.position = "bottom",
+    text = element_text(color = "#22211d"),
+    plot.background = element_rect(fill = "#ffffff", color = NA),
+    panel.background = element_rect(fill = "#ffffff", color = NA),
+    legend.background = element_rect(fill = "#ffffff", color = NA)
+  )
+
+```
+
+### plotly绘制地图
+
+#### 首先绘制全球数据
+
+除了直接使用地图数据及ggplot之外，还可以用plotly绘制世界地图：
+
+```{r warning=FALSE }
+library(plotly)
+#全球死亡数据
+deaths_global <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"))
+
+p <- ncol(deaths_global)
+death<- deaths_global [, c(1:4,p-14, p)]
+colnames(death) <- c("province", "country","Lat","Long", "total_death_14", "total_death")  
+death_global <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+
+g <- list(
+  scope = "global",
+  showland = TRUE,
+  landcolor = toRGB("gray85"),
+  subunitwidth = 1,
+  countrywidth = 1,
+  subunitcolor = toRGB("white"),
+  countrycolor = toRGB("white")
+)
+
+fig <- plot_geo(death_global, sizes = c(1, 250)) %>%
+  add_markers(
+    x = ~Long,
+    y = ~Lat,
+    size = ~total_death,
+    color = ~total_death,
+    hoverinfo = "text",
+    text = ~ paste(
+      death_global$province,
+      " ",
+      death_global$country,
+      "<br />",
+      "deaths",
+      death_global$total_death
+    ),colors = 'Purples'
+  ) %>%
+  layout(title = "Global total death", geo = g)
+fig
+```
+
+
+```{r warning=FALSE}
+library(plotly)
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator'),
+  scope = "global",
+  showland = TRUE,
+  landcolor = toRGB("gray85"),
+  subunitwidth = 1,
+  countrywidth = 1,
+  subunitcolor = toRGB("white"),
+  countrycolor = toRGB("white")
+)
+fig <- plot_geo(death_global)
+fig <- fig %>% add_trace(
+    x = ~Long,
+    y = ~Lat,
+    size = ~new_death_14,
+    color = ~new_death_14,
+    hoverinfo = "text",
+    text = ~paste(
+      death_global$province,
+      " ",
+      death_global$country,
+      "<br />",
+      "deaths",
+      death_global$new_death_14
+    )
+  )
+fig <- fig %>% colorbar(title = '人数')
+fig <- fig %>% layout(
+    title = '全球近14天新增死亡人数 Source:<a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv">Global total death</a>',
+    geo = g
+  )
+fig
+```
+
+#### 绘制美国地图数据
+
+基于前一章节的数据，此处进行美国新冠数据的处理，得到美国各个州的确诊以及死亡人数，从而计算死亡率，得到死亡率。
+
+```{r}
+confirmed_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
+deaths_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
+```
+
+
+```{r}
+p <- ncol(confirmed_US)
+confirmed <- confirmed_US[, c(6:7,9:10, nc)]
+colnames(confirmed) <- c("state", "province", "Lat","Long", "total_cases")  
+confirmed
+```
+
+```{r}
+q <- ncol(deaths_US)
+deaths <- deaths_US[, c(6:7,9:10, nc)]
+colnames(deaths) <- c("state", "province", "Lat","Long", "total_deaths")
+deaths
+```
+
+```{r}
+full_data <- full_join(confirmed, deaths) %>%
+  mutate(
+    rate = round(total_deaths/total_cases , digits = 5)
+  )
+full_data
+```
+
+```{r}
+library(plotly)
+full_data$class <- cut(full_data$rate,
+                breaks = c(0.01, 0.02, 0.03, 0.04,0.05),
+                labels = c("低", "中低", "中", "偏高"),
+                ordered_result = T)
+g <- list(
+  scope = "usa",
+  projection = list(type = "albers usa"),
+  showland = TRUE,
+  landcolor = toRGB("gray85"),
+  subunitwidth = 1,
+  countrywidth = 1,
+  subunitcolor = toRGB("white"),
+  countrycolor = toRGB("white")
+)
+
+fig <- plot_geo(full_data, locationmode = "USA", sizes = c(1, 250)) %>%
+  add_markers(
+    x = ~Long,
+    y = ~Lat,
+    size = ~rate,
+    color = ~class,
+    hoverinfo = "text",
+    text = ~ paste(
+      full_data$state,
+      " ",
+      full_data$province,
+      "<br />",
+      "death rate ",
+      full_data$rate
+    )
+  ) %>%
+  layout(title = "US death rate", geo = g)
+
+fig
+```
+
+
+### leaflet绘制地图
+
+leaflet也是绘制地图的一个有利的工具：
+
+```{r warning=FALSE}
+library(leaflet)
+deaths_global <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"))
+
+#处理数据
+p <- ncol(deaths_global)
+death<-deaths_global[, c(2:4, p - 14, p)]
+colnames(death) <- c("country","lat","long", "total_death_14", "total_death")  
+death_global <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+leaflet(death_global) %>% 
+  addProviderTiles(providers$Stamen.TonerLite) %>% 
+  addMarkers(lat=~lat,lng=~long,popup=~as.character(new_death_14))
+```
+

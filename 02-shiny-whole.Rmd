@@ -1,0 +1,253 @@
+# Shiny APP整体介绍
+
+**详细内容请参考学习网址[Mastering Shiny](https://mastering-shiny.org) **
+
+## 基本介绍
+
+创建Shiny APP有多种方法，最简单的方法是为你的文件创建一个新的目录，并放入一个app.R的文件，app.R的文件整体布局如下：
+
+`library(shiny)`(加载Shiny包)
+
+`ui <- fluidPage()`（定义用户界面）
+
+`server <- function(input, output, session) {}`（定义服务器功能）
+
+`shinyApp(ui, server)`（从ui和server构建并启动一个shiny应用程序）
+
+### 添加用户界面控件
+
+例如：
+
+```{r}
+library(shiny)
+ui <- fluidPage(
+  selectInput("dataset", label = "Dataset", choices = ls("package:datasets")),
+  verbatimTextOutput("summary"),
+  tableOutput("table")
+)
+```
+
+这里fluidPage()是一个布局函数，用于设置页面的基本视觉结构。
+
+selectInput()是一个输入控件，允许用户通过提供一个值与应用程序进行交互。
+
+verbatimTextOutput()和tableOutput()是输出控件，它们告诉Shiny将渲染输出放在哪里。
+
+verbatimTextOutput()显示代码，tableOutput()显示表格。
+
+### 在服务器函数中定义输出（添加行为）
+
+Shiny使用反应式编程使应用程序具有交互性。
+
+例如：
+
+```{r}
+server <- function(input, output, session) {
+  output$summary <- renderPrint({
+    dataset <- get(input$dataset, "package:datasets")
+    summary(dataset)
+  })
+  
+  output$table <- renderTable({
+    dataset <- get(input$dataset, "package:datasets")
+    dataset
+  })
+}
+```
+
+使用特定的render函数来包装您提供的一些代码。
+
+renderPrint()与verbatimTextOutput()配对以显示具有固定宽度(逐字)文本的统计摘要，renderTable()与tableOutput()配对以显示表格中的输入数据。
+
+### 创建Shiny应用程序
+
+```{r}
+shinyApp(ui=ui, server=server)
+```
+
+## 前端介绍（用户端UI）
+
+### inputs
+
+_sliderInput_
+
+_textInput_
+
+_passwordInput_
+
+_textAreaInput_
+
+_numericInput_
+
+_dateInput_
+
+_dateRangeInput_
+
+_selectInput_
+
+_radioButtons_
+
+_checkboxGroupInput_
+
+_checkboxInput_
+
+_fileInput_
+
+_actionButton_
+
+具体应用**代码**请参考[https://shiny.rstudio.com/gallery/widget-gallery.html]https://shiny.rstudio.com/gallery/widget-gallery.html
+
+### outputs
+
+#### Text
+
+_textOutput()_
+
+_verbatimTextOutput()_
+
+renderText()将结果组合成一个字符串，通常与textOutput()配对；renderPrint()打印结果，通常与verbatimTextOutput()配对。
+
+```{r}
+ui <- fluidPage(
+  textOutput("text"),
+  verbatimTextOutput("code")
+)
+server <- function(input, output, session) {
+  output$text <- renderText({ 
+    "Hello friend!" 
+  })
+  output$code <- renderPrint({ 
+    summary(1:10) 
+  })
+}
+```
+
+#### Tables
+
+_tableOutput()_
+
+_dataTableOutput()_
+
+tableOutput()和renderTable()呈现一个静态数据表，一次显示所有数据；dataTableOutput()和renderDataTable()呈现一个动态表，显示固定数量的行以及用于更改哪些行可见的控件。
+
+```{r}
+ui <- fluidPage(
+  tableOutput("static"),
+  dataTableOutput("dynamic")
+)
+server <- function(input, output, session) {
+  output$static <- renderTable(head(mtcars))
+  output$dynamic <- renderDataTable(mtcars, options = list(pageLength = 5))
+}
+```
+
+#### Plots
+
+_plotOutput()_
+
+plotOutput() 常与renderPlot()对应；
+
+```{r}
+ui <- fluidPage(
+  plotOutput("plot", width = "400px")
+)
+server <- function(input, output, session) {
+  output$plot <- renderPlot(plot(1:5), res = 96)
+}
+```
+
+#### Downloads
+
+_downloadButton()_
+
+_downloadLink()_
+
+## 反应式编程
+
+### inputs
+
+注意事项：
+
+1.与典型的列表不同，输入对象是只读的，不可以修改服务器函数内部的输入。
+
+2.它对允许谁阅读它是有选择性的。要读取输入，必须处于由render...()或reactive()等函数创建的反应上下文中。
+
+### output
+
+输出与输入非常相似:它也是一个类似列表的对象，根据输出ID命名。主要区别在于，使用它来发送输出，而不是接收输入。
+
+### Reactive programming
+
+既有input又有output的应用程序
+
+**注意：**
+
+如果运行一个Shiny应用程序，代码永远不会运行，仔细检查ui用户界面和server服务器功能使用相同的标识符。
+
+reactive()可以简化许多重复步骤。
+
+```{r}
+server <- function(input, output, session) {
+  x1 <- reactive(rnorm(input$n1, input$mean1, input$sd1))
+  x2 <- reactive(rnorm(input$n2, input$mean2, input$sd2))
+
+  output$hist <- renderPlot({
+    freqpoly(x1(), x2(), binwidth = input$binwidth, xlim = input$range)
+  }, res = 96)
+
+  output$ttest <- renderText({
+    t_test(x1(), x2())
+  })
+}
+```
+
+假设您想通过不断地重新模拟数据来强化这是模拟数据的事实，以便您看到的是动画而不是静态绘图，可以用一个新的函数来增加更新的频率:reactiveTimer()。
+
+```{r}
+server <- function(input, output, session) {
+  timer <- reactiveTimer(500)
+  
+  x1 <- reactive({
+    timer()
+    rpois(input$n, input$lambda1)
+  })
+  x2 <- reactive({
+    timer()
+    rpois(input$n, input$lambda2)
+  })
+  
+  output$hist <- renderPlot({
+    freqpoly(x1(), x2(), binwidth = 1, xlim = c(0, 40))
+  }, res = 96)
+}
+```
+
+若选择执行昂贵的计算，可以使用是actionButton():
+
+```{r}
+ui <- fluidPage(
+  fluidRow(
+    column(3, 
+      numericInput("lambda1", label = "lambda1", value = 3),
+      numericInput("lambda2", label = "lambda2", value = 5),
+      numericInput("n", label = "n", value = 1e4, min = 0),
+      actionButton("simulate", "Simulate!")
+    ),
+    column(9, plotOutput("hist"))
+  )
+)
+server <- function(input, output, session) {
+  x1 <- eventReactive(input$simulate, {
+    rpois(input$n, input$lambda1)
+  })
+  x2 <- eventReactive(input$simulate, {
+    rpois(input$n, input$lambda2)
+  })
+
+  output$hist <- renderPlot({
+    freqpoly(x1(), x2(), binwidth = 1, xlim = c(0, 40))
+  }, res = 96)
+}
+```
+
+需要eventReactive()，它有两个参数:第一个参数指定依赖什么，第二个参数指定计算什么。这使得该应用程序在单击模拟时只能计算x1()和x2()。

@@ -1,0 +1,144 @@
+# Shiny Bookmarking
+
+## Basic
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+   sidebarLayout(
+     sidebarPanel(
+       sliderInput("omega", "omega", value = 1, min = -2, max = 2, step = 0.01),
+      sliderInput("delta", "delta", value = 1, min = 0, max = 2, step = 0.01),
+      sliderInput("damping", "damping", value = 1, min = 0.9, max = 1, step = 0.001),
+      numericInput("length", "length", value = 100)
+     ),
+     mainPanel(
+       plotOutput("fig")
+     )
+  )
+)
+
+server <- function(input, output, session) {
+   t <- reactive(seq(0, input$length, length.out = input$length * 100))
+  x <- reactive(sin(input$omega * t() + input$delta) * input$damping ^ t())
+  y <- reactive(sin(t()) * input$damping ^ t())
+  
+  output$fig<-renderPlot({
+    plot(x(), y(), axes = FALSE, xlab = "", ylab = "", type = "l", lwd = 2)
+  }, res = 96
+  )
+}
+
+```
+
+我们需要做三件事来使这个应用程序可书签化:
+1.向用户界面添加书签按钮bookmarkButton()。这将生成一个按钮，用户单击该按钮可以生成可书签的网址。
+2.将ui转换成函数function。
+3.将enableBookmarking = "url "添加到shinyApp()调用中。
+
+```{r}
+library(shiny)
+
+ui <- function(request){
+  fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        sliderInput("omega", "omega", value = 1, min = -2, max = 2, step = 0.01),
+        sliderInput("delta", "delta", value = 1, min = 0, max = 2, step = 0.01),
+        sliderInput("damping", "damping", value = 1, min = 0.9, max = 1, step = 0.001),
+        numericInput("length", "length", value = 100),
+        bookmarkButton()
+        
+      ),
+      mainPanel(
+        plotOutput("fig")
+      )
+    )
+  )
+}
+
+#shinyApp(ui, server,enableBookmarking = "url ")
+```
+
+自动更新网址需要服务器函数中的一些样板:
+
+```{r}
+# # Automatically bookmark every time an input changes
+# observe({
+#   reactiveValuesToList(input)
+#   session$doBookmark()
+# })
+# # Update the query string
+# onBookmarked(updateQueryString)
+```
+
+它为我们提供了如下更新的服务器功能:
+
+```{r}
+server <- function(input, output, session) {
+  t <- reactive(seq(0, input$length, length = input$length * 100))
+  x <- reactive(sin(input$omega * t() + input$delta) * input$damping ^ t())
+  y <- reactive(sin(t()) * input$damping ^ t())
+
+  output$fig <- renderPlot({
+    plot(x(), y(), axes = FALSE, xlab = "", ylab = "", type = "l", lwd = 2)
+  }, res = 96)
+  
+  observe({
+    reactiveValuesToList(input)
+    session$doBookmark()
+  })
+  onBookmarked(updateQueryString)
+}
+
+```
+
+添加bookmark书签完整代码：
+
+```{r}
+library(shiny)
+
+ui <- function(request){
+  fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        sliderInput("omega", "omega", value = 1, min = -2, max = 2, step = 0.01),
+        sliderInput("delta", "delta", value = 1, min = 0, max = 2, step = 0.01),
+        sliderInput("damping", "damping", value = 1, min = 0.9, max = 1, step = 0.001),
+        numericInput("length", "length", value = 100),
+        bookmarkButton()
+
+      ),
+      mainPanel(
+        plotOutput("fig")
+      )
+    )
+  )
+}
+
+server <- function(input, output, session) {
+  t <- reactive(seq(0, input$length, length = input$length * 100))
+  x <- reactive(sin(input$omega * t() + input$delta) * input$damping ^ t())
+  y <- reactive(sin(t()) * input$damping ^ t())
+
+  output$fig <- renderPlot({
+    plot(x(), y(), axes = FALSE, xlab = "", ylab = "", type = "l", lwd = 2)
+  }, res = 96)
+
+  observe({
+    reactiveValuesToList(input)
+    session$doBookmark()
+  })
+  onBookmarked(updateQueryString)
+}
+
+```
+
+## Storing richer state
+
+使用enableBookmarking="server"，它将状态保存到server上的rds文件。这总是会生成一个简短、不透明的URL，但需要服务器上的额外存储。
+
+```{r}
+#shinyApp(ui, server, enableBookmarking = "server")
+```

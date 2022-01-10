@@ -1,0 +1,188 @@
+# Shiny feedback
+
+## Validation
+ 
+### Validating input
+
+无效的输入可能会导致不想向用户显示的非信息性错误。为了阻止输入触发反应性变化您需要一个新工具:req()
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  shinyFeedback::useShinyFeedback(),
+  numericInput("n","n",value=10),
+  textOutput("half")
+  
+)
+
+server <- function(input, output, session) {
+  half<-reactive({
+    even<-input$n %% 2==0
+    shinyFeedback::feedbackWarning("n",!even,"please select an even number!")
+    #req(even)
+    input$n /2
+    
+  })
+    output$half<-renderText(half())
+  
+}
+
+```
+
+### Cancelling execution with req()
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  selectInput("language","Language",choices = c("","English","Maori")),
+  textInput("name","Name"),
+  textOutput("greeting")
+  
+)
+
+server <- function(input, output, session) {
+  greetings<-c(
+    Engilsh="Hello",
+    Maori="Kia ora"
+  )
+  output$greeting<-renderText({
+    #req(input$language,input$name)
+    paste0(greetings[[input$language]],"",input$name,"!")
+  })
+}
+
+```
+
+### req() and validation
+
+结合req()和shinyFeedback来解决一个更具挑战性的问题
+
+注意cancelOutput = TRUE的用法:通常取消无功会复位所有下游输出；使用cancelOutput = TRUE会让它们显示最后一个good value
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  shinyFeedback::useShinyFeedback(),
+   textInput("dataset", "Dataset name"), 
+  tableOutput("data")
+)
+
+server <- function(input, output, session) {
+  data<-reactive({
+    req(input$dataset)
+    
+    exists<-exists(input$dataset,"package:datasets")
+    shinyFeedback::feedbackDanger("dataset",!exists,"Unknown dataset")
+    req(exists,cancelOutput = TRUE)
+    
+    get(input$dataset, "package:datasets")
+    
+  })
+  
+  output$data<-renderTable({
+    head(data())
+  })
+}
+
+```
+
+### Validate output
+
+使用内置于shiny: validate()中的工具
+validate(message)停止执行代码的其余部分
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  numericInput("x","x",value=0),
+  selectInput("trans","transformation",choices=c("square", "log", "square-root")),
+  textOutput("out")
+)
+
+server <- function(input, output, session) {
+  
+ output$out <- renderText({
+    if (input$x < 0 && input$trans %in% c("log", "square-root")) {
+      validate("x can not be negative for this transformation")
+    }
+   
+   switch(input$trans,
+      square = input$x ^ 2,
+      "square-root" = sqrt(input$x),
+      log = log(input$x)
+    )
+  })
+}
+
+```
+
+
+## Notifications
+
+### Transient notification
+
+```{r eruptions, echo=FALSE,warning=FALSE}
+library(shiny)
+
+ui<-fluidPage(
+  actionButton("goodnight","GoodNight")
+)
+
+server<-function(input,output,session){
+  observeEvent(input$goodnight,{
+    showNotification("So Long")
+    Sys.sleep(1)
+    showNotification("Farewell",type="message")
+    Sys.sleep(1)
+    showNotification("Adieu",type="error")
+  })
+}
+
+```
+
+### Removing on completion
+
+将持续时间设置为空(duration = NULL)，将关闭按钮设置为假closeButton = FALSE，以便在任务完成之前通知保持可见。
+在任务开始时显示通知，并在任务完成时删除通知  
+使用on.exit()，它确保无论任务如何完成(成功完成或出现错误)，通知都会被删除  
+on.exit:ensures that the notification is removed
+
+```{r tabsets, echo=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+   tableOutput("data")
+)
+
+server <- function(input, output, session) {
+  notify <- function(msg, id = NULL) {
+    showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
+  }
+
+  data <- reactive({ 
+    id <- notify("Reading data...")
+    on.exit(removeNotification(id), add = TRUE)
+    Sys.sleep(1)
+      
+    notify("Reticulating splines...", id = id)
+    Sys.sleep(1)
+    
+    notify("Herding llamas...", id = id)
+    Sys.sleep(1)
+
+    notify("Orthogonalizing matrices...", id = id)
+    Sys.sleep(1)
+        
+    mtcars
+})
+  output$data<-renderTable(head(data()))
+}
+
+```
+
+
+

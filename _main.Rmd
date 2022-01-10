@@ -1,0 +1,2068 @@
+--- 
+title: "Rmarkdown and Shiny"
+author: "Lei mingri"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+
+description: |
+  Mastering github、rmarkdown、shiny、 leaflet、plotly.
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# 前言
+
+这是用 **Markdown**写的一本简单的草稿书，书中的内容主要是学习过程的总结整理，一步一步从下载安装软件开始，后续进行rmarkdown、shiny、leaflet、plotly等的学习。此外，结合Github上面的COVID-19项目，运用以上几种R包进行数据处理与分析，从而掌握一些可视化R包、开阔眼界。
+
+
+## 布局书 
+
+每一个**bookdown**章节都是一个**.Rmd文件**
+
+`index.Rmd`是整本书的第一部分，当运行这本书时，它将成为主页。
+
+## 运行书
+
+可以呈现本书籍的HTML版本:
+
+在RStudio IDE中找到**Build**，并且点击 **Build Book**，然后选择输出格式；
+
+或者也可以在R console中创建这本书：
+
+```{r, eval=FALSE}
+bookdown::render_book()
+```
+
+如果将书展示成为PDF版本`bookdown::pdf_book`，需要安装XeLaTeX，当然还是建议安装TinyTeX<https://yihui.org/tinytex/>。
+
+## 预览书
+
+可以启动一个本地服务器来实时预览这本书（HTML）。当保存单独.Rmd文件时，此预览会随着编辑图书而更新。
+
+<!--chapter:end:index.Rmd-->
+
+# 前期工作
+
+## 软件准备工作
+
+### 注册Github账号
+
+- 注册一个[**GitHub账户https://github.com**](https://github.com)
+
+- 安装或者更新**R**和**RStudio**
+
+- 下载并安装特定于平台的Git。这里我安装[**Git(windows)https://gitforwindows.org/**](https://gitforwindows.org/)
+
+- 使用全局命令配置Git。在我完成此过程时，我发现这一步是必要的。打开 bash 版本的 Git 并输入以下内容：
+
+`git config --global user.name 'leimingri' ` 
+
+`git config --global user.email 'lmr18845128812@163.com' ` 
+
+`git config --global --list `
+
+替换您的名称和与GitHub帐户相关的电子邮件 
+
+- 已确认可以从命令行对GitHub推/拉
+
+### 连接Git GitHub,RStudio
+
+这部分主要概述让RStudio与GitHub一起工作的简单步骤。首先您必须了解与 Git 相关的四个术语：存储库、提交、推送和拉取，打开Rstudio并设置Git可执行文件的路径*Tools > global options > Git/SVM*。首先，在GitHub上面创建一个项目repository，然后将项目地址克隆到RStudio中，接着进行本地的更改、保存及提交，将新增更改的内容保存到GitHub该项目存储库中。
+
+- 连接RStudio到Git和GitHub
+
+在GitHub上创建存储库（项目）,然后通过RStudio将新的GitHub存储库克隆到您的计算机上，这就是Rstudio如何知道要使用什么存储库，并将其与您的新存储库相关联项目文件。在RStudio中，*File > New Project > Version Control > Git*。
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcWqp6iCnBt6LgMYnnO6B5HpXjXKlbYxFk46xki6v1zZcEaLKDpUiI.MLcBVFuPNGdKY.JLtle6Q57.*tknTqg3k!/r" width = "300" height = "180" align=center />
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7W6hmCqubVl3HuUivpwPir.KRmHsZwkPDJyMmRkW4WZ6C2jNxt*phmYwxIP7IVIALo!/r" width = "300" height = "180" align=center />
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7VnCuhp9oP3UJXscyIvhykoRRAjVXj5hwQz1nFPXdgwFJhCCezbOKtjKDMgqj0vSv0!/r" width = "300" height = "180" align=center />
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7VyroulROJQ3b42cW5GC0dZCEBNkSoiv4IA*whdlrb834MPsCW0Jk7Y1GrpFMW*ZFM!/r" width = "300" height = "180" align=center /> 
+
+- 进行本地更改，保存、提交
+
+现在在新的R项目中做一些工作，创建并保存一些文件。下一步是“提交”您的工作——本质上是复制您所有的脚本文件与R项目相关联。接着*Tools>Version Control>Commit*将您在本地进行的更改在线推送到GitHub。
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7XxWjr.9heo*14lh0n7j..AY*WsAR3aJ763ojGHfyK0m09NzLViBpZiLcDkw99sjCQ!/r" width = "300" height = "180" align=center />
+
+- 确认传播到GitHub远程存储器的本地更改
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcXs7nTmmgbXR5sVjMg16OdQNCoHfjdD1DEGsjiNFJ19ugvqH76Ps6i.OufOQg0NsO1H1upexja1vlGr2gXIkH1c!/r" width = "300" height = "180" align=center /> 
+
+检查想要提交的文件，然后按下**Commit**按钮。如果想把这些文件移到GitHub服务器上，点击“Push”。在线查看您的存储库，仔细检查您的文件是否确实在那里。
+
+注：[R Markdown官网地址http://rmarkdown.rstudio.com](http://rmarkdown.rstudio.com)      
+    以上内容参考文献[happy-git-with-R](https://happygitwithr.com/)
+
+### 可能遇到的问题
+
+1.错误: LaTeX failed to compile R.tex.
+
+解决办法：[链接https://yihui.org/tinytex/r/#debugging for debugging tips.]( https://yihui.org/tinytex/r/#debugging for debugging tips.)---有时候是插入的图片问题
+
+2.导入GitHub中的URL时，出现‘...Connection was reset, errno 10054’错误时
+
+解决办法：`git config --global http.sslVerify` "false"即解除ssl验证，再次git即可
+
+3.第一次点选Knit PDF（或Knit HTML)报错Knit PDF : pandoc document conversion failed with error 43
+
+解决办法：可以通过安装 github 上最新的版本解决：  
+`install.packages(“devtools”)`  
+如果以前没有安装 devtools 包  
+`devtools::install_github(“rstudio/rmarkdown”)`
+
+4.错误：PDF中文问题
+
+latex_engine: xelatex（尝试加上这句话）
+
+5.错误：导入GitHub中的URL时，出现‘...Connection was reset, errno 10054’错误
+
+解决办法：git bash里面`git config --global http.sslVerify "false"`即解除ssl验证，再次git
+
+*针对上面的错误，注意：可以多多尝试* 
+
+方法一：用压缩的方式进行下载  
+`git config --global --add core.compression -1`  
+
+方法二：.增大缓存大小  
+524288000表示增至500兆，1048576000表示增至1G  
+`git config --global http.postBuffer 524288000` 
+
+方法三：利用ssh下载  
+`git clone git://github.com/XX/XXXX.git` 
+
+方法四：安全设置问题  
+`git config http.sslVerify "false"` 
+
+----------
+
+## 熟悉Rmarkdown（利用Rmarkdown制作简历）
+
+| 一些简历资源    | 链接 |
+| :----------- | :----------- |
+| 简历学习模板1   | <a href="https://github.com/geekcompany/DeerResume">https://github.com/geekcompany/DeerResume</a>|
+| 简历学习模板2   | <a href="https://github.com/geekcompany/ResumeSample">https://github.com/geekcompany/ResumeSample</a>|
+| 在线MarkDown简历书写工具 冷熊简历   | <a href="http://link.ftqq.com/0rsRL">http://link.ftqq.com/0rsRL</a>|
+| 教学：《如何写好技术简历》   | <a href="http://link.ftqq.com/KWkVX">http://link.ftqq.com/KWkVX</a>|
+| 简历例句     | <a href="https://github.com/resumejob/awesome-resume">https://github.com/resumejob/awesome-resume</a>      |
+| 大厂高频面经面试题      | <a href="https://osjobs.net/topk/">https://osjobs.net/topk/</a>      |  
+| 雨果主题简历制作模板   | <a href="https://wowchemy.com/hugo-themes/">https://wowchemy.com/hugo-themes/</a>|
+
+## ggplot2绘图入门
+
+### 基本概念
+
+- 图层（Layer）：图层可以允许用户一步步的构建图形，方便单独对图层进行修改、增加统计量、甚至改动数据。
+
+- 标度（Scale）：标度是一种函数，它控制了数学空间到图形元素空间的映射。一组连续数据可以映射到X轴坐标，也可以映射到一组连续的渐变色彩。一组分类数据可以映射成为不同的形状，也可以映射成为不同的大小。
+
+- 坐标系统（Coordinate）：坐标系统控制了图形的坐标轴并影响所有图形元素，最常用的是直角坐标轴，坐标轴可以进行变换以满足不同的需要，如对数、极坐标轴。
+
+- 位面（Facet）：很多时候需要将数据按某种方法分组，分别进行绘图。位面就是控制分组绘图的方法和排列形式。
+
+### 一个例子
+
+用ggplot2包内带的汽车测试数据（mpg）来举个例子，用到的三个变量分别是发动机容量(displ)、高速公路上的每加仑行驶里数(hwy)、汽缸数目(cyl)。首先加载ggplot2包，然后用ggplot定义第一层即数据来源。其中aes参数非常关键，它将displ映射到X轴，将hwy映射到Y轴，将cyl变为分类数据后映射为不同的颜色。然后使用+号添加了两个新的图层，第二层是加上了散点，第三层是加上了loess平滑曲线。
+
+```{r warning=FALSE}
+install.packages("ggplot2")
+```
+
+```{r warning=FALSE}
+library(ggplot2)
+p <- ggplot(data=mpg,aes(x=displ,y=hwy,colour=factor(cyl)))
+p + geom_point() + geom_smooth()
+```
+
+如果需要对整体数据进行平滑，可将colour参数设置在散点图层内而非第一层，这样第三层的平滑图形就不会受到colour参数的影响。
+
+```{r}
+p <- ggplot(mpg,aes(x=displ,y=hwy))
+p + geom_point(aes(colour=factor(cyl))) + geom_smooth()
+```
+
+### 相关图形
+
+#### 图层控制与直方图
+
+第一层必须是原始数据层，其中data参数控制数据来源，注意数据形式只能是数据框格式。aes参数控制了对哪些变量进行图形映射，以及映射方式，aes是Aesthetic的缩写。  
+下面我们来绘制一个直方图作为示例。数据集仍采取mpg，对hwy变量绘制直方图。首先加载了扩展包，然后用ggplot函数建立了第一层，hwy数据映射到X轴上；使用+号增加了第二层，即直方图对象层。此时p被视为一种层对象，使用summary函数可得到关于它的更多信息，print(p)命令即可进行绘图。
+
+```{r}
+library(ggplot2)
+p <- ggplot(data = mpg,aes(x = hwy))
+p <- p + geom_histogram()
+summary(p)
+print(p)
+```
+
+p对象含有两层，第一层数据层描述了变量和映射方式，第二层是直方图对象（geom_histogram），geom表示几何对象，它是ggplot中重要的图层控制对象，因为它负责图形渲染的类型。geom_histogram是图形渲染类型的一种。
+
+每个geom对象都需要有数据输入，数据可以从第一层中自动读取，也可以在aes参数中直接设置。而且每个geom还默认搭配某种统计变换（stat），geom_histogram的默认统计变换是stat_bin。它负责对数据进行分组计数。
+
+下面我们尝试两种更为复杂的直方图，首先将数据按照year这个变量划分为两组，用不同的颜色绘制直方图，而且用频率而非计数来刻画Y轴，并添加密度曲线。
+
+```{r warning=FALSE}
+p <- ggplot(mpg,aes(hwy))
+p + geom_histogram(position = 'identity',
+alpha=0.5,
+aes(y = ..density..,
+fill = factor(year))) +
+stat_density(geom = 'line',
+position = 'identity',
+aes(colour = factor(year)))
+```
+
+#### 位置调整与条形图
+
+位置调整（Position adjustments）是针对同一图层内元素的位置进行微调的方法。它包括五种设置，分别是stack、dodge、fill、identity、jitter。
+
+我们用条形图来展示其用法，仍使用mpg数据集，其中用到的变量是class，即生产汽车的类型，以及year生产年份。下面的条形图是将各类型的汽车数量进行汇集，并以年份作为分组变量。我们首先载入扩展包，然后用频数表对数据进行大致的了解，最后绘制了四种条形图。
+
+```{r}
+library(ggplot2)
+with(mpg,table(class,year))
+p <- ggplot(data=mpg,aes(x=class,fill=factor(year)))
+p + geom_bar(position='dodge')
+p + geom_bar(position='stack')
+p + geom_bar(position='fill')
+p + geom_bar(position='identity',alpha=0.3)
+```
+
+可以看到dodge方式是将不同年份的数据并列放置；stack方式是将不同年份数据推叠放置，这也是geom_bar的默认处理方式；fill方式和stack类似，但Y轴不再是计数，而是以百分比显示；identity方式是不做任何改变直接显示出来，所以需要设置透明度才能看得清楚。
+
+#### 散点图
+
+- 色彩和形状的控制
+
+数据特征不仅可以用坐标来表示，也可以用不同的色彩或形状来表示。仍以mpg数据集为例，所用到的变量有cty（城市中行驶距离）,hwy（高速路行驶距离）,displ（排量大小）,year（生产年份）
+
+```{r}
+library(ggplot2)
+p <- ggplot(mpg, aes(cty, hwy))
+p1 <- p + geom_point(aes(colour = factor(year),shape = factor(year), size = displ), alpha = 0.6, position = 'jitter')
+print(p1)
+```
+
+我们将1999年生产车型用红色圆形表示，2008年用兰色三角形表示，排量用图形的大小表示，并且设置了透明度和jitter以避免样本点之间的重叠。可观察到2008年生产的大排量车型较多，从而油耗较高，单位油耗行驶距离较短。
+
+- 坐标的控制
+
+上图右上角数据点较为稀疏，这种情况下可用对数变换。为了演示ggplot2对图形坐标的控制，我们对X轴和Y轴均进行对数变换，然后对X轴的坐标显示加以限制，只显示X轴数据的均值，以及一倍标准差的坐标。
+
+```{r}
+cty.mean=with(mpg,mean(cty))
+cty.sd=with(mpg,sd(cty))
+p1 + scale_x_continuous(trans='log',breaks=c(cty.mean-cty.sd,cty.mean,cty.mean+cty.sd), labels=c("high", "mean", "low")) + scale_y_continuous(trans='log')
+```
+
+- 文字说明
+
+利用geom_text函数可添加文字说明以增强图形的可读性
+
+```{r}
+p <- ggplot(mtcars, aes(x=wt, y=mpg,colour=factor(cyl),label=rownames(mtcars)))
+p + geom_text(hjust=0,vjust=-1,alpha=0.8)+ geom_point(size=3,aes(shape=factor(cyl)))
+```
+
+### ggplot2绘制时间序列变化图
+
+ggplot2包也能对时间序列数据绘图，但在处理上需要有些注意的地方，可能需要注意转化成data.frame。ggplot()可以先将时间序列类型拆成数据框类型然后再绘图。
+
+[数据来源：2021全球开放数据应用创新大赛https://www.sodic.com.cn/datasets](https://www.sodic.com.cn/datasets)
+
+<!--chapter:end:01-preparation.Rmd-->
+
+# Shiny APP整体介绍
+
+**详细内容请参考学习网址[Mastering Shiny](https://mastering-shiny.org) **
+
+## 基本介绍
+
+创建Shiny APP有多种方法，最简单的方法是为你的文件创建一个新的目录，并放入一个app.R的文件，app.R的文件整体布局如下：
+
+`library(shiny)`(加载Shiny包)
+
+`ui <- fluidPage()`（定义用户界面）
+
+`server <- function(input, output, session) {}`（定义服务器功能）
+
+`shinyApp(ui, server)`（从ui和server构建并启动一个shiny应用程序）
+
+### 添加用户界面控件
+
+例如：
+
+```{r}
+library(shiny)
+ui <- fluidPage(
+  selectInput("dataset", label = "Dataset", choices = ls("package:datasets")),
+  verbatimTextOutput("summary"),
+  tableOutput("table")
+)
+```
+
+这里fluidPage()是一个布局函数，用于设置页面的基本视觉结构。
+
+selectInput()是一个输入控件，允许用户通过提供一个值与应用程序进行交互。
+
+verbatimTextOutput()和tableOutput()是输出控件，它们告诉Shiny将渲染输出放在哪里。
+
+verbatimTextOutput()显示代码，tableOutput()显示表格。
+
+### 在服务器函数中定义输出（添加行为）
+
+Shiny使用反应式编程使应用程序具有交互性。
+
+例如：
+
+```{r}
+server <- function(input, output, session) {
+  output$summary <- renderPrint({
+    dataset <- get(input$dataset, "package:datasets")
+    summary(dataset)
+  })
+  
+  output$table <- renderTable({
+    dataset <- get(input$dataset, "package:datasets")
+    dataset
+  })
+}
+```
+
+使用特定的render函数来包装您提供的一些代码。
+
+renderPrint()与verbatimTextOutput()配对以显示具有固定宽度(逐字)文本的统计摘要，renderTable()与tableOutput()配对以显示表格中的输入数据。
+
+### 创建Shiny应用程序
+
+```{r}
+shinyApp(ui=ui, server=server)
+```
+
+## 前端介绍（用户端UI）
+
+### inputs
+
+_sliderInput_
+
+_textInput_
+
+_passwordInput_
+
+_textAreaInput_
+
+_numericInput_
+
+_dateInput_
+
+_dateRangeInput_
+
+_selectInput_
+
+_radioButtons_
+
+_checkboxGroupInput_
+
+_checkboxInput_
+
+_fileInput_
+
+_actionButton_
+
+具体应用**代码**请参考[https://shiny.rstudio.com/gallery/widget-gallery.html]https://shiny.rstudio.com/gallery/widget-gallery.html
+
+### outputs
+
+#### Text
+
+_textOutput()_
+
+_verbatimTextOutput()_
+
+renderText()将结果组合成一个字符串，通常与textOutput()配对；renderPrint()打印结果，通常与verbatimTextOutput()配对。
+
+```{r}
+ui <- fluidPage(
+  textOutput("text"),
+  verbatimTextOutput("code")
+)
+server <- function(input, output, session) {
+  output$text <- renderText({ 
+    "Hello friend!" 
+  })
+  output$code <- renderPrint({ 
+    summary(1:10) 
+  })
+}
+```
+
+#### Tables
+
+_tableOutput()_
+
+_dataTableOutput()_
+
+tableOutput()和renderTable()呈现一个静态数据表，一次显示所有数据；dataTableOutput()和renderDataTable()呈现一个动态表，显示固定数量的行以及用于更改哪些行可见的控件。
+
+```{r}
+ui <- fluidPage(
+  tableOutput("static"),
+  dataTableOutput("dynamic")
+)
+server <- function(input, output, session) {
+  output$static <- renderTable(head(mtcars))
+  output$dynamic <- renderDataTable(mtcars, options = list(pageLength = 5))
+}
+```
+
+#### Plots
+
+_plotOutput()_
+
+plotOutput() 常与renderPlot()对应；
+
+```{r}
+ui <- fluidPage(
+  plotOutput("plot", width = "400px")
+)
+server <- function(input, output, session) {
+  output$plot <- renderPlot(plot(1:5), res = 96)
+}
+```
+
+#### Downloads
+
+_downloadButton()_
+
+_downloadLink()_
+
+## 反应式编程
+
+### inputs
+
+注意事项：
+
+1.与典型的列表不同，输入对象是只读的，不可以修改服务器函数内部的输入。
+
+2.它对允许谁阅读它是有选择性的。要读取输入，必须处于由render...()或reactive()等函数创建的反应上下文中。
+
+### output
+
+输出与输入非常相似:它也是一个类似列表的对象，根据输出ID命名。主要区别在于，使用它来发送输出，而不是接收输入。
+
+### Reactive programming
+
+既有input又有output的应用程序
+
+**注意：**
+
+如果运行一个Shiny应用程序，代码永远不会运行，仔细检查ui用户界面和server服务器功能使用相同的标识符。
+
+reactive()可以简化许多重复步骤。
+
+```{r}
+server <- function(input, output, session) {
+  x1 <- reactive(rnorm(input$n1, input$mean1, input$sd1))
+  x2 <- reactive(rnorm(input$n2, input$mean2, input$sd2))
+
+  output$hist <- renderPlot({
+    freqpoly(x1(), x2(), binwidth = input$binwidth, xlim = input$range)
+  }, res = 96)
+
+  output$ttest <- renderText({
+    t_test(x1(), x2())
+  })
+}
+```
+
+假设您想通过不断地重新模拟数据来强化这是模拟数据的事实，以便您看到的是动画而不是静态绘图，可以用一个新的函数来增加更新的频率:reactiveTimer()。
+
+```{r}
+server <- function(input, output, session) {
+  timer <- reactiveTimer(500)
+  
+  x1 <- reactive({
+    timer()
+    rpois(input$n, input$lambda1)
+  })
+  x2 <- reactive({
+    timer()
+    rpois(input$n, input$lambda2)
+  })
+  
+  output$hist <- renderPlot({
+    freqpoly(x1(), x2(), binwidth = 1, xlim = c(0, 40))
+  }, res = 96)
+}
+```
+
+若选择执行昂贵的计算，可以使用是actionButton():
+
+```{r}
+ui <- fluidPage(
+  fluidRow(
+    column(3, 
+      numericInput("lambda1", label = "lambda1", value = 3),
+      numericInput("lambda2", label = "lambda2", value = 5),
+      numericInput("n", label = "n", value = 1e4, min = 0),
+      actionButton("simulate", "Simulate!")
+    ),
+    column(9, plotOutput("hist"))
+  )
+)
+server <- function(input, output, session) {
+  x1 <- eventReactive(input$simulate, {
+    rpois(input$n, input$lambda1)
+  })
+  x2 <- eventReactive(input$simulate, {
+    rpois(input$n, input$lambda2)
+  })
+
+  output$hist <- renderPlot({
+    freqpoly(x1(), x2(), binwidth = 1, xlim = c(0, 40))
+  }, res = 96)
+}
+```
+
+需要eventReactive()，它有两个参数:第一个参数指定依赖什么，第二个参数指定计算什么。这使得该应用程序在单击模拟时只能计算x1()和x2()。
+
+<!--chapter:end:02-shiny-whole.Rmd-->
+
+# Shiny feedback
+
+## Validation
+ 
+### Validating input
+
+无效的输入可能会导致不想向用户显示的非信息性错误。为了阻止输入触发反应性变化您需要一个新工具:req()
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  shinyFeedback::useShinyFeedback(),
+  numericInput("n","n",value=10),
+  textOutput("half")
+  
+)
+
+server <- function(input, output, session) {
+  half<-reactive({
+    even<-input$n %% 2==0
+    shinyFeedback::feedbackWarning("n",!even,"please select an even number!")
+    #req(even)
+    input$n /2
+    
+  })
+    output$half<-renderText(half())
+  
+}
+
+```
+
+### Cancelling execution with req()
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  selectInput("language","Language",choices = c("","English","Maori")),
+  textInput("name","Name"),
+  textOutput("greeting")
+  
+)
+
+server <- function(input, output, session) {
+  greetings<-c(
+    Engilsh="Hello",
+    Maori="Kia ora"
+  )
+  output$greeting<-renderText({
+    #req(input$language,input$name)
+    paste0(greetings[[input$language]],"",input$name,"!")
+  })
+}
+
+```
+
+### req() and validation
+
+结合req()和shinyFeedback来解决一个更具挑战性的问题
+
+注意cancelOutput = TRUE的用法:通常取消无功会复位所有下游输出；使用cancelOutput = TRUE会让它们显示最后一个good value
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  shinyFeedback::useShinyFeedback(),
+   textInput("dataset", "Dataset name"), 
+  tableOutput("data")
+)
+
+server <- function(input, output, session) {
+  data<-reactive({
+    req(input$dataset)
+    
+    exists<-exists(input$dataset,"package:datasets")
+    shinyFeedback::feedbackDanger("dataset",!exists,"Unknown dataset")
+    req(exists,cancelOutput = TRUE)
+    
+    get(input$dataset, "package:datasets")
+    
+  })
+  
+  output$data<-renderTable({
+    head(data())
+  })
+}
+
+```
+
+### Validate output
+
+使用内置于shiny: validate()中的工具
+validate(message)停止执行代码的其余部分
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  numericInput("x","x",value=0),
+  selectInput("trans","transformation",choices=c("square", "log", "square-root")),
+  textOutput("out")
+)
+
+server <- function(input, output, session) {
+  
+ output$out <- renderText({
+    if (input$x < 0 && input$trans %in% c("log", "square-root")) {
+      validate("x can not be negative for this transformation")
+    }
+   
+   switch(input$trans,
+      square = input$x ^ 2,
+      "square-root" = sqrt(input$x),
+      log = log(input$x)
+    )
+  })
+}
+
+```
+
+
+## Notifications
+
+### Transient notification
+
+```{r eruptions, echo=FALSE,warning=FALSE}
+library(shiny)
+
+ui<-fluidPage(
+  actionButton("goodnight","GoodNight")
+)
+
+server<-function(input,output,session){
+  observeEvent(input$goodnight,{
+    showNotification("So Long")
+    Sys.sleep(1)
+    showNotification("Farewell",type="message")
+    Sys.sleep(1)
+    showNotification("Adieu",type="error")
+  })
+}
+
+```
+
+### Removing on completion
+
+将持续时间设置为空(duration = NULL)，将关闭按钮设置为假closeButton = FALSE，以便在任务完成之前通知保持可见。
+在任务开始时显示通知，并在任务完成时删除通知  
+使用on.exit()，它确保无论任务如何完成(成功完成或出现错误)，通知都会被删除  
+on.exit:ensures that the notification is removed
+
+```{r tabsets, echo=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+   tableOutput("data")
+)
+
+server <- function(input, output, session) {
+  notify <- function(msg, id = NULL) {
+    showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
+  }
+
+  data <- reactive({ 
+    id <- notify("Reading data...")
+    on.exit(removeNotification(id), add = TRUE)
+    Sys.sleep(1)
+      
+    notify("Reticulating splines...", id = id)
+    Sys.sleep(1)
+    
+    notify("Herding llamas...", id = id)
+    Sys.sleep(1)
+
+    notify("Orthogonalizing matrices...", id = id)
+    Sys.sleep(1)
+        
+    mtcars
+})
+  output$data<-renderTable(head(data()))
+}
+
+```
+
+
+
+
+<!--chapter:end:03-shiny-feedback.Rmd-->
+
+# Shiny uploads and downloads
+
+## upload
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  fileInput("upload",NULL,buttonLabel="Upload...", multiple = TRUE),
+  tableOutput("files")
+)
+
+server <- function(input, output, session) {
+  output$files<-renderTable(input$upload)
+}
+
+```
+
+
+在页面加载时，input$upload被初始化为空，所以需要req(input$upload)来确保您代码等待直到第一个文件被上传
+
+accept参数允许您限制可能的输入。最简单的方法是提供文件扩展名的字符向量，如accept = ".csv”。但是accept参数只是给浏览器的一个建议，并不总是被强制执行。
+
+在R中获取文件扩展名最简单的方法是tools::file_ext()
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  fileInput("upload",NULL,accept = c(".csv",".tsv")),
+  numericInput("n","Rows",value=5, min = 1, step = 1),
+  tableOutput("head")
+)
+
+server <- function(input, output, session) {
+  data<-reactive({
+    req(input$pload)
+    
+    ext<-tools::file_ext()
+    switch(ext,
+           csv=vroom::vroom(input$upload$datapath,delim=","),
+             tsv=vroom::vroom(input$upload$datapath,delim="\t"),
+             validate("Invalid file; Please upload a .csv or .tsv file"))
+  })
+  output$head<-renderTable({
+    head(data(),input$n)
+  })
+}
+
+```
+
+## Download
+
+用户界面很简单:使用downloadButton(id)或downloadLink(id)给用户一些东西来点击下载文件
+
+与其他输出不同,downloadButton()没有与渲染函数配对,可以使用downloadHandler()
+
+downloadHandler()有两个参数,都是函数:filename是一个没有参数的函数,它返回一个文件名(作为字符串),此功能的工作是创建将在下载对话框中显示给用户的名称。content应该是带有一个参数file的函数,file是保存文件的路径。这个函数的工作是将文件保存在Shiny知道的地方，这样它就可以将文件发送给用户
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  selectInput("dataset", "Pick a dataset", ls("package:datasets")),
+  tableOutput("preview"),
+  downloadButton("download","Download.tsv")
+)
+
+server <- function(input, output, session) {
+   data <- reactive({
+    out <- get(input$dataset, "package:datasets")
+    if (!is.data.frame(out)) {
+      validate(paste0("'", input$dataset, "' is not a data frame"))
+    }
+    out
+  })
+  
+  output$preview <- renderTable({
+    head(data())
+  })
+    
+  output$download <- downloadHandler(
+    filename = function() {
+      paste0(input$dataset, ".tsv")
+    },
+    content = function(file) {
+      vroom::vroom_write(data(), file)
+    }
+  )
+}
+
+```
+
+## Downloading reports
+
+生成报告的一个强大方法是使用参数化的RMarkdown文档。参数化的RMarkdown文件在YAML元数据中有一个参数字段
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  sliderInput("n", "Number of points", 1, 100, 50),
+  downloadButton("report", "Generate report")
+)
+
+server <- function(input, output, session) {
+  output$report <- downloadHandler(
+    filename = "report.html",
+    content = function(file) {
+      params <- list(n = input$n)
+      
+      id <- showNotification(
+        "Rendering report...", 
+        duration = NULL, 
+        closeButton = FALSE
+      )
+      on.exit(removeNotification(id), add = TRUE)
+
+      rmarkdown::render("report.Rmd", 
+        output_file = file,
+        params = params,
+        envir = new.env(parent = globalenv())
+      )
+    }
+  )
+}
+
+```
+
+<!--chapter:end:04-shiny-updown.Rmd-->
+
+# Shiny Dynamic UI
+
+创建动态用户界面有三种关键技术:
+
+*使用update更新函数族修改输入控件的参数*
+
+*使用tabsetPanel()有条件地显示和隐藏部分用户界面*
+
+*使用uiOutput()和renderUI()用代码生成用户界面的选定部分*
+
+## Updating inputs
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  numericInput("n","Simulations",10),
+  actionButton("simulate","Simulate")
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$n, {
+    label<-paste0("Simulate",input$n,"times")
+    updateActionButton(inputId = "simulate",label=label)
+  })
+}
+
+```
+ 
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  selectInput("dataset","Choose a dataset",c("pressure","cars")),
+  selectInput("column","Choose column",character(0)),
+  verbatimTextOutput("summary")
+)
+
+server <- function(input, output, session) {
+  # freezeReactiveValue(input,"column")
+  dataset<-reactive(get(input$dataset,"package:datasets"))
+  
+  observeEvent(input$dataset,{
+    updateSelectInput(inputId = "column",choices = names(dataset()))
+  })
+  output$summary<-renderPrint({
+    summary(dataset()[[input$column]])
+  })
+}
+
+```
+
+## Dynamic visibility
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("controller","Show",choices = paste0("panel",1:3))
+    ),
+    mainPanel(
+      tabsetPanel(
+        id="switcher",
+        type="hidden",
+        tabPanelBody("panel1","Panel 1 content"),
+        tabPanelBody("panel2","Panel 2 content"),
+        tabPanelBody("panel3","Panel 3 content")
+      )
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$controller,{
+    updateTabsetPanel(inputId = "switcher",selected=input$controller)
+  })
+}
+
+```
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("dist","Distribution",
+                  choices=c("normal","uniform","exponential")),
+      numericInput("n","Number of samples",value=100),
+      parameter_tabs<-tabsetPanel(
+        id="params",
+        type="hidden",
+        tabPanel("normal",
+                 numericInput("mean","mean",value=1),
+                 numericInput("sd","standard deviation",min=0,value=1)),
+        tabPanel("uniform",
+                 numericInput("min","min",value=0),
+                 numericInput("max","max",value=1)),
+        tabPanel("exponential",
+                 numericInput("rate","rate",value=1,min=0))
+      )
+    ),
+    mainPanel(
+      plotOutput("hist")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$dist,{
+    updateTabsetPanel(inputId="params",selected = input$dist)
+  })
+  sample<-reactive({
+    switch(input$dist,
+           normal=rnorm(input$n,input$mean,input$sd),
+           uniform=runif(input$n,input$min,input$max),
+           exponential=rexp(input$n,input $ rate))
+  })
+  output$hist<-renderPlot(hist(sample()),res=96)
+}
+
+```
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  tabsetPanel(
+    id="wizard",
+    type="hidden",
+    tabPanel("page_1",
+             "Welcome!",
+             actionButton("page_12","next")),
+    tabPanel("page_2","Only one page to go",
+             actionButton("page_21","prev"),
+             actionButton("page_23","next")),
+    tabPanel("page_3","You're done!",
+             actionButton("page_32","prev"))
+  )
+)
+
+server <- function(input, output, session) {
+  switch_page<-function(i){
+    updateTabsetPanel(inputId="wizard",selected=paste0("page_",i))
+  }
+  observeEvent(input$page_12,switch_page(2))
+  observeEvent(input$page_21,switch_page(1))
+  observeEvent(input$page_23,switch_page(3))
+  observeEvent(input$page_32,switch_page(2))
+  
+}
+
+```
+
+## Creating UI with code
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  textInput("label","label"),
+  selectInput("type","type",c("slider","numeric")),
+  uiOutput("numeric")
+)
+server <- function(input, output, session) {
+  output$numeric<-renderUI({
+    #value<-isolate(input$dynamic)
+    if(input$type=="slider"){
+      sliderInput("dynamic",input$label,value=0,min=0,max=10)
+    }else{
+      numericInput("dynamic",input$label,value=0,min=0,max=10)
+    }
+  })
+}
+
+```
+
+```{r}
+library(purrr)
+library(shiny)
+
+ui <- fluidPage(
+  numericInput("n", "Number of colours", value = 5, min = 1),
+  uiOutput("col"),
+  textOutput("palette")
+)
+
+
+server <- function(input, output, session) {
+  col_names <- reactive(paste0("col", seq_len(input$n)))
+  
+  output$col <- renderUI({
+    map(col_names(), ~ textInput(.x, NULL))
+  })
+  
+  output$palette <- renderText({
+    map_chr(col_names(), ~ input[[.x]] %||% "")
+  })
+}
+
+```
+
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      numericInput("n", "Number of colours", value = 5, min = 1),
+      uiOutput("col"),
+    ),
+    mainPanel(
+      plotOutput("plot")  
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  col_names <- reactive(paste0("col", seq_len(input$n)))
+  
+  output$col <- renderUI({
+    map(col_names(), ~ textInput(.x, NULL, value = isolate(input[[.x]])))
+  })
+  
+  output$plot <- renderPlot({
+    cols <- map_chr(col_names(), ~ input[[.x]] %||% "")
+    # convert empty inputs to transparent
+    cols[cols == ""] <- NA
+    
+    barplot(
+      rep(1, length(cols)), 
+      col = cols,
+      space = 0, 
+      axes = FALSE
+    )
+  }, res = 96)
+}
+
+```
+
+<!--chapter:end:05-shiny-dynamicUI.Rmd-->
+
+# Shiny Bookmarking
+
+## Basic
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+   sidebarLayout(
+     sidebarPanel(
+       sliderInput("omega", "omega", value = 1, min = -2, max = 2, step = 0.01),
+      sliderInput("delta", "delta", value = 1, min = 0, max = 2, step = 0.01),
+      sliderInput("damping", "damping", value = 1, min = 0.9, max = 1, step = 0.001),
+      numericInput("length", "length", value = 100)
+     ),
+     mainPanel(
+       plotOutput("fig")
+     )
+  )
+)
+
+server <- function(input, output, session) {
+   t <- reactive(seq(0, input$length, length.out = input$length * 100))
+  x <- reactive(sin(input$omega * t() + input$delta) * input$damping ^ t())
+  y <- reactive(sin(t()) * input$damping ^ t())
+  
+  output$fig<-renderPlot({
+    plot(x(), y(), axes = FALSE, xlab = "", ylab = "", type = "l", lwd = 2)
+  }, res = 96
+  )
+}
+
+```
+
+我们需要做三件事来使这个应用程序可书签化:
+1.向用户界面添加书签按钮bookmarkButton()。这将生成一个按钮，用户单击该按钮可以生成可书签的网址。
+2.将ui转换成函数function。
+3.将enableBookmarking = "url "添加到shinyApp()调用中。
+
+```{r}
+library(shiny)
+
+ui <- function(request){
+  fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        sliderInput("omega", "omega", value = 1, min = -2, max = 2, step = 0.01),
+        sliderInput("delta", "delta", value = 1, min = 0, max = 2, step = 0.01),
+        sliderInput("damping", "damping", value = 1, min = 0.9, max = 1, step = 0.001),
+        numericInput("length", "length", value = 100),
+        bookmarkButton()
+        
+      ),
+      mainPanel(
+        plotOutput("fig")
+      )
+    )
+  )
+}
+
+#shinyApp(ui, server,enableBookmarking = "url ")
+```
+
+自动更新网址需要服务器函数中的一些样板:
+
+```{r}
+# # Automatically bookmark every time an input changes
+# observe({
+#   reactiveValuesToList(input)
+#   session$doBookmark()
+# })
+# # Update the query string
+# onBookmarked(updateQueryString)
+```
+
+它为我们提供了如下更新的服务器功能:
+
+```{r}
+server <- function(input, output, session) {
+  t <- reactive(seq(0, input$length, length = input$length * 100))
+  x <- reactive(sin(input$omega * t() + input$delta) * input$damping ^ t())
+  y <- reactive(sin(t()) * input$damping ^ t())
+
+  output$fig <- renderPlot({
+    plot(x(), y(), axes = FALSE, xlab = "", ylab = "", type = "l", lwd = 2)
+  }, res = 96)
+  
+  observe({
+    reactiveValuesToList(input)
+    session$doBookmark()
+  })
+  onBookmarked(updateQueryString)
+}
+
+```
+
+添加bookmark书签完整代码：
+
+```{r}
+library(shiny)
+
+ui <- function(request){
+  fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        sliderInput("omega", "omega", value = 1, min = -2, max = 2, step = 0.01),
+        sliderInput("delta", "delta", value = 1, min = 0, max = 2, step = 0.01),
+        sliderInput("damping", "damping", value = 1, min = 0.9, max = 1, step = 0.001),
+        numericInput("length", "length", value = 100),
+        bookmarkButton()
+
+      ),
+      mainPanel(
+        plotOutput("fig")
+      )
+    )
+  )
+}
+
+server <- function(input, output, session) {
+  t <- reactive(seq(0, input$length, length = input$length * 100))
+  x <- reactive(sin(input$omega * t() + input$delta) * input$damping ^ t())
+  y <- reactive(sin(t()) * input$damping ^ t())
+
+  output$fig <- renderPlot({
+    plot(x(), y(), axes = FALSE, xlab = "", ylab = "", type = "l", lwd = 2)
+  }, res = 96)
+
+  observe({
+    reactiveValuesToList(input)
+    session$doBookmark()
+  })
+  onBookmarked(updateQueryString)
+}
+
+```
+
+## Storing richer state
+
+使用enableBookmarking="server"，它将状态保存到server上的rds文件。这总是会生成一个简短、不透明的URL，但需要服务器上的额外存储。
+
+```{r}
+#shinyApp(ui, server, enableBookmarking = "server")
+```
+
+<!--chapter:end:06-shiny-bookmark.Rmd-->
+
+# COVID-19 data
+
+## US data
+
+该部分主要处理美国US新冠数据的死亡和确诊数据，得到美国各个地区死亡总人数和近28天的死亡人数以及确诊总人数和近28天的确认总人数，数据进行结合，最后利用reactable函数进行可视化。
+
+### Load libraries
+
+```{r}
+library(data.table)
+library(reactable)
+library(tidyverse)
+```
+
+### Load data and Processing data
+
+```{r}
+confirmed_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
+confirmed_US
+```
+
+```{r}
+deaths_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
+deaths_US
+```
+
+```{r}
+p <- ncol(confirmed_US)
+confirmed <- confirmed_US[, c(11, p - 28, p)]
+colnames(confirmed) <- c("us_county", "total_cases_28", "total_cases")  
+confirmed2 <- confirmed  %>%
+  mutate(new_cases_28 = total_cases - total_cases_28) %>%
+  select(-total_cases_28)
+confirmed2
+```
+
+```{r}
+q <- ncol(deaths_US)
+deaths <- deaths_US[, c(11:12, q - 28, q)]
+colnames(deaths) <- c("us_county", "population",  "total_deaths_28", "total_deaths")
+deaths2 <- deaths %>%
+  mutate(new_deaths_28 = total_deaths - total_deaths_28) %>%
+  select(-total_deaths_28)
+deaths2
+```
+
+### Combine data 
+
+```{r}
+full_data <- full_join(confirmed2, deaths2) %>%
+  mutate(
+    incidence = round(total_cases / population * 1e5, digits = 2), 
+    case_fatality_ratio = round(total_deaths / total_cases * 100, digits = 2)
+  )
+full_data
+```
+
+```{r}
+reactable(data = full_data, searchable = TRUE, striped = TRUE, highlight = TRUE, width = "auto", height = "auto") 
+```
+
+## Global data
+
+这里面主要做了全球COVID-19数据的处理，其中利用dplyr包中的长宽数据转换函数pivot_longer()或者pivot_wider()，其中pivot_longer()将宽数据转化为长数据，pivot_wider()将长数据转化为宽数据。
+
+此外，这里面主要利用COVID-19全球数据制作*周维度全球确诊数据*和*日维度全球死亡数据*，以便进行时间序列展示，方便接下来的时间序列图以及shiny地图的制作。
+
+### 周维度全球确诊数据
+
+```{r}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+confirmed_global <- data.table::fread(url) %>% tibble::tibble() # readr::read_csv(url) # utils::read.csv(url)
+
+nc <- ncol(confirmed_global)
+M <- confirmed_global[, seq(9, nc, 7)]
+M2 <- cbind(M[, 1], M[, -1] - M[, -ncol(M)])
+new_cases_global_weekly <- cbind(
+  confirmed_global[, 2:1], 
+  M2[, rev(colnames(M2))] 
+) %>% tibble()
+
+confirmed_global_weekly <- new_cases_global_weekly %>% # 导入全球数据
+  filter(`Province/State` == "") %>% # 筛选行 
+  select(!`Province/State`) %>% # 筛选列
+  pivot_longer(!`Country/Region`, names_to = "Date", values_to = "Confirmed") %>% # wide to long
+  
+  rename(Country_Region = `Country/Region`) %>% # 左新右旧
+  mutate(Date = lubridate::mdy(Date)) %>% # mutate 替换成 YMD
+  arrange(Country_Region, Date) # 时间排序从小到大（-Date从大到小）
+confirmed_global_weekly
+```
+
+### 日维度全球死亡数据
+
+```{r}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+death_global<- data.table::fread(url) %>% tibble::tibble()
+
+death_global_daily <- death_global %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names() %>%
+  group_by(country_region, date) %>%
+  summarise(cases = sum(cases),.groups = "drop") %>%
+  ungroup()
+
+death_global_daily
+```
+
+
+<!--chapter:end:07-covid19-data.Rmd-->
+
+# Plots and Maps
+
+## Plots
+
+利用全球COVID-19数据进行时间序列作图，分别进行全球全球周维度确诊数据以及全球日维度死亡数据的时间序列可视化作图。
+
+全球周维度确诊数据制作时间序列图如下所示：
+
+```{r  warning=FALSE}
+library(data.table)
+library(reactable)
+library(tidyverse)
+```
+
+```{r warning=FALSE}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+confirmed_global <- data.table::fread(url) %>% tibble::tibble() # readr::read_csv(url) # utils::read.csv(url)
+
+nc <- ncol(confirmed_global)
+M <- confirmed_global[, seq(9, nc, 7)]
+M2 <- cbind(M[, 1], M[, -1] - M[, -ncol(M)])
+new_cases_global_weekly <- cbind(
+  confirmed_global[, 2:1], 
+  M2[, rev(colnames(M2))] 
+) %>% tibble()
+
+confirmed_global_weekly <- new_cases_global_weekly %>% # 导入全球数据
+  filter(`Province/State` == "") %>% # 筛选行 
+  select(!`Province/State`) %>% # 筛选列
+  pivot_longer(!`Country/Region`, names_to = "Date", values_to = "Confirmed") %>% # wide to long
+  
+  rename(Country_Region = `Country/Region`) %>% # 左新右旧
+  mutate(Date = lubridate::mdy(Date)) %>% # mutate 替换成 YMD
+  arrange(Country_Region, Date) # 时间排序从小到大（-Date从大到小）
+confirmed_global_weekly<-confirmed_global_weekly %>%
+  group_by(Date) %>%
+  summarise(Confirmed = sum(Confirmed))
+```
+
+```{r warning=FALSE}
+p <- ggplot(confirmed_global_weekly, aes(x = Date, y = Confirmed)) +
+       geom_point() +
+       scale_x_date(
+           date_labels = "%m-%d",
+           date_breaks = "1 week") +
+       scale_y_continuous(
+           breaks = c(0, 50000, 100000, 200000, 300000, 500000, 900000),
+           labels = scales::comma)+
+       geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("date")+ylab("confirmed")
+p
+```
+
+
+```{r}
+p1 <- ggplot(confirmed_global_weekly, aes(x = Date, y = Confirmed)) +
+       geom_point() +
+       # scale_x_date(
+       #     date_labels = "%m-%d",
+       #     date_breaks = "1 week") +
+       # scale_y_continuous(
+       #     breaks = c(0, 50000, 100000, 200000, 300000, 500000, 900000),
+       #     labels = scales::comma)+
+       geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("date")+ylab("confirmed")
+p1
+```
+
+全球日维度死亡数据中筛选中国，查看中国的新冠日维度死亡人数趋势：
+
+```{r}
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+death_global<- data.table::fread(url) %>% tibble::tibble()
+```
+
+```{r }
+death_global_daily <- death_global %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names() %>%
+  group_by(country_region, date) %>%
+  summarise(cases = sum(cases),.groups = "drop") %>%
+  ungroup()
+
+death_China_daily<-death_global_daily %>%
+  filter(country_region == "China") %>%
+  ggplot(aes(x = date, y = cases)) +
+  geom_point() +
+  # scale_x_date(date_breaks = "1 week", date_labels = "%m-%d") +
+  scale_y_log10(labels = scales::comma)
+
+death_China_daily
+```
+
+```{r}
+death200000<-death_global_daily %>%
+  group_by(country_region) %>%
+  filter(max(cases) >= 200000) %>%
+  ungroup() %>%
+  ggplot(aes(x = date, y = cases, color = country_region)) +
+  geom_point() +
+  # scale_x_date(date_breaks = "1 week", date_labels = "%m-%d") +
+  # scale_y_log10() +
+  facet_wrap(vars(country_region), ncol = 2) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  theme(legend.position = "none")
+
+death200000
+```
+
+## Maps
+
+参考[https://plotly.com/r/maps/](https://plotly.com/r/maps/)进行地图的绘制。
+
+### 使用Maps包绘制地图
+利用ggplot进行地图绘制
+
+```{r}
+#全球死亡数据
+deaths_global <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"))
+
+#处理数据
+p <- ncol(deaths_global)
+death<-deaths_global[, c(2:4, p - 14, p)]
+colnames(death) <- c("country","lat","long", "total_death_14", "total_death")  
+death_global <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+```
+
+```{r warning=FALSE}
+world <- map_data("world")
+
+ggplot() +
+  geom_polygon(
+    data = world,
+    aes(x = long, y = lat, group = group),
+    fill = "grey", alpha = 0.3
+  ) +
+  geom_point(
+    data = death_global,
+    aes(x = long, y = lat, size = new_death_14, color = new_death_14),
+    stroke = F, alpha = 0.7
+  ) +
+  scale_size_continuous(
+    name = "Cases", trans = "log",
+    range = c(1, 7),
+    breaks = c(1, 20, 100, 1000, 50000),
+    labels = c("1-19", "20-99", "100-999", "1,000-49,999", "50,000+")
+  ) +
+  scale_color_viridis_c(
+    option = "inferno",
+    name = "Cases",
+    trans = "log",
+    breaks = c(1, 20, 100, 1000, 50000),
+    labels = c("1-19", "20-99", "100-999", "1,000-49,999", "50,000+")
+  ) +
+  theme_void() +
+  guides(colour = guide_legend()) +
+  labs(
+    title = "Mapping the global new_death_14",
+    subtitle = "",
+    caption = "Source: JHU Unviersity, CSSE; FT research @www.FT.com"
+  ) +
+  theme(
+    legend.position = "bottom",
+    text = element_text(color = "#22211d"),
+    plot.background = element_rect(fill = "#ffffff", color = NA),
+    panel.background = element_rect(fill = "#ffffff", color = NA),
+    legend.background = element_rect(fill = "#ffffff", color = NA)
+  )
+
+```
+
+### plotly绘制地图
+
+#### 首先绘制全球数据
+
+除了直接使用地图数据及ggplot之外，还可以用plotly绘制世界地图：
+
+```{r warning=FALSE }
+library(plotly)
+#全球死亡数据
+deaths_global <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"))
+
+p <- ncol(deaths_global)
+death<- deaths_global [, c(1:4,p-14, p)]
+colnames(death) <- c("province", "country","Lat","Long", "total_death_14", "total_death")  
+death_global <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+
+g <- list(
+  scope = "global",
+  showland = TRUE,
+  landcolor = toRGB("gray85"),
+  subunitwidth = 1,
+  countrywidth = 1,
+  subunitcolor = toRGB("white"),
+  countrycolor = toRGB("white")
+)
+
+fig <- plot_geo(death_global, sizes = c(1, 250)) %>%
+  add_markers(
+    x = ~Long,
+    y = ~Lat,
+    size = ~total_death,
+    color = ~total_death,
+    hoverinfo = "text",
+    text = ~ paste(
+      death_global$province,
+      " ",
+      death_global$country,
+      "<br />",
+      "deaths",
+      death_global$total_death
+    ),colors = 'Purples'
+  ) %>%
+  layout(title = "Global total death", geo = g)
+fig
+```
+
+
+```{r warning=FALSE}
+library(plotly)
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator'),
+  scope = "global",
+  showland = TRUE,
+  landcolor = toRGB("gray85"),
+  subunitwidth = 1,
+  countrywidth = 1,
+  subunitcolor = toRGB("white"),
+  countrycolor = toRGB("white")
+)
+fig <- plot_geo(death_global)
+fig <- fig %>% add_trace(
+    x = ~Long,
+    y = ~Lat,
+    size = ~new_death_14,
+    color = ~new_death_14,
+    hoverinfo = "text",
+    text = ~paste(
+      death_global$province,
+      " ",
+      death_global$country,
+      "<br />",
+      "deaths",
+      death_global$new_death_14
+    )
+  )
+fig <- fig %>% colorbar(title = '人数')
+fig <- fig %>% layout(
+    title = '全球近14天新增死亡人数 Source:<a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv">Global total death</a>',
+    geo = g
+  )
+fig
+```
+
+#### 绘制美国地图数据
+
+基于前一章节的数据，此处进行美国新冠数据的处理，得到美国各个州的确诊以及死亡人数，从而计算死亡率，得到死亡率。
+
+```{r}
+confirmed_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"))
+deaths_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
+```
+
+
+```{r}
+p <- ncol(confirmed_US)
+confirmed <- confirmed_US[, c(6:7,9:10, nc)]
+colnames(confirmed) <- c("state", "province", "Lat","Long", "total_cases")  
+confirmed
+```
+
+```{r}
+q <- ncol(deaths_US)
+deaths <- deaths_US[, c(6:7,9:10, nc)]
+colnames(deaths) <- c("state", "province", "Lat","Long", "total_deaths")
+deaths
+```
+
+```{r}
+full_data <- full_join(confirmed, deaths) %>%
+  mutate(
+    rate = round(total_deaths/total_cases , digits = 5)
+  )
+full_data
+```
+
+```{r}
+library(plotly)
+full_data$class <- cut(full_data$rate,
+                breaks = c(0.01, 0.02, 0.03, 0.04,0.05),
+                labels = c("低", "中低", "中", "偏高"),
+                ordered_result = T)
+g <- list(
+  scope = "usa",
+  projection = list(type = "albers usa"),
+  showland = TRUE,
+  landcolor = toRGB("gray85"),
+  subunitwidth = 1,
+  countrywidth = 1,
+  subunitcolor = toRGB("white"),
+  countrycolor = toRGB("white")
+)
+
+fig <- plot_geo(full_data, locationmode = "USA", sizes = c(1, 250)) %>%
+  add_markers(
+    x = ~Long,
+    y = ~Lat,
+    size = ~rate,
+    color = ~class,
+    hoverinfo = "text",
+    text = ~ paste(
+      full_data$state,
+      " ",
+      full_data$province,
+      "<br />",
+      "death rate ",
+      full_data$rate
+    )
+  ) %>%
+  layout(title = "US death rate", geo = g)
+
+fig
+```
+
+
+### leaflet绘制地图
+
+leaflet也是绘制地图的一个有利的工具：
+
+```{r warning=FALSE}
+library(leaflet)
+deaths_global <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"))
+
+#处理数据
+p <- ncol(deaths_global)
+death<-deaths_global[, c(2:4, p - 14, p)]
+colnames(death) <- c("country","lat","long", "total_death_14", "total_death")  
+death_global <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+leaflet(death_global) %>% 
+  addProviderTiles(providers$Stamen.TonerLite) %>% 
+  addMarkers(lat=~lat,lng=~long,popup=~as.character(new_death_14))
+```
+
+
+<!--chapter:end:08-plot-maps.Rmd-->
+
+# shiny 练习
+
+## shiny时间序列交互
+
+导入数据以及处理数据：
+
+```{r warning=FALSE}
+#导入包
+library(data.table)
+library(reactable)
+library(tidyverse)
+library(dplyr)
+library(shiny)
+library(shinydashboard)
+#死亡数据
+deaths_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
+
+# #处理数据
+p <- ncol(deaths_US)
+death<- deaths_US[, c(7,11:12, p - 14, p)]
+colnames(death) <- c("province","Combined_Key","population", "total_death_14", "total_death")
+death1 <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+
+#周维度全球确诊数据
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+confirmed_global <- data.table::fread(url) %>% tibble::tibble() # readr::read_csv(url) # utils::read.csv(url)
+#处理数据
+nc <- ncol(confirmed_global)
+M <- confirmed_global[, seq(9, nc, 7)]
+M2 <- cbind(M[, 1], M[, -1] - M[, -ncol(M)])
+new_cases_global_weekly <- cbind(
+  confirmed_global[, 2:1], 
+  M2[, rev(colnames(M2))] 
+) %>% tibble()
+
+covid19_global <- new_cases_global_weekly %>% # 导入全球数据
+  filter(`Province/State` == "") %>% # 筛选行 
+  select(!`Province/State`) %>% # 筛选列
+  pivot_longer(!`Country/Region`, names_to = "Date", values_to = "Confirmed") %>% # wide to long
+  rename(Country_Region = `Country/Region`) %>% # 左新右旧
+  mutate(Date = lubridate::mdy(Date)) %>% # mutate 替换成 YMD
+  arrange(Country_Region, Date) 
+
+#日维度全球死亡数据
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+d<- data.table::fread(url) %>% tibble::tibble()
+d1 <- d %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names() %>%
+  group_by(country_region, date) %>%
+  summarise(cases = sum(cases),.groups = "drop") %>%
+  ungroup()
+```
+
+添加shiny交互UI部分：
+
+```{r warning=FALSE}
+# Define UI for application that draws a histogram
+ui <- dashboardPage(
+  dashboardHeader(title = "COVID-19_Shiny"),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("周确诊趋势", tabName = "周确诊趋势"),
+      menuItem("日死亡趋势", tabName = "日死亡趋势"),
+      menuItem("table", tabName = "table"),
+      menuItem("ggplot2", tabName = "ggplot2"),
+      menuItem("Cluster", tabName = "cluster")
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # First tab content
+      tabItem(tabName = "周确诊趋势",
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput(
+                    inputId = "admin0",
+                    label = "国家",
+                    choices = covid19_global$Country_Region,
+                    selected = "US"
+                  ),
+                  dateRangeInput(
+                    inputId = "daterange",
+                    label = "时间范围",
+                    language = "zh-CN",
+                    weekstart = 0,
+                    separator = "to",
+                    min = min(covid19_global$Date),
+                    max = max(covid19_global$Date),
+                    start = min(covid19_global$Date),
+                    end = max(covid19_global$Date)
+                  ),
+                  width=4
+                ),
+                mainPanel(dashboardBody(
+                  # Boxes need to be put in a row (or column)
+                  fluidRow(
+                    box(
+                      title = "周新增确诊趋势",
+                      plotlyOutput(outputId = "myggplot"),
+                      width = 250
+                    ))
+              )
+                ))),
+      tabItem(tabName = "日死亡趋势",
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput(
+                    inputId = "admin1",
+                    label = "国家",
+                    choices =d1$country_region,
+                    selected = "US"
+                  ),
+                  dateRangeInput(
+                    inputId = "daterange1",
+                    label = "时间范围",
+                    language = "zh-CN",
+                    separator = "to",
+                    min = min(d1$date),
+                    max = max(d1$date),
+                    start = min(d1$date),
+                    end = max(d1$date)
+                  ),
+                  width=4
+                  
+                ),
+                mainPanel(dashboardBody(
+                  # Boxes need to be put in a row (or column)
+                  fluidRow(
+                    box(
+                      title = "日新增死亡趋势",
+                      plotlyOutput(outputId = "myggplot1"),
+                      width = 250
+                    ))
+                )
+                ))),
+      
+      tabItem(tabName = "table",
+              sidebarLayout(
+                sidebarPanel(
+                  sliderInput("number","number of data:",
+                              min=0,max=4000,value=10,animate=TRUE
+                              )
+                              
+                  ),
+                mainPanel(dataTableOutput("Data"))
+              )),     
+      # Second tab content
+      tabItem(tabName = "ggplot2",
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput("Position","The Type of Plot:",
+                              c("fill"="fill",
+                                "dodge"="dodge",
+                                "stack"="stack")
+                    
+                  )),
+                mainPanel(plotOutput("Plot"))
+      )), 
+      #third
+      tabItem(tabName = "cluster",
+              titlePanel("clustering"),
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput("xcol","x",names(deaths_US),
+                              selected=names(deaths_US[,629])),
+                  selectInput("ycol","y",names(deaths_US),
+                              selected=names(deaths_US[,630])),
+                  numericInput("clusters","count",3,min=0,max=5000)
+                ),
+                
+                # Show a plot of the generated distribution
+                mainPanel(
+                  plotOutput("distPlot")
+                )
+              ))
+           )) 
+    )
+
+```
+
+
+添加shiny交互server部分：
+
+```{r warning=FALSE}
+server <- function(input, output) {
+  #周新增确诊
+  mydata <- reactive({
+    covid19_global %>%
+      filter(Country_Region == input$admin0) %>%
+      filter(Date >= input$daterange[1]) %>%
+      filter(Date <= input$daterange[2])
+    # select(-Country_Region)
+  })
+  output$myggplot <- renderPlotly({
+    p <- ggplot(data = mydata(), aes(x = Date, y = Confirmed)) +
+      # geom_point() +
+      # geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("日期(周)")+ylab("确诊人数")
+    ggplotly(p)
+  })
+  #日新增死亡
+  mydata1 <- reactive({
+   d1 %>%
+      filter(country_region == input$admin1) %>%
+      filter(date >= input$daterange1[1]) %>%
+      filter(date <= input$daterange1[2])
+    # select(-Country_Region)
+  })
+  output$myggplot1 <- renderPlotly({
+    p1 <- ggplot(data = mydata1(), aes(x = date, y = cases)) +
+      # geom_point() +
+      # geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("日期(日)")+ylab("死亡人数")
+    ggplotly(p1)
+  })
+  
+  set.seed(123)
+  data=death1[sample(1:nrow(death1),1000,replace = F),]
+   
+  #table
+  output$Data<-renderDataTable({
+    data.table(head(data,input$number))
+  })
+  
+  #ggplot
+  output$Plot<- renderPlot({
+    ggplot(data,aes(x="new_death_14",fill=data$province))+
+      geom_histogram(Position=input$Position,stat="count")+
+      ggtitle("histogram")
+      #geom_bar(stat = "count",Position="cut")
+  })
+  
+#cluster
+  selecteddata <- reactive({
+    deaths_US[,c(input$xcol,input$ycol)]
+  })
+  clusters <- reactive({
+    kmeans(selecteddata(),input$clusters)
+  })
+  output$distPlot <- renderPlot({
+    
+    par(mar=c(5.1,4.1,0,1))
+    plot(selecteddata(),
+         col=clusters()$cluster,
+         pch=20,cex=3)
+    points(clusters()$centers,pch=4,cex=4,lwd=4)
+  })
+ }
+```
+
+呈现的交互动态形势图如下：
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcWqp6iCnBt6LgMYnnO6B5HpXjXKlbYxFk46xki6v1zZcEaLKDpUiI.MLcBVFuPNGdKY.JLtle6Q57.*tknTqg3k!/r" width = "300" height = "180" align=center />
+
+注意：在这一部分目前还是有些问题没有解决的：
+
+当运行以上shiny时，添加`shinyAPP(ui=ui,server=server)`，运行`run APP`，会发现网站出现的很缓慢，由于添加ui控件时，进行国家和日期的选择，其中`choices=什么`的问题需要进一步明确。
+
+## shiny交互式地图
+
+在本例子中，结合shiny，利用plotly包绘制地图，从而显示出全球新冠疫情相关数据分布情况。
+
+```{r warning=FALSE}
+library(shiny)
+library(data.table)
+library(reactable)
+library(tidyverse)
+library(dplyr)
+library(shinydashboard)
+library(plotly)
+#日维度全球死亡数据
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+death<- data.table::fread(url) %>% tibble::tibble()
+death <- death %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names()
+
+ui <- fluidPage(
+  titlePanel("全球新冠death数据"),   
+  sidebarPanel(width = 6,     
+               selectInput(
+                 inputId = "date",
+                 label = "选择日期",
+                 choices = death$date,
+                 selected = "2021-05-23")),
+  mainPanel(width = 6,plotlyOutput("plotly")
+       )
+  ) 
+
+server <- function(input, output) {  
+    output$plotly <- renderPlotly({
+    death <- filter(death, date ==input$date)
+    g <- list(
+      scope = "global",
+      showland = TRUE,
+      landcolor = toRGB("gray85"),
+      subunitwidth = 1,
+      countrywidth = 1,
+      subunitcolor = toRGB("white"),
+      countrycolor = toRGB("white")
+    )
+    fig<-plot_geo(death) %>%
+      add_markers(
+        x = ~long,
+        y = ~lat,
+        size = ~cases,
+        color = ~cases,
+        hoverinfo = "text",
+        text = ~ paste(
+          death$country_region,
+          " ",
+          death$province_state,
+          "<br />",
+          "deaths",
+          death$cases
+        )
+      ) %>%
+      layout(title = "Global death", geo = g)
+    fig})  
+}
+#shinyApp(ui=ui, server=server)
+```
+
+<!--chapter:end:09-shiny-examples.Rmd-->
+

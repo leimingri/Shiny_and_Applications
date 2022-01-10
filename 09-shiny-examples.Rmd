@@ -1,0 +1,337 @@
+# shiny 练习
+
+## shiny时间序列交互
+
+导入数据以及处理数据：
+
+```{r warning=FALSE}
+#导入包
+library(data.table)
+library(reactable)
+library(tidyverse)
+library(dplyr)
+library(shiny)
+library(shinydashboard)
+#死亡数据
+deaths_US <- tibble(fread("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"))
+
+# #处理数据
+p <- ncol(deaths_US)
+death<- deaths_US[, c(7,11:12, p - 14, p)]
+colnames(death) <- c("province","Combined_Key","population", "total_death_14", "total_death")
+death1 <- death  %>%
+  mutate(new_death_14 = total_death - total_death_14) %>%
+  select(-total_death_14)
+
+#周维度全球确诊数据
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+confirmed_global <- data.table::fread(url) %>% tibble::tibble() # readr::read_csv(url) # utils::read.csv(url)
+#处理数据
+nc <- ncol(confirmed_global)
+M <- confirmed_global[, seq(9, nc, 7)]
+M2 <- cbind(M[, 1], M[, -1] - M[, -ncol(M)])
+new_cases_global_weekly <- cbind(
+  confirmed_global[, 2:1], 
+  M2[, rev(colnames(M2))] 
+) %>% tibble()
+
+covid19_global <- new_cases_global_weekly %>% # 导入全球数据
+  filter(`Province/State` == "") %>% # 筛选行 
+  select(!`Province/State`) %>% # 筛选列
+  pivot_longer(!`Country/Region`, names_to = "Date", values_to = "Confirmed") %>% # wide to long
+  rename(Country_Region = `Country/Region`) %>% # 左新右旧
+  mutate(Date = lubridate::mdy(Date)) %>% # mutate 替换成 YMD
+  arrange(Country_Region, Date) 
+
+#日维度全球死亡数据
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+d<- data.table::fread(url) %>% tibble::tibble()
+d1 <- d %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names() %>%
+  group_by(country_region, date) %>%
+  summarise(cases = sum(cases),.groups = "drop") %>%
+  ungroup()
+```
+
+添加shiny交互UI部分：
+
+```{r warning=FALSE}
+# Define UI for application that draws a histogram
+ui <- dashboardPage(
+  dashboardHeader(title = "COVID-19_Shiny"),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("周确诊趋势", tabName = "周确诊趋势"),
+      menuItem("日死亡趋势", tabName = "日死亡趋势"),
+      menuItem("table", tabName = "table"),
+      menuItem("ggplot2", tabName = "ggplot2"),
+      menuItem("Cluster", tabName = "cluster")
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # First tab content
+      tabItem(tabName = "周确诊趋势",
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput(
+                    inputId = "admin0",
+                    label = "国家",
+                    choices = covid19_global$Country_Region,
+                    selected = "US"
+                  ),
+                  dateRangeInput(
+                    inputId = "daterange",
+                    label = "时间范围",
+                    language = "zh-CN",
+                    weekstart = 0,
+                    separator = "to",
+                    min = min(covid19_global$Date),
+                    max = max(covid19_global$Date),
+                    start = min(covid19_global$Date),
+                    end = max(covid19_global$Date)
+                  ),
+                  width=4
+                ),
+                mainPanel(dashboardBody(
+                  # Boxes need to be put in a row (or column)
+                  fluidRow(
+                    box(
+                      title = "周新增确诊趋势",
+                      plotlyOutput(outputId = "myggplot"),
+                      width = 250
+                    ))
+              )
+                ))),
+      tabItem(tabName = "日死亡趋势",
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput(
+                    inputId = "admin1",
+                    label = "国家",
+                    choices =d1$country_region,
+                    selected = "US"
+                  ),
+                  dateRangeInput(
+                    inputId = "daterange1",
+                    label = "时间范围",
+                    language = "zh-CN",
+                    separator = "to",
+                    min = min(d1$date),
+                    max = max(d1$date),
+                    start = min(d1$date),
+                    end = max(d1$date)
+                  ),
+                  width=4
+                  
+                ),
+                mainPanel(dashboardBody(
+                  # Boxes need to be put in a row (or column)
+                  fluidRow(
+                    box(
+                      title = "日新增死亡趋势",
+                      plotlyOutput(outputId = "myggplot1"),
+                      width = 250
+                    ))
+                )
+                ))),
+      
+      tabItem(tabName = "table",
+              sidebarLayout(
+                sidebarPanel(
+                  sliderInput("number","number of data:",
+                              min=0,max=4000,value=10,animate=TRUE
+                              )
+                              
+                  ),
+                mainPanel(dataTableOutput("Data"))
+              )),     
+      # Second tab content
+      tabItem(tabName = "ggplot2",
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput("Position","The Type of Plot:",
+                              c("fill"="fill",
+                                "dodge"="dodge",
+                                "stack"="stack")
+                    
+                  )),
+                mainPanel(plotOutput("Plot"))
+      )), 
+      #third
+      tabItem(tabName = "cluster",
+              titlePanel("clustering"),
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput("xcol","x",names(deaths_US),
+                              selected=names(deaths_US[,629])),
+                  selectInput("ycol","y",names(deaths_US),
+                              selected=names(deaths_US[,630])),
+                  numericInput("clusters","count",3,min=0,max=5000)
+                ),
+                
+                # Show a plot of the generated distribution
+                mainPanel(
+                  plotOutput("distPlot")
+                )
+              ))
+           )) 
+    )
+
+```
+
+
+添加shiny交互server部分：
+
+```{r warning=FALSE}
+server <- function(input, output) {
+  #周新增确诊
+  mydata <- reactive({
+    covid19_global %>%
+      filter(Country_Region == input$admin0) %>%
+      filter(Date >= input$daterange[1]) %>%
+      filter(Date <= input$daterange[2])
+    # select(-Country_Region)
+  })
+  output$myggplot <- renderPlotly({
+    p <- ggplot(data = mydata(), aes(x = Date, y = Confirmed)) +
+      # geom_point() +
+      # geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("日期(周)")+ylab("确诊人数")
+    ggplotly(p)
+  })
+  #日新增死亡
+  mydata1 <- reactive({
+   d1 %>%
+      filter(country_region == input$admin1) %>%
+      filter(date >= input$daterange1[1]) %>%
+      filter(date <= input$daterange1[2])
+    # select(-Country_Region)
+  })
+  output$myggplot1 <- renderPlotly({
+    p1 <- ggplot(data = mydata1(), aes(x = date, y = cases)) +
+      # geom_point() +
+      # geom_line() +
+      geom_bar(stat = "identity", colour = "white", fill = "blue") +
+      theme_bw()+xlab("日期(日)")+ylab("死亡人数")
+    ggplotly(p1)
+  })
+  
+  set.seed(123)
+  data=death1[sample(1:nrow(death1),1000,replace = F),]
+   
+  #table
+  output$Data<-renderDataTable({
+    data.table(head(data,input$number))
+  })
+  
+  #ggplot
+  output$Plot<- renderPlot({
+    ggplot(data,aes(x="new_death_14",fill=data$province))+
+      geom_histogram(Position=input$Position,stat="count")+
+      ggtitle("histogram")
+      #geom_bar(stat = "count",Position="cut")
+  })
+  
+#cluster
+  selecteddata <- reactive({
+    deaths_US[,c(input$xcol,input$ycol)]
+  })
+  clusters <- reactive({
+    kmeans(selecteddata(),input$clusters)
+  })
+  output$distPlot <- renderPlot({
+    
+    par(mar=c(5.1,4.1,0,1))
+    plot(selecteddata(),
+         col=clusters()$cluster,
+         pch=20,cex=3)
+    points(clusters()$centers,pch=4,cex=4,lwd=4)
+  })
+ }
+```
+
+呈现的交互动态形势图如下：
+
+<img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcWqp6iCnBt6LgMYnnO6B5HpXjXKlbYxFk46xki6v1zZcEaLKDpUiI.MLcBVFuPNGdKY.JLtle6Q57.*tknTqg3k!/r" width = "300" height = "180" align=center />
+
+注意：在这一部分目前还是有些问题没有解决的：
+
+当运行以上shiny时，添加`shinyAPP(ui=ui,server=server)`，运行`run APP`，会发现网站出现的很缓慢，由于添加ui控件时，进行国家和日期的选择，其中`choices=什么`的问题需要进一步明确。
+
+## shiny交互式地图
+
+在本例子中，结合shiny，利用plotly包绘制地图，从而显示出全球新冠疫情相关数据分布情况。
+
+```{r warning=FALSE}
+library(shiny)
+library(data.table)
+library(reactable)
+library(tidyverse)
+library(dplyr)
+library(shinydashboard)
+library(plotly)
+#日维度全球死亡数据
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+death<- data.table::fread(url) %>% tibble::tibble()
+death <- death %>%
+  pivot_longer(
+    cols = 5:ncol(.),
+    names_to = "date",
+    values_to = "cases"
+  ) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  janitor::clean_names()
+
+ui <- fluidPage(
+  titlePanel("全球新冠death数据"),   
+  sidebarPanel(width = 6,     
+               selectInput(
+                 inputId = "date",
+                 label = "选择日期",
+                 choices = death$date,
+                 selected = "2021-05-23")),
+  mainPanel(width = 6,plotlyOutput("plotly")
+       )
+  ) 
+
+server <- function(input, output) {  
+    output$plotly <- renderPlotly({
+    death <- filter(death, date ==input$date)
+    g <- list(
+      scope = "global",
+      showland = TRUE,
+      landcolor = toRGB("gray85"),
+      subunitwidth = 1,
+      countrywidth = 1,
+      subunitcolor = toRGB("white"),
+      countrycolor = toRGB("white")
+    )
+    fig<-plot_geo(death) %>%
+      add_markers(
+        x = ~long,
+        y = ~lat,
+        size = ~cases,
+        color = ~cases,
+        hoverinfo = "text",
+        text = ~ paste(
+          death$country_region,
+          " ",
+          death$province_state,
+          "<br />",
+          "deaths",
+          death$cases
+        )
+      ) %>%
+      layout(title = "Global death", geo = g)
+    fig})  
+}
+#shinyApp(ui=ui, server=server)
+```

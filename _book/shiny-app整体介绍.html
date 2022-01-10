@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Shiny APP整体介绍 | Rmarkdown and Shiny</title>
+  <meta name="description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Shiny APP整体介绍 | Rmarkdown and Shiny" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Shiny APP整体介绍 | Rmarkdown and Shiny" />
+  
+  <meta name="twitter:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  
+
+<meta name="author" content="Lei mingri" />
+
+
+<meta name="date" content="2021-12-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="前期工作.html"/>
+<link rel="next" href="shiny-feedback.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/core-js-2.5.3/shim.min.js"></script>
+<script src="libs/react-17.0.0/react.min.js"></script>
+<script src="libs/react-17.0.0/react-dom.min.js"></script>
+<script src="libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/reactable-binding-0.2.3.9000/reactable.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Learning Process Record</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#布局书"><i class="fa fa-check"></i><b>1.1</b> 布局书</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#运行书"><i class="fa fa-check"></i><b>1.2</b> 运行书</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#预览书"><i class="fa fa-check"></i><b>1.3</b> 预览书</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="前期工作.html"><a href="前期工作.html"><i class="fa fa-check"></i><b>2</b> 前期工作</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="前期工作.html"><a href="前期工作.html#软件准备工作"><i class="fa fa-check"></i><b>2.1</b> 软件准备工作</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="前期工作.html"><a href="前期工作.html#注册github账号"><i class="fa fa-check"></i><b>2.1.1</b> 注册Github账号</a></li>
+<li class="chapter" data-level="2.1.2" data-path="前期工作.html"><a href="前期工作.html#连接git-githubrstudio"><i class="fa fa-check"></i><b>2.1.2</b> 连接Git GitHub,RStudio</a></li>
+<li class="chapter" data-level="2.1.3" data-path="前期工作.html"><a href="前期工作.html#可能遇到的问题"><i class="fa fa-check"></i><b>2.1.3</b> 可能遇到的问题</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="前期工作.html"><a href="前期工作.html#熟悉rmarkdown利用rmarkdown制作简历"><i class="fa fa-check"></i><b>2.2</b> 熟悉Rmarkdown（利用Rmarkdown制作简历）</a></li>
+<li class="chapter" data-level="2.3" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘图入门"><i class="fa fa-check"></i><b>2.3</b> ggplot2绘图入门</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="前期工作.html"><a href="前期工作.html#基本概念"><i class="fa fa-check"></i><b>2.3.1</b> 基本概念</a></li>
+<li class="chapter" data-level="2.3.2" data-path="前期工作.html"><a href="前期工作.html#一个例子"><i class="fa fa-check"></i><b>2.3.2</b> 一个例子</a></li>
+<li class="chapter" data-level="2.3.3" data-path="前期工作.html"><a href="前期工作.html#相关图形"><i class="fa fa-check"></i><b>2.3.3</b> 相关图形</a></li>
+<li class="chapter" data-level="2.3.4" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘制时间序列变化图"><i class="fa fa-check"></i><b>2.3.4</b> ggplot2绘制时间序列变化图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html"><i class="fa fa-check"></i><b>3</b> Shiny APP整体介绍</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#基本介绍"><i class="fa fa-check"></i><b>3.1</b> 基本介绍</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#添加用户界面控件"><i class="fa fa-check"></i><b>3.1.1</b> 添加用户界面控件</a></li>
+<li class="chapter" data-level="3.1.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#在服务器函数中定义输出添加行为"><i class="fa fa-check"></i><b>3.1.2</b> 在服务器函数中定义输出（添加行为）</a></li>
+<li class="chapter" data-level="3.1.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#创建shiny应用程序"><i class="fa fa-check"></i><b>3.1.3</b> 创建Shiny应用程序</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#前端介绍用户端ui"><i class="fa fa-check"></i><b>3.2</b> 前端介绍（用户端UI）</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs"><i class="fa fa-check"></i><b>3.2.1</b> inputs</a></li>
+<li class="chapter" data-level="3.2.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#outputs"><i class="fa fa-check"></i><b>3.2.2</b> outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#反应式编程"><i class="fa fa-check"></i><b>3.3</b> 反应式编程</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs-1"><i class="fa fa-check"></i><b>3.3.1</b> inputs</a></li>
+<li class="chapter" data-level="3.3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#output"><i class="fa fa-check"></i><b>3.3.2</b> output</a></li>
+<li class="chapter" data-level="3.3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#reactive-programming"><i class="fa fa-check"></i><b>3.3.3</b> Reactive programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="shiny-feedback.html"><a href="shiny-feedback.html"><i class="fa fa-check"></i><b>4</b> Shiny feedback</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validation"><i class="fa fa-check"></i><b>4.1</b> Validation</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validating-input"><i class="fa fa-check"></i><b>4.1.1</b> Validating input</a></li>
+<li class="chapter" data-level="4.1.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#cancelling-execution-with-req"><i class="fa fa-check"></i><b>4.1.2</b> Cancelling execution with req()</a></li>
+<li class="chapter" data-level="4.1.3" data-path="shiny-feedback.html"><a href="shiny-feedback.html#req-and-validation"><i class="fa fa-check"></i><b>4.1.3</b> req() and validation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validate-output"><i class="fa fa-check"></i><b>4.1.4</b> Validate output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#notifications"><i class="fa fa-check"></i><b>4.2</b> Notifications</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#transient-notification"><i class="fa fa-check"></i><b>4.2.1</b> Transient notification</a></li>
+<li class="chapter" data-level="4.2.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#removing-on-completion"><i class="fa fa-check"></i><b>4.2.2</b> Removing on completion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html"><i class="fa fa-check"></i><b>5</b> Shiny uploads and downloads</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#upload"><i class="fa fa-check"></i><b>5.1</b> upload</a></li>
+<li class="chapter" data-level="5.2" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#download"><i class="fa fa-check"></i><b>5.2</b> Download</a></li>
+<li class="chapter" data-level="5.3" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#downloading-reports"><i class="fa fa-check"></i><b>5.3</b> Downloading reports</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html"><i class="fa fa-check"></i><b>6</b> Shiny Dynamic UI</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#updating-inputs"><i class="fa fa-check"></i><b>6.1</b> Updating inputs</a></li>
+<li class="chapter" data-level="6.2" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#dynamic-visibility"><i class="fa fa-check"></i><b>6.2</b> Dynamic visibility</a></li>
+<li class="chapter" data-level="6.3" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#creating-ui-with-code"><i class="fa fa-check"></i><b>6.3</b> Creating UI with code</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html"><i class="fa fa-check"></i><b>7</b> Shiny Bookmarking</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#basic"><i class="fa fa-check"></i><b>7.1</b> Basic</a></li>
+<li class="chapter" data-level="7.2" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#storing-richer-state"><i class="fa fa-check"></i><b>7.2</b> Storing richer state</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="covid-19-data.html"><a href="covid-19-data.html"><i class="fa fa-check"></i><b>8</b> COVID-19 data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="covid-19-data.html"><a href="covid-19-data.html#us-data"><i class="fa fa-check"></i><b>8.1</b> US data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="covid-19-data.html"><a href="covid-19-data.html#load-libraries"><i class="fa fa-check"></i><b>8.1.1</b> Load libraries</a></li>
+<li class="chapter" data-level="8.1.2" data-path="covid-19-data.html"><a href="covid-19-data.html#load-data-and-processing-data"><i class="fa fa-check"></i><b>8.1.2</b> Load data and Processing data</a></li>
+<li class="chapter" data-level="8.1.3" data-path="covid-19-data.html"><a href="covid-19-data.html#combine-data"><i class="fa fa-check"></i><b>8.1.3</b> Combine data</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="covid-19-data.html"><a href="covid-19-data.html#global-data"><i class="fa fa-check"></i><b>8.2</b> Global data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="covid-19-data.html"><a href="covid-19-data.html#周维度全球确诊数据"><i class="fa fa-check"></i><b>8.2.1</b> 周维度全球确诊数据</a></li>
+<li class="chapter" data-level="8.2.2" data-path="covid-19-data.html"><a href="covid-19-data.html#日维度全球死亡数据"><i class="fa fa-check"></i><b>8.2.2</b> 日维度全球死亡数据</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="plots-and-maps.html"><a href="plots-and-maps.html"><i class="fa fa-check"></i><b>9</b> Plots and Maps</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plots-1"><i class="fa fa-check"></i><b>9.1</b> Plots</a></li>
+<li class="chapter" data-level="9.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#maps"><i class="fa fa-check"></i><b>9.2</b> Maps</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#使用maps包绘制地图"><i class="fa fa-check"></i><b>9.2.1</b> 使用Maps包绘制地图</a></li>
+<li class="chapter" data-level="9.2.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plotly绘制地图"><i class="fa fa-check"></i><b>9.2.2</b> plotly绘制地图</a></li>
+<li class="chapter" data-level="9.2.3" data-path="plots-and-maps.html"><a href="plots-and-maps.html#leaflet绘制地图"><i class="fa fa-check"></i><b>9.2.3</b> leaflet绘制地图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="shiny-练习.html"><a href="shiny-练习.html"><i class="fa fa-check"></i><b>10</b> shiny 练习</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny时间序列交互"><i class="fa fa-check"></i><b>10.1</b> shiny时间序列交互</a></li>
+<li class="chapter" data-level="10.2" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny交互式地图"><i class="fa fa-check"></i><b>10.2</b> shiny交互式地图</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rmarkdown and Shiny</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="shiny-app整体介绍" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Shiny APP整体介绍</h1>
+<p><strong>详细内容请参考学习网址<a href="https://mastering-shiny.org">Mastering Shiny</a> </strong></p>
+<div id="基本介绍" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> 基本介绍</h2>
+<p>创建Shiny APP有多种方法，最简单的方法是为你的文件创建一个新的目录，并放入一个app.R的文件，app.R的文件整体布局如下：</p>
+<p><code>library(shiny)</code>(加载Shiny包)</p>
+<p><code>ui &lt;- fluidPage()</code>（定义用户界面）</p>
+<p><code>server &lt;- function(input, output, session) {}</code>（定义服务器功能）</p>
+<p><code>shinyApp(ui, server)</code>（从ui和server构建并启动一个shiny应用程序）</p>
+<div id="添加用户界面控件" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> 添加用户界面控件</h3>
+<p>例如：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="shiny-app整体介绍.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb23-2"><a href="shiny-app整体介绍.html#cb23-2" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb23-3"><a href="shiny-app整体介绍.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">selectInput</span>(<span class="st">&quot;dataset&quot;</span>, <span class="at">label =</span> <span class="st">&quot;Dataset&quot;</span>, <span class="at">choices =</span> <span class="fu">ls</span>(<span class="st">&quot;package:datasets&quot;</span>)),</span>
+<span id="cb23-4"><a href="shiny-app整体介绍.html#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">verbatimTextOutput</span>(<span class="st">&quot;summary&quot;</span>),</span>
+<span id="cb23-5"><a href="shiny-app整体介绍.html#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableOutput</span>(<span class="st">&quot;table&quot;</span>)</span>
+<span id="cb23-6"><a href="shiny-app整体介绍.html#cb23-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>这里fluidPage()是一个布局函数，用于设置页面的基本视觉结构。</p>
+<p>selectInput()是一个输入控件，允许用户通过提供一个值与应用程序进行交互。</p>
+<p>verbatimTextOutput()和tableOutput()是输出控件，它们告诉Shiny将渲染输出放在哪里。</p>
+<p>verbatimTextOutput()显示代码，tableOutput()显示表格。</p>
+</div>
+<div id="在服务器函数中定义输出添加行为" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> 在服务器函数中定义输出（添加行为）</h3>
+<p>Shiny使用反应式编程使应用程序具有交互性。</p>
+<p>例如：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="shiny-app整体介绍.html#cb24-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb24-2"><a href="shiny-app整体介绍.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>summary <span class="ot">&lt;-</span> <span class="fu">renderPrint</span>({</span>
+<span id="cb24-3"><a href="shiny-app整体介绍.html#cb24-3" aria-hidden="true" tabindex="-1"></a>    dataset <span class="ot">&lt;-</span> <span class="fu">get</span>(input<span class="sc">$</span>dataset, <span class="st">&quot;package:datasets&quot;</span>)</span>
+<span id="cb24-4"><a href="shiny-app整体介绍.html#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(dataset)</span>
+<span id="cb24-5"><a href="shiny-app整体介绍.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb24-6"><a href="shiny-app整体介绍.html#cb24-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-7"><a href="shiny-app整体介绍.html#cb24-7" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>table <span class="ot">&lt;-</span> <span class="fu">renderTable</span>({</span>
+<span id="cb24-8"><a href="shiny-app整体介绍.html#cb24-8" aria-hidden="true" tabindex="-1"></a>    dataset <span class="ot">&lt;-</span> <span class="fu">get</span>(input<span class="sc">$</span>dataset, <span class="st">&quot;package:datasets&quot;</span>)</span>
+<span id="cb24-9"><a href="shiny-app整体介绍.html#cb24-9" aria-hidden="true" tabindex="-1"></a>    dataset</span>
+<span id="cb24-10"><a href="shiny-app整体介绍.html#cb24-10" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb24-11"><a href="shiny-app整体介绍.html#cb24-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>使用特定的render函数来包装您提供的一些代码。</p>
+<p>renderPrint()与verbatimTextOutput()配对以显示具有固定宽度(逐字)文本的统计摘要，renderTable()与tableOutput()配对以显示表格中的输入数据。</p>
+</div>
+<div id="创建shiny应用程序" class="section level3" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> 创建Shiny应用程序</h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="shiny-app整体介绍.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui=</span>ui, <span class="at">server=</span>server)</span></code></pre></div>
+<pre><code>## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.</code></pre>
+<p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div></p>
+</div>
+</div>
+<div id="前端介绍用户端ui" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> 前端介绍（用户端UI）</h2>
+<div id="inputs" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> inputs</h3>
+<p><em>sliderInput</em></p>
+<p><em>textInput</em></p>
+<p><em>passwordInput</em></p>
+<p><em>textAreaInput</em></p>
+<p><em>numericInput</em></p>
+<p><em>dateInput</em></p>
+<p><em>dateRangeInput</em></p>
+<p><em>selectInput</em></p>
+<p><em>radioButtons</em></p>
+<p><em>checkboxGroupInput</em></p>
+<p><em>checkboxInput</em></p>
+<p><em>fileInput</em></p>
+<p><em>actionButton</em></p>
+<p>具体应用<strong>代码</strong>请参考[<a href="https://shiny.rstudio.com/gallery/widget-gallery.html" class="uri">https://shiny.rstudio.com/gallery/widget-gallery.html</a>]<a href="https://shiny.rstudio.com/gallery/widget-gallery.html" class="uri">https://shiny.rstudio.com/gallery/widget-gallery.html</a></p>
+</div>
+<div id="outputs" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> outputs</h3>
+<div id="text" class="section level4" number="3.2.2.1">
+<h4><span class="header-section-number">3.2.2.1</span> Text</h4>
+<p><em>textOutput()</em></p>
+<p><em>verbatimTextOutput()</em></p>
+<p>renderText()将结果组合成一个字符串，通常与textOutput()配对；renderPrint()打印结果，通常与verbatimTextOutput()配对。</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="shiny-app整体介绍.html#cb27-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb27-2"><a href="shiny-app整体介绍.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textOutput</span>(<span class="st">&quot;text&quot;</span>),</span>
+<span id="cb27-3"><a href="shiny-app整体介绍.html#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">verbatimTextOutput</span>(<span class="st">&quot;code&quot;</span>)</span>
+<span id="cb27-4"><a href="shiny-app整体介绍.html#cb27-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-5"><a href="shiny-app整体介绍.html#cb27-5" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb27-6"><a href="shiny-app整体介绍.html#cb27-6" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>text <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ </span>
+<span id="cb27-7"><a href="shiny-app整体介绍.html#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Hello friend!&quot;</span> </span>
+<span id="cb27-8"><a href="shiny-app整体介绍.html#cb27-8" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb27-9"><a href="shiny-app整体介绍.html#cb27-9" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>code <span class="ot">&lt;-</span> <span class="fu">renderPrint</span>({ </span>
+<span id="cb27-10"><a href="shiny-app整体介绍.html#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) </span>
+<span id="cb27-11"><a href="shiny-app整体介绍.html#cb27-11" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb27-12"><a href="shiny-app整体介绍.html#cb27-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="tables" class="section level4" number="3.2.2.2">
+<h4><span class="header-section-number">3.2.2.2</span> Tables</h4>
+<p><em>tableOutput()</em></p>
+<p><em>dataTableOutput()</em></p>
+<p>tableOutput()和renderTable()呈现一个静态数据表，一次显示所有数据；dataTableOutput()和renderDataTable()呈现一个动态表，显示固定数量的行以及用于更改哪些行可见的控件。</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="shiny-app整体介绍.html#cb28-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb28-2"><a href="shiny-app整体介绍.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableOutput</span>(<span class="st">&quot;static&quot;</span>),</span>
+<span id="cb28-3"><a href="shiny-app整体介绍.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dataTableOutput</span>(<span class="st">&quot;dynamic&quot;</span>)</span>
+<span id="cb28-4"><a href="shiny-app整体介绍.html#cb28-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-5"><a href="shiny-app整体介绍.html#cb28-5" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb28-6"><a href="shiny-app整体介绍.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>static <span class="ot">&lt;-</span> <span class="fu">renderTable</span>(<span class="fu">head</span>(mtcars))</span>
+<span id="cb28-7"><a href="shiny-app整体介绍.html#cb28-7" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>dynamic <span class="ot">&lt;-</span> <span class="fu">renderDataTable</span>(mtcars, <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">5</span>))</span>
+<span id="cb28-8"><a href="shiny-app整体介绍.html#cb28-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="plots" class="section level4" number="3.2.2.3">
+<h4><span class="header-section-number">3.2.2.3</span> Plots</h4>
+<p><em>plotOutput()</em></p>
+<p>plotOutput() 常与renderPlot()对应；</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="shiny-app整体介绍.html#cb29-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb29-2"><a href="shiny-app整体介绍.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotOutput</span>(<span class="st">&quot;plot&quot;</span>, <span class="at">width =</span> <span class="st">&quot;400px&quot;</span>)</span>
+<span id="cb29-3"><a href="shiny-app整体介绍.html#cb29-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-4"><a href="shiny-app整体介绍.html#cb29-4" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb29-5"><a href="shiny-app整体介绍.html#cb29-5" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>(<span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), <span class="at">res =</span> <span class="dv">96</span>)</span>
+<span id="cb29-6"><a href="shiny-app整体介绍.html#cb29-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="downloads" class="section level4" number="3.2.2.4">
+<h4><span class="header-section-number">3.2.2.4</span> Downloads</h4>
+<p><em>downloadButton()</em></p>
+<p><em>downloadLink()</em></p>
+</div>
+</div>
+</div>
+<div id="反应式编程" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> 反应式编程</h2>
+<div id="inputs-1" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> inputs</h3>
+<p>注意事项：</p>
+<p>1.与典型的列表不同，输入对象是只读的，不可以修改服务器函数内部的输入。</p>
+<p>2.它对允许谁阅读它是有选择性的。要读取输入，必须处于由render…()或reactive()等函数创建的反应上下文中。</p>
+</div>
+<div id="output" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> output</h3>
+<p>输出与输入非常相似:它也是一个类似列表的对象，根据输出ID命名。主要区别在于，使用它来发送输出，而不是接收输入。</p>
+</div>
+<div id="reactive-programming" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Reactive programming</h3>
+<p>既有input又有output的应用程序</p>
+<p><strong>注意：</strong></p>
+<p>如果运行一个Shiny应用程序，代码永远不会运行，仔细检查ui用户界面和server服务器功能使用相同的标识符。</p>
+<p>reactive()可以简化许多重复步骤。</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="shiny-app整体介绍.html#cb30-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb30-2"><a href="shiny-app整体介绍.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">reactive</span>(<span class="fu">rnorm</span>(input<span class="sc">$</span>n1, input<span class="sc">$</span>mean1, input<span class="sc">$</span>sd1))</span>
+<span id="cb30-3"><a href="shiny-app整体介绍.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  x2 <span class="ot">&lt;-</span> <span class="fu">reactive</span>(<span class="fu">rnorm</span>(input<span class="sc">$</span>n2, input<span class="sc">$</span>mean2, input<span class="sc">$</span>sd2))</span>
+<span id="cb30-4"><a href="shiny-app整体介绍.html#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="shiny-app整体介绍.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>hist <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb30-6"><a href="shiny-app整体介绍.html#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">freqpoly</span>(<span class="fu">x1</span>(), <span class="fu">x2</span>(), <span class="at">binwidth =</span> input<span class="sc">$</span>binwidth, <span class="at">xlim =</span> input<span class="sc">$</span>range)</span>
+<span id="cb30-7"><a href="shiny-app整体介绍.html#cb30-7" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">res =</span> <span class="dv">96</span>)</span>
+<span id="cb30-8"><a href="shiny-app整体介绍.html#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="shiny-app整体介绍.html#cb30-9" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>ttest <span class="ot">&lt;-</span> <span class="fu">renderText</span>({</span>
+<span id="cb30-10"><a href="shiny-app整体介绍.html#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">t_test</span>(<span class="fu">x1</span>(), <span class="fu">x2</span>())</span>
+<span id="cb30-11"><a href="shiny-app整体介绍.html#cb30-11" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb30-12"><a href="shiny-app整体介绍.html#cb30-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>假设您想通过不断地重新模拟数据来强化这是模拟数据的事实，以便您看到的是动画而不是静态绘图，可以用一个新的函数来增加更新的频率:reactiveTimer()。</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="shiny-app整体介绍.html#cb31-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb31-2"><a href="shiny-app整体介绍.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  timer <span class="ot">&lt;-</span> <span class="fu">reactiveTimer</span>(<span class="dv">500</span>)</span>
+<span id="cb31-3"><a href="shiny-app整体介绍.html#cb31-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-4"><a href="shiny-app整体介绍.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb31-5"><a href="shiny-app整体介绍.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">timer</span>()</span>
+<span id="cb31-6"><a href="shiny-app整体介绍.html#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rpois</span>(input<span class="sc">$</span>n, input<span class="sc">$</span>lambda1)</span>
+<span id="cb31-7"><a href="shiny-app整体介绍.html#cb31-7" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb31-8"><a href="shiny-app整体介绍.html#cb31-8" aria-hidden="true" tabindex="-1"></a>  x2 <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb31-9"><a href="shiny-app整体介绍.html#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">timer</span>()</span>
+<span id="cb31-10"><a href="shiny-app整体介绍.html#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rpois</span>(input<span class="sc">$</span>n, input<span class="sc">$</span>lambda2)</span>
+<span id="cb31-11"><a href="shiny-app整体介绍.html#cb31-11" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb31-12"><a href="shiny-app整体介绍.html#cb31-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-13"><a href="shiny-app整体介绍.html#cb31-13" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>hist <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb31-14"><a href="shiny-app整体介绍.html#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">freqpoly</span>(<span class="fu">x1</span>(), <span class="fu">x2</span>(), <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>))</span>
+<span id="cb31-15"><a href="shiny-app整体介绍.html#cb31-15" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">res =</span> <span class="dv">96</span>)</span>
+<span id="cb31-16"><a href="shiny-app整体介绍.html#cb31-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>若选择执行昂贵的计算，可以使用是actionButton():</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="shiny-app整体介绍.html#cb32-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb32-2"><a href="shiny-app整体介绍.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
+<span id="cb32-3"><a href="shiny-app整体介绍.html#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">3</span>, </span>
+<span id="cb32-4"><a href="shiny-app整体介绍.html#cb32-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">numericInput</span>(<span class="st">&quot;lambda1&quot;</span>, <span class="at">label =</span> <span class="st">&quot;lambda1&quot;</span>, <span class="at">value =</span> <span class="dv">3</span>),</span>
+<span id="cb32-5"><a href="shiny-app整体介绍.html#cb32-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">numericInput</span>(<span class="st">&quot;lambda2&quot;</span>, <span class="at">label =</span> <span class="st">&quot;lambda2&quot;</span>, <span class="at">value =</span> <span class="dv">5</span>),</span>
+<span id="cb32-6"><a href="shiny-app整体介绍.html#cb32-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">numericInput</span>(<span class="st">&quot;n&quot;</span>, <span class="at">label =</span> <span class="st">&quot;n&quot;</span>, <span class="at">value =</span> <span class="fl">1e4</span>, <span class="at">min =</span> <span class="dv">0</span>),</span>
+<span id="cb32-7"><a href="shiny-app整体介绍.html#cb32-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">actionButton</span>(<span class="st">&quot;simulate&quot;</span>, <span class="st">&quot;Simulate!&quot;</span>)</span>
+<span id="cb32-8"><a href="shiny-app整体介绍.html#cb32-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb32-9"><a href="shiny-app整体介绍.html#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">9</span>, <span class="fu">plotOutput</span>(<span class="st">&quot;hist&quot;</span>))</span>
+<span id="cb32-10"><a href="shiny-app整体介绍.html#cb32-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb32-11"><a href="shiny-app整体介绍.html#cb32-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-12"><a href="shiny-app整体介绍.html#cb32-12" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb32-13"><a href="shiny-app整体介绍.html#cb32-13" aria-hidden="true" tabindex="-1"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">eventReactive</span>(input<span class="sc">$</span>simulate, {</span>
+<span id="cb32-14"><a href="shiny-app整体介绍.html#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rpois</span>(input<span class="sc">$</span>n, input<span class="sc">$</span>lambda1)</span>
+<span id="cb32-15"><a href="shiny-app整体介绍.html#cb32-15" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb32-16"><a href="shiny-app整体介绍.html#cb32-16" aria-hidden="true" tabindex="-1"></a>  x2 <span class="ot">&lt;-</span> <span class="fu">eventReactive</span>(input<span class="sc">$</span>simulate, {</span>
+<span id="cb32-17"><a href="shiny-app整体介绍.html#cb32-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rpois</span>(input<span class="sc">$</span>n, input<span class="sc">$</span>lambda2)</span>
+<span id="cb32-18"><a href="shiny-app整体介绍.html#cb32-18" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb32-19"><a href="shiny-app整体介绍.html#cb32-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-20"><a href="shiny-app整体介绍.html#cb32-20" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>hist <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb32-21"><a href="shiny-app整体介绍.html#cb32-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">freqpoly</span>(<span class="fu">x1</span>(), <span class="fu">x2</span>(), <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>))</span>
+<span id="cb32-22"><a href="shiny-app整体介绍.html#cb32-22" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">res =</span> <span class="dv">96</span>)</span>
+<span id="cb32-23"><a href="shiny-app整体介绍.html#cb32-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>需要eventReactive()，它有两个参数:第一个参数指定依赖什么，第二个参数指定计算什么。这使得该应用程序在单击模拟时只能计算x1()和x2()。</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="前期工作.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="shiny-feedback.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-shiny-whole.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

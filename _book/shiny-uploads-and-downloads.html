@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Shiny uploads and downloads | Rmarkdown and Shiny</title>
+  <meta name="description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Shiny uploads and downloads | Rmarkdown and Shiny" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Shiny uploads and downloads | Rmarkdown and Shiny" />
+  
+  <meta name="twitter:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  
+
+<meta name="author" content="Lei mingri" />
+
+
+<meta name="date" content="2021-12-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="shiny-feedback.html"/>
+<link rel="next" href="shiny-dynamic-ui.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/core-js-2.5.3/shim.min.js"></script>
+<script src="libs/react-17.0.0/react.min.js"></script>
+<script src="libs/react-17.0.0/react-dom.min.js"></script>
+<script src="libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/reactable-binding-0.2.3.9000/reactable.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Learning Process Record</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#布局书"><i class="fa fa-check"></i><b>1.1</b> 布局书</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#运行书"><i class="fa fa-check"></i><b>1.2</b> 运行书</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#预览书"><i class="fa fa-check"></i><b>1.3</b> 预览书</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="前期工作.html"><a href="前期工作.html"><i class="fa fa-check"></i><b>2</b> 前期工作</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="前期工作.html"><a href="前期工作.html#软件准备工作"><i class="fa fa-check"></i><b>2.1</b> 软件准备工作</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="前期工作.html"><a href="前期工作.html#注册github账号"><i class="fa fa-check"></i><b>2.1.1</b> 注册Github账号</a></li>
+<li class="chapter" data-level="2.1.2" data-path="前期工作.html"><a href="前期工作.html#连接git-githubrstudio"><i class="fa fa-check"></i><b>2.1.2</b> 连接Git GitHub,RStudio</a></li>
+<li class="chapter" data-level="2.1.3" data-path="前期工作.html"><a href="前期工作.html#可能遇到的问题"><i class="fa fa-check"></i><b>2.1.3</b> 可能遇到的问题</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="前期工作.html"><a href="前期工作.html#熟悉rmarkdown利用rmarkdown制作简历"><i class="fa fa-check"></i><b>2.2</b> 熟悉Rmarkdown（利用Rmarkdown制作简历）</a></li>
+<li class="chapter" data-level="2.3" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘图入门"><i class="fa fa-check"></i><b>2.3</b> ggplot2绘图入门</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="前期工作.html"><a href="前期工作.html#基本概念"><i class="fa fa-check"></i><b>2.3.1</b> 基本概念</a></li>
+<li class="chapter" data-level="2.3.2" data-path="前期工作.html"><a href="前期工作.html#一个例子"><i class="fa fa-check"></i><b>2.3.2</b> 一个例子</a></li>
+<li class="chapter" data-level="2.3.3" data-path="前期工作.html"><a href="前期工作.html#相关图形"><i class="fa fa-check"></i><b>2.3.3</b> 相关图形</a></li>
+<li class="chapter" data-level="2.3.4" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘制时间序列变化图"><i class="fa fa-check"></i><b>2.3.4</b> ggplot2绘制时间序列变化图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html"><i class="fa fa-check"></i><b>3</b> Shiny APP整体介绍</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#基本介绍"><i class="fa fa-check"></i><b>3.1</b> 基本介绍</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#添加用户界面控件"><i class="fa fa-check"></i><b>3.1.1</b> 添加用户界面控件</a></li>
+<li class="chapter" data-level="3.1.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#在服务器函数中定义输出添加行为"><i class="fa fa-check"></i><b>3.1.2</b> 在服务器函数中定义输出（添加行为）</a></li>
+<li class="chapter" data-level="3.1.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#创建shiny应用程序"><i class="fa fa-check"></i><b>3.1.3</b> 创建Shiny应用程序</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#前端介绍用户端ui"><i class="fa fa-check"></i><b>3.2</b> 前端介绍（用户端UI）</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs"><i class="fa fa-check"></i><b>3.2.1</b> inputs</a></li>
+<li class="chapter" data-level="3.2.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#outputs"><i class="fa fa-check"></i><b>3.2.2</b> outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#反应式编程"><i class="fa fa-check"></i><b>3.3</b> 反应式编程</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs-1"><i class="fa fa-check"></i><b>3.3.1</b> inputs</a></li>
+<li class="chapter" data-level="3.3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#output"><i class="fa fa-check"></i><b>3.3.2</b> output</a></li>
+<li class="chapter" data-level="3.3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#reactive-programming"><i class="fa fa-check"></i><b>3.3.3</b> Reactive programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="shiny-feedback.html"><a href="shiny-feedback.html"><i class="fa fa-check"></i><b>4</b> Shiny feedback</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validation"><i class="fa fa-check"></i><b>4.1</b> Validation</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validating-input"><i class="fa fa-check"></i><b>4.1.1</b> Validating input</a></li>
+<li class="chapter" data-level="4.1.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#cancelling-execution-with-req"><i class="fa fa-check"></i><b>4.1.2</b> Cancelling execution with req()</a></li>
+<li class="chapter" data-level="4.1.3" data-path="shiny-feedback.html"><a href="shiny-feedback.html#req-and-validation"><i class="fa fa-check"></i><b>4.1.3</b> req() and validation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validate-output"><i class="fa fa-check"></i><b>4.1.4</b> Validate output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#notifications"><i class="fa fa-check"></i><b>4.2</b> Notifications</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#transient-notification"><i class="fa fa-check"></i><b>4.2.1</b> Transient notification</a></li>
+<li class="chapter" data-level="4.2.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#removing-on-completion"><i class="fa fa-check"></i><b>4.2.2</b> Removing on completion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html"><i class="fa fa-check"></i><b>5</b> Shiny uploads and downloads</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#upload"><i class="fa fa-check"></i><b>5.1</b> upload</a></li>
+<li class="chapter" data-level="5.2" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#download"><i class="fa fa-check"></i><b>5.2</b> Download</a></li>
+<li class="chapter" data-level="5.3" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#downloading-reports"><i class="fa fa-check"></i><b>5.3</b> Downloading reports</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html"><i class="fa fa-check"></i><b>6</b> Shiny Dynamic UI</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#updating-inputs"><i class="fa fa-check"></i><b>6.1</b> Updating inputs</a></li>
+<li class="chapter" data-level="6.2" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#dynamic-visibility"><i class="fa fa-check"></i><b>6.2</b> Dynamic visibility</a></li>
+<li class="chapter" data-level="6.3" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#creating-ui-with-code"><i class="fa fa-check"></i><b>6.3</b> Creating UI with code</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html"><i class="fa fa-check"></i><b>7</b> Shiny Bookmarking</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#basic"><i class="fa fa-check"></i><b>7.1</b> Basic</a></li>
+<li class="chapter" data-level="7.2" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#storing-richer-state"><i class="fa fa-check"></i><b>7.2</b> Storing richer state</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="covid-19-data.html"><a href="covid-19-data.html"><i class="fa fa-check"></i><b>8</b> COVID-19 data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="covid-19-data.html"><a href="covid-19-data.html#us-data"><i class="fa fa-check"></i><b>8.1</b> US data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="covid-19-data.html"><a href="covid-19-data.html#load-libraries"><i class="fa fa-check"></i><b>8.1.1</b> Load libraries</a></li>
+<li class="chapter" data-level="8.1.2" data-path="covid-19-data.html"><a href="covid-19-data.html#load-data-and-processing-data"><i class="fa fa-check"></i><b>8.1.2</b> Load data and Processing data</a></li>
+<li class="chapter" data-level="8.1.3" data-path="covid-19-data.html"><a href="covid-19-data.html#combine-data"><i class="fa fa-check"></i><b>8.1.3</b> Combine data</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="covid-19-data.html"><a href="covid-19-data.html#global-data"><i class="fa fa-check"></i><b>8.2</b> Global data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="covid-19-data.html"><a href="covid-19-data.html#周维度全球确诊数据"><i class="fa fa-check"></i><b>8.2.1</b> 周维度全球确诊数据</a></li>
+<li class="chapter" data-level="8.2.2" data-path="covid-19-data.html"><a href="covid-19-data.html#日维度全球死亡数据"><i class="fa fa-check"></i><b>8.2.2</b> 日维度全球死亡数据</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="plots-and-maps.html"><a href="plots-and-maps.html"><i class="fa fa-check"></i><b>9</b> Plots and Maps</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plots-1"><i class="fa fa-check"></i><b>9.1</b> Plots</a></li>
+<li class="chapter" data-level="9.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#maps"><i class="fa fa-check"></i><b>9.2</b> Maps</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#使用maps包绘制地图"><i class="fa fa-check"></i><b>9.2.1</b> 使用Maps包绘制地图</a></li>
+<li class="chapter" data-level="9.2.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plotly绘制地图"><i class="fa fa-check"></i><b>9.2.2</b> plotly绘制地图</a></li>
+<li class="chapter" data-level="9.2.3" data-path="plots-and-maps.html"><a href="plots-and-maps.html#leaflet绘制地图"><i class="fa fa-check"></i><b>9.2.3</b> leaflet绘制地图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="shiny-练习.html"><a href="shiny-练习.html"><i class="fa fa-check"></i><b>10</b> shiny 练习</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny时间序列交互"><i class="fa fa-check"></i><b>10.1</b> shiny时间序列交互</a></li>
+<li class="chapter" data-level="10.2" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny交互式地图"><i class="fa fa-check"></i><b>10.2</b> shiny交互式地图</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rmarkdown and Shiny</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="shiny-uploads-and-downloads" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Shiny uploads and downloads</h1>
+<div id="upload" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> upload</h2>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="shiny-uploads-and-downloads.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb37-2"><a href="shiny-uploads-and-downloads.html#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="shiny-uploads-and-downloads.html#cb37-3" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb37-4"><a href="shiny-uploads-and-downloads.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fileInput</span>(<span class="st">&quot;upload&quot;</span>,<span class="cn">NULL</span>,<span class="at">buttonLabel=</span><span class="st">&quot;Upload...&quot;</span>, <span class="at">multiple =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb37-5"><a href="shiny-uploads-and-downloads.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableOutput</span>(<span class="st">&quot;files&quot;</span>)</span>
+<span id="cb37-6"><a href="shiny-uploads-and-downloads.html#cb37-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-7"><a href="shiny-uploads-and-downloads.html#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="shiny-uploads-and-downloads.html#cb37-8" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb37-9"><a href="shiny-uploads-and-downloads.html#cb37-9" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>files<span class="ot">&lt;-</span><span class="fu">renderTable</span>(input<span class="sc">$</span>upload)</span>
+<span id="cb37-10"><a href="shiny-uploads-and-downloads.html#cb37-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>在页面加载时，input<span class="math inline">\(upload被初始化为空，所以需要req(input\)</span>upload)来确保您代码等待直到第一个文件被上传</p>
+<p>accept参数允许您限制可能的输入。最简单的方法是提供文件扩展名的字符向量，如accept = “.csv”。但是accept参数只是给浏览器的一个建议，并不总是被强制执行。</p>
+<p>在R中获取文件扩展名最简单的方法是tools::file_ext()</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="shiny-uploads-and-downloads.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb38-2"><a href="shiny-uploads-and-downloads.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="shiny-uploads-and-downloads.html#cb38-3" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb38-4"><a href="shiny-uploads-and-downloads.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fileInput</span>(<span class="st">&quot;upload&quot;</span>,<span class="cn">NULL</span>,<span class="at">accept =</span> <span class="fu">c</span>(<span class="st">&quot;.csv&quot;</span>,<span class="st">&quot;.tsv&quot;</span>)),</span>
+<span id="cb38-5"><a href="shiny-uploads-and-downloads.html#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">numericInput</span>(<span class="st">&quot;n&quot;</span>,<span class="st">&quot;Rows&quot;</span>,<span class="at">value=</span><span class="dv">5</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">step =</span> <span class="dv">1</span>),</span>
+<span id="cb38-6"><a href="shiny-uploads-and-downloads.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableOutput</span>(<span class="st">&quot;head&quot;</span>)</span>
+<span id="cb38-7"><a href="shiny-uploads-and-downloads.html#cb38-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-8"><a href="shiny-uploads-and-downloads.html#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="shiny-uploads-and-downloads.html#cb38-9" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb38-10"><a href="shiny-uploads-and-downloads.html#cb38-10" aria-hidden="true" tabindex="-1"></a>  data<span class="ot">&lt;-</span><span class="fu">reactive</span>({</span>
+<span id="cb38-11"><a href="shiny-uploads-and-downloads.html#cb38-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(input<span class="sc">$</span>pload)</span>
+<span id="cb38-12"><a href="shiny-uploads-and-downloads.html#cb38-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb38-13"><a href="shiny-uploads-and-downloads.html#cb38-13" aria-hidden="true" tabindex="-1"></a>    ext<span class="ot">&lt;-</span>tools<span class="sc">::</span><span class="fu">file_ext</span>()</span>
+<span id="cb38-14"><a href="shiny-uploads-and-downloads.html#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">switch</span>(ext,</span>
+<span id="cb38-15"><a href="shiny-uploads-and-downloads.html#cb38-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">csv=</span>vroom<span class="sc">::</span><span class="fu">vroom</span>(input<span class="sc">$</span>upload<span class="sc">$</span>datapath,<span class="at">delim=</span><span class="st">&quot;,&quot;</span>),</span>
+<span id="cb38-16"><a href="shiny-uploads-and-downloads.html#cb38-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">tsv=</span>vroom<span class="sc">::</span><span class="fu">vroom</span>(input<span class="sc">$</span>upload<span class="sc">$</span>datapath,<span class="at">delim=</span><span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>),</span>
+<span id="cb38-17"><a href="shiny-uploads-and-downloads.html#cb38-17" aria-hidden="true" tabindex="-1"></a>             <span class="fu">validate</span>(<span class="st">&quot;Invalid file; Please upload a .csv or .tsv file&quot;</span>))</span>
+<span id="cb38-18"><a href="shiny-uploads-and-downloads.html#cb38-18" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb38-19"><a href="shiny-uploads-and-downloads.html#cb38-19" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>head<span class="ot">&lt;-</span><span class="fu">renderTable</span>({</span>
+<span id="cb38-20"><a href="shiny-uploads-and-downloads.html#cb38-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="fu">data</span>(),input<span class="sc">$</span>n)</span>
+<span id="cb38-21"><a href="shiny-uploads-and-downloads.html#cb38-21" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb38-22"><a href="shiny-uploads-and-downloads.html#cb38-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="download" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Download</h2>
+<p>用户界面很简单:使用downloadButton(id)或downloadLink(id)给用户一些东西来点击下载文件</p>
+<p>与其他输出不同,downloadButton()没有与渲染函数配对,可以使用downloadHandler()</p>
+<p>downloadHandler()有两个参数,都是函数:filename是一个没有参数的函数,它返回一个文件名(作为字符串),此功能的工作是创建将在下载对话框中显示给用户的名称。content应该是带有一个参数file的函数,file是保存文件的路径。这个函数的工作是将文件保存在Shiny知道的地方，这样它就可以将文件发送给用户</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="shiny-uploads-and-downloads.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb39-2"><a href="shiny-uploads-and-downloads.html#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="shiny-uploads-and-downloads.html#cb39-3" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb39-4"><a href="shiny-uploads-and-downloads.html#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">selectInput</span>(<span class="st">&quot;dataset&quot;</span>, <span class="st">&quot;Pick a dataset&quot;</span>, <span class="fu">ls</span>(<span class="st">&quot;package:datasets&quot;</span>)),</span>
+<span id="cb39-5"><a href="shiny-uploads-and-downloads.html#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableOutput</span>(<span class="st">&quot;preview&quot;</span>),</span>
+<span id="cb39-6"><a href="shiny-uploads-and-downloads.html#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">downloadButton</span>(<span class="st">&quot;download&quot;</span>,<span class="st">&quot;Download.tsv&quot;</span>)</span>
+<span id="cb39-7"><a href="shiny-uploads-and-downloads.html#cb39-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-8"><a href="shiny-uploads-and-downloads.html#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="shiny-uploads-and-downloads.html#cb39-9" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb39-10"><a href="shiny-uploads-and-downloads.html#cb39-10" aria-hidden="true" tabindex="-1"></a>   data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb39-11"><a href="shiny-uploads-and-downloads.html#cb39-11" aria-hidden="true" tabindex="-1"></a>    out <span class="ot">&lt;-</span> <span class="fu">get</span>(input<span class="sc">$</span>dataset, <span class="st">&quot;package:datasets&quot;</span>)</span>
+<span id="cb39-12"><a href="shiny-uploads-and-downloads.html#cb39-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.data.frame</span>(out)) {</span>
+<span id="cb39-13"><a href="shiny-uploads-and-downloads.html#cb39-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">validate</span>(<span class="fu">paste0</span>(<span class="st">&quot;&#39;&quot;</span>, input<span class="sc">$</span>dataset, <span class="st">&quot;&#39; is not a data frame&quot;</span>))</span>
+<span id="cb39-14"><a href="shiny-uploads-and-downloads.html#cb39-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb39-15"><a href="shiny-uploads-and-downloads.html#cb39-15" aria-hidden="true" tabindex="-1"></a>    out</span>
+<span id="cb39-16"><a href="shiny-uploads-and-downloads.html#cb39-16" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb39-17"><a href="shiny-uploads-and-downloads.html#cb39-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-18"><a href="shiny-uploads-and-downloads.html#cb39-18" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>preview <span class="ot">&lt;-</span> <span class="fu">renderTable</span>({</span>
+<span id="cb39-19"><a href="shiny-uploads-and-downloads.html#cb39-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="fu">data</span>())</span>
+<span id="cb39-20"><a href="shiny-uploads-and-downloads.html#cb39-20" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb39-21"><a href="shiny-uploads-and-downloads.html#cb39-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb39-22"><a href="shiny-uploads-and-downloads.html#cb39-22" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>download <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
+<span id="cb39-23"><a href="shiny-uploads-and-downloads.html#cb39-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> <span class="cf">function</span>() {</span>
+<span id="cb39-24"><a href="shiny-uploads-and-downloads.html#cb39-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(input<span class="sc">$</span>dataset, <span class="st">&quot;.tsv&quot;</span>)</span>
+<span id="cb39-25"><a href="shiny-uploads-and-downloads.html#cb39-25" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb39-26"><a href="shiny-uploads-and-downloads.html#cb39-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
+<span id="cb39-27"><a href="shiny-uploads-and-downloads.html#cb39-27" aria-hidden="true" tabindex="-1"></a>      vroom<span class="sc">::</span><span class="fu">vroom_write</span>(<span class="fu">data</span>(), file)</span>
+<span id="cb39-28"><a href="shiny-uploads-and-downloads.html#cb39-28" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb39-29"><a href="shiny-uploads-and-downloads.html#cb39-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb39-30"><a href="shiny-uploads-and-downloads.html#cb39-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="downloading-reports" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Downloading reports</h2>
+<p>生成报告的一个强大方法是使用参数化的RMarkdown文档。参数化的RMarkdown文件在YAML元数据中有一个参数字段</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="shiny-uploads-and-downloads.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb40-2"><a href="shiny-uploads-and-downloads.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="shiny-uploads-and-downloads.html#cb40-3" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb40-4"><a href="shiny-uploads-and-downloads.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sliderInput</span>(<span class="st">&quot;n&quot;</span>, <span class="st">&quot;Number of points&quot;</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">50</span>),</span>
+<span id="cb40-5"><a href="shiny-uploads-and-downloads.html#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">downloadButton</span>(<span class="st">&quot;report&quot;</span>, <span class="st">&quot;Generate report&quot;</span>)</span>
+<span id="cb40-6"><a href="shiny-uploads-and-downloads.html#cb40-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb40-7"><a href="shiny-uploads-and-downloads.html#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="shiny-uploads-and-downloads.html#cb40-8" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb40-9"><a href="shiny-uploads-and-downloads.html#cb40-9" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>report <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
+<span id="cb40-10"><a href="shiny-uploads-and-downloads.html#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> <span class="st">&quot;report.html&quot;</span>,</span>
+<span id="cb40-11"><a href="shiny-uploads-and-downloads.html#cb40-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
+<span id="cb40-12"><a href="shiny-uploads-and-downloads.html#cb40-12" aria-hidden="true" tabindex="-1"></a>      params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> input<span class="sc">$</span>n)</span>
+<span id="cb40-13"><a href="shiny-uploads-and-downloads.html#cb40-13" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb40-14"><a href="shiny-uploads-and-downloads.html#cb40-14" aria-hidden="true" tabindex="-1"></a>      id <span class="ot">&lt;-</span> <span class="fu">showNotification</span>(</span>
+<span id="cb40-15"><a href="shiny-uploads-and-downloads.html#cb40-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Rendering report...&quot;</span>, </span>
+<span id="cb40-16"><a href="shiny-uploads-and-downloads.html#cb40-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">duration =</span> <span class="cn">NULL</span>, </span>
+<span id="cb40-17"><a href="shiny-uploads-and-downloads.html#cb40-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">closeButton =</span> <span class="cn">FALSE</span></span>
+<span id="cb40-18"><a href="shiny-uploads-and-downloads.html#cb40-18" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb40-19"><a href="shiny-uploads-and-downloads.html#cb40-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">on.exit</span>(<span class="fu">removeNotification</span>(id), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb40-20"><a href="shiny-uploads-and-downloads.html#cb40-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-21"><a href="shiny-uploads-and-downloads.html#cb40-21" aria-hidden="true" tabindex="-1"></a>      rmarkdown<span class="sc">::</span><span class="fu">render</span>(<span class="st">&quot;report.Rmd&quot;</span>, </span>
+<span id="cb40-22"><a href="shiny-uploads-and-downloads.html#cb40-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">output_file =</span> file,</span>
+<span id="cb40-23"><a href="shiny-uploads-and-downloads.html#cb40-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">params =</span> params,</span>
+<span id="cb40-24"><a href="shiny-uploads-and-downloads.html#cb40-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">envir =</span> <span class="fu">new.env</span>(<span class="at">parent =</span> <span class="fu">globalenv</span>())</span>
+<span id="cb40-25"><a href="shiny-uploads-and-downloads.html#cb40-25" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb40-26"><a href="shiny-uploads-and-downloads.html#cb40-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb40-27"><a href="shiny-uploads-and-downloads.html#cb40-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-28"><a href="shiny-uploads-and-downloads.html#cb40-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="shiny-feedback.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="shiny-dynamic-ui.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-shiny-updown.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

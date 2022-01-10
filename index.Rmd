@@ -1,0 +1,41 @@
+--- 
+title: "Rmarkdown and Shiny"
+author: "Lei mingri"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+
+description: |
+  Mastering github、rmarkdown、shiny、 leaflet、plotly.
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# 前言
+
+这是用 **Markdown**写的一本简单的草稿书，书中的内容主要是学习过程的总结整理，一步一步从下载安装软件开始，后续进行rmarkdown、shiny、leaflet、plotly等的学习。此外，结合Github上面的COVID-19项目，运用以上几种R包进行数据处理与分析，从而掌握一些可视化R包、开阔眼界。
+
+
+## 布局书 
+
+每一个**bookdown**章节都是一个**.Rmd文件**
+
+`index.Rmd`是整本书的第一部分，当运行这本书时，它将成为主页。
+
+## 运行书
+
+可以呈现本书籍的HTML版本:
+
+在RStudio IDE中找到**Build**，并且点击 **Build Book**，然后选择输出格式；
+
+或者也可以在R console中创建这本书：
+
+```{r, eval=FALSE}
+bookdown::render_book()
+```
+
+如果将书展示成为PDF版本`bookdown::pdf_book`，需要安装XeLaTeX，当然还是建议安装TinyTeX<https://yihui.org/tinytex/>。
+
+## 预览书
+
+可以启动一个本地服务器来实时预览这本书（HTML）。当保存单独.Rmd文件时，此预览会随着编辑图书而更新。

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 前期工作 | Rmarkdown and Shiny</title>
+  <meta name="description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 前期工作 | Rmarkdown and Shiny" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 前期工作 | Rmarkdown and Shiny" />
+  
+  <meta name="twitter:description" content="Mastering github、rmarkdown、shiny、 leaflet、plotly." />
+  
+
+<meta name="author" content="Lei mingri" />
+
+
+<meta name="date" content="2021-12-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="shiny-app整体介绍.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/core-js-2.5.3/shim.min.js"></script>
+<script src="libs/react-17.0.0/react.min.js"></script>
+<script src="libs/react-17.0.0/react-dom.min.js"></script>
+<script src="libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/reactable-binding-0.2.3.9000/reactable.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Learning Process Record</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#布局书"><i class="fa fa-check"></i><b>1.1</b> 布局书</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#运行书"><i class="fa fa-check"></i><b>1.2</b> 运行书</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#预览书"><i class="fa fa-check"></i><b>1.3</b> 预览书</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="前期工作.html"><a href="前期工作.html"><i class="fa fa-check"></i><b>2</b> 前期工作</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="前期工作.html"><a href="前期工作.html#软件准备工作"><i class="fa fa-check"></i><b>2.1</b> 软件准备工作</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="前期工作.html"><a href="前期工作.html#注册github账号"><i class="fa fa-check"></i><b>2.1.1</b> 注册Github账号</a></li>
+<li class="chapter" data-level="2.1.2" data-path="前期工作.html"><a href="前期工作.html#连接git-githubrstudio"><i class="fa fa-check"></i><b>2.1.2</b> 连接Git GitHub,RStudio</a></li>
+<li class="chapter" data-level="2.1.3" data-path="前期工作.html"><a href="前期工作.html#可能遇到的问题"><i class="fa fa-check"></i><b>2.1.3</b> 可能遇到的问题</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="前期工作.html"><a href="前期工作.html#熟悉rmarkdown利用rmarkdown制作简历"><i class="fa fa-check"></i><b>2.2</b> 熟悉Rmarkdown（利用Rmarkdown制作简历）</a></li>
+<li class="chapter" data-level="2.3" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘图入门"><i class="fa fa-check"></i><b>2.3</b> ggplot2绘图入门</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="前期工作.html"><a href="前期工作.html#基本概念"><i class="fa fa-check"></i><b>2.3.1</b> 基本概念</a></li>
+<li class="chapter" data-level="2.3.2" data-path="前期工作.html"><a href="前期工作.html#一个例子"><i class="fa fa-check"></i><b>2.3.2</b> 一个例子</a></li>
+<li class="chapter" data-level="2.3.3" data-path="前期工作.html"><a href="前期工作.html#相关图形"><i class="fa fa-check"></i><b>2.3.3</b> 相关图形</a></li>
+<li class="chapter" data-level="2.3.4" data-path="前期工作.html"><a href="前期工作.html#ggplot2绘制时间序列变化图"><i class="fa fa-check"></i><b>2.3.4</b> ggplot2绘制时间序列变化图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html"><i class="fa fa-check"></i><b>3</b> Shiny APP整体介绍</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#基本介绍"><i class="fa fa-check"></i><b>3.1</b> 基本介绍</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#添加用户界面控件"><i class="fa fa-check"></i><b>3.1.1</b> 添加用户界面控件</a></li>
+<li class="chapter" data-level="3.1.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#在服务器函数中定义输出添加行为"><i class="fa fa-check"></i><b>3.1.2</b> 在服务器函数中定义输出（添加行为）</a></li>
+<li class="chapter" data-level="3.1.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#创建shiny应用程序"><i class="fa fa-check"></i><b>3.1.3</b> 创建Shiny应用程序</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#前端介绍用户端ui"><i class="fa fa-check"></i><b>3.2</b> 前端介绍（用户端UI）</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs"><i class="fa fa-check"></i><b>3.2.1</b> inputs</a></li>
+<li class="chapter" data-level="3.2.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#outputs"><i class="fa fa-check"></i><b>3.2.2</b> outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#反应式编程"><i class="fa fa-check"></i><b>3.3</b> 反应式编程</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#inputs-1"><i class="fa fa-check"></i><b>3.3.1</b> inputs</a></li>
+<li class="chapter" data-level="3.3.2" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#output"><i class="fa fa-check"></i><b>3.3.2</b> output</a></li>
+<li class="chapter" data-level="3.3.3" data-path="shiny-app整体介绍.html"><a href="shiny-app整体介绍.html#reactive-programming"><i class="fa fa-check"></i><b>3.3.3</b> Reactive programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="shiny-feedback.html"><a href="shiny-feedback.html"><i class="fa fa-check"></i><b>4</b> Shiny feedback</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validation"><i class="fa fa-check"></i><b>4.1</b> Validation</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validating-input"><i class="fa fa-check"></i><b>4.1.1</b> Validating input</a></li>
+<li class="chapter" data-level="4.1.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#cancelling-execution-with-req"><i class="fa fa-check"></i><b>4.1.2</b> Cancelling execution with req()</a></li>
+<li class="chapter" data-level="4.1.3" data-path="shiny-feedback.html"><a href="shiny-feedback.html#req-and-validation"><i class="fa fa-check"></i><b>4.1.3</b> req() and validation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="shiny-feedback.html"><a href="shiny-feedback.html#validate-output"><i class="fa fa-check"></i><b>4.1.4</b> Validate output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#notifications"><i class="fa fa-check"></i><b>4.2</b> Notifications</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="shiny-feedback.html"><a href="shiny-feedback.html#transient-notification"><i class="fa fa-check"></i><b>4.2.1</b> Transient notification</a></li>
+<li class="chapter" data-level="4.2.2" data-path="shiny-feedback.html"><a href="shiny-feedback.html#removing-on-completion"><i class="fa fa-check"></i><b>4.2.2</b> Removing on completion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html"><i class="fa fa-check"></i><b>5</b> Shiny uploads and downloads</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#upload"><i class="fa fa-check"></i><b>5.1</b> upload</a></li>
+<li class="chapter" data-level="5.2" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#download"><i class="fa fa-check"></i><b>5.2</b> Download</a></li>
+<li class="chapter" data-level="5.3" data-path="shiny-uploads-and-downloads.html"><a href="shiny-uploads-and-downloads.html#downloading-reports"><i class="fa fa-check"></i><b>5.3</b> Downloading reports</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html"><i class="fa fa-check"></i><b>6</b> Shiny Dynamic UI</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#updating-inputs"><i class="fa fa-check"></i><b>6.1</b> Updating inputs</a></li>
+<li class="chapter" data-level="6.2" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#dynamic-visibility"><i class="fa fa-check"></i><b>6.2</b> Dynamic visibility</a></li>
+<li class="chapter" data-level="6.3" data-path="shiny-dynamic-ui.html"><a href="shiny-dynamic-ui.html#creating-ui-with-code"><i class="fa fa-check"></i><b>6.3</b> Creating UI with code</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html"><i class="fa fa-check"></i><b>7</b> Shiny Bookmarking</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#basic"><i class="fa fa-check"></i><b>7.1</b> Basic</a></li>
+<li class="chapter" data-level="7.2" data-path="shiny-bookmarking.html"><a href="shiny-bookmarking.html#storing-richer-state"><i class="fa fa-check"></i><b>7.2</b> Storing richer state</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="covid-19-data.html"><a href="covid-19-data.html"><i class="fa fa-check"></i><b>8</b> COVID-19 data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="covid-19-data.html"><a href="covid-19-data.html#us-data"><i class="fa fa-check"></i><b>8.1</b> US data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="covid-19-data.html"><a href="covid-19-data.html#load-libraries"><i class="fa fa-check"></i><b>8.1.1</b> Load libraries</a></li>
+<li class="chapter" data-level="8.1.2" data-path="covid-19-data.html"><a href="covid-19-data.html#load-data-and-processing-data"><i class="fa fa-check"></i><b>8.1.2</b> Load data and Processing data</a></li>
+<li class="chapter" data-level="8.1.3" data-path="covid-19-data.html"><a href="covid-19-data.html#combine-data"><i class="fa fa-check"></i><b>8.1.3</b> Combine data</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="covid-19-data.html"><a href="covid-19-data.html#global-data"><i class="fa fa-check"></i><b>8.2</b> Global data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="covid-19-data.html"><a href="covid-19-data.html#周维度全球确诊数据"><i class="fa fa-check"></i><b>8.2.1</b> 周维度全球确诊数据</a></li>
+<li class="chapter" data-level="8.2.2" data-path="covid-19-data.html"><a href="covid-19-data.html#日维度全球死亡数据"><i class="fa fa-check"></i><b>8.2.2</b> 日维度全球死亡数据</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="plots-and-maps.html"><a href="plots-and-maps.html"><i class="fa fa-check"></i><b>9</b> Plots and Maps</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plots-1"><i class="fa fa-check"></i><b>9.1</b> Plots</a></li>
+<li class="chapter" data-level="9.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#maps"><i class="fa fa-check"></i><b>9.2</b> Maps</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="plots-and-maps.html"><a href="plots-and-maps.html#使用maps包绘制地图"><i class="fa fa-check"></i><b>9.2.1</b> 使用Maps包绘制地图</a></li>
+<li class="chapter" data-level="9.2.2" data-path="plots-and-maps.html"><a href="plots-and-maps.html#plotly绘制地图"><i class="fa fa-check"></i><b>9.2.2</b> plotly绘制地图</a></li>
+<li class="chapter" data-level="9.2.3" data-path="plots-and-maps.html"><a href="plots-and-maps.html#leaflet绘制地图"><i class="fa fa-check"></i><b>9.2.3</b> leaflet绘制地图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="shiny-练习.html"><a href="shiny-练习.html"><i class="fa fa-check"></i><b>10</b> shiny 练习</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny时间序列交互"><i class="fa fa-check"></i><b>10.1</b> shiny时间序列交互</a></li>
+<li class="chapter" data-level="10.2" data-path="shiny-练习.html"><a href="shiny-练习.html#shiny交互式地图"><i class="fa fa-check"></i><b>10.2</b> shiny交互式地图</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rmarkdown and Shiny</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="前期工作" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> 前期工作</h1>
+<div id="软件准备工作" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> 软件准备工作</h2>
+<div id="注册github账号" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> 注册Github账号</h3>
+<ul>
+<li><p>注册一个<a href="https://github.com"><strong>GitHub账户https://github.com</strong></a></p></li>
+<li><p>安装或者更新<strong>R</strong>和<strong>RStudio</strong></p></li>
+<li><p>下载并安装特定于平台的Git。这里我安装<a href="https://gitforwindows.org/"><strong>Git(windows)https://gitforwindows.org/</strong></a></p></li>
+<li><p>使用全局命令配置Git。在我完成此过程时，我发现这一步是必要的。打开 bash 版本的 Git 并输入以下内容：</p></li>
+</ul>
+<p><code>git config --global user.name 'leimingri'</code></p>
+<p><code>git config --global user.email 'lmr18845128812@163.com'</code></p>
+<p><code>git config --global --list</code></p>
+<p>替换您的名称和与GitHub帐户相关的电子邮件</p>
+<ul>
+<li>已确认可以从命令行对GitHub推/拉</li>
+</ul>
+</div>
+<div id="连接git-githubrstudio" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> 连接Git GitHub,RStudio</h3>
+<p>这部分主要概述让RStudio与GitHub一起工作的简单步骤。首先您必须了解与 Git 相关的四个术语：存储库、提交、推送和拉取，打开Rstudio并设置Git可执行文件的路径<em>Tools &gt; global options &gt; Git/SVM</em>。首先，在GitHub上面创建一个项目repository，然后将项目地址克隆到RStudio中，接着进行本地的更改、保存及提交，将新增更改的内容保存到GitHub该项目存储库中。</p>
+<ul>
+<li>连接RStudio到Git和GitHub</li>
+</ul>
+<p>在GitHub上创建存储库（项目）,然后通过RStudio将新的GitHub存储库克隆到您的计算机上，这就是Rstudio如何知道要使用什么存储库，并将其与您的新存储库相关联项目文件。在RStudio中，<em>File &gt; New Project &gt; Version Control &gt; Git</em>。</p>
+<p><img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcWqp6iCnBt6LgMYnnO6B5HpXjXKlbYxFk46xki6v1zZcEaLKDpUiI.MLcBVFuPNGdKY.JLtle6Q57.*tknTqg3k!/r" width = "300" height = "180" align=center /></p>
+<p><img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7W6hmCqubVl3HuUivpwPir.KRmHsZwkPDJyMmRkW4WZ6C2jNxt*phmYwxIP7IVIALo!/r" width = "300" height = "180" align=center /></p>
+<p><img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7VnCuhp9oP3UJXscyIvhykoRRAjVXj5hwQz1nFPXdgwFJhCCezbOKtjKDMgqj0vSv0!/r" width = "300" height = "180" align=center /></p>
+<p><img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7VyroulROJQ3b42cW5GC0dZCEBNkSoiv4IA*whdlrb834MPsCW0Jk7Y1GrpFMW*ZFM!/r" width = "300" height = "180" align=center /></p>
+<ul>
+<li>进行本地更改，保存、提交</li>
+</ul>
+<p>现在在新的R项目中做一些工作，创建并保存一些文件。下一步是“提交”您的工作——本质上是复制您所有的脚本文件与R项目相关联。接着<em>Tools&gt;Version Control&gt;Commit</em>将您在本地进行的更改在线推送到GitHub。</p>
+<p><img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcT7P9tdwXVcQslYJNuCoe7XxWjr.9heo*14lh0n7j..AY*WsAR3aJ763ojGHfyK0m09NzLViBpZiLcDkw99sjCQ!/r" width = "300" height = "180" align=center /></p>
+<ul>
+<li>确认传播到GitHub远程存储器的本地更改</li>
+</ul>
+<p><img src="http://r.photo.store.qq.com/psc?/V54AC60s2AQkQe24IJrU0a9knd0j1QQg/45NBuzDIW489QBoVep5mcXs7nTmmgbXR5sVjMg16OdQNCoHfjdD1DEGsjiNFJ19ugvqH76Ps6i.OufOQg0NsO1H1upexja1vlGr2gXIkH1c!/r" width = "300" height = "180" align=center /></p>
+<p>检查想要提交的文件，然后按下<strong>Commit</strong>按钮。如果想把这些文件移到GitHub服务器上，点击“Push”。在线查看您的存储库，仔细检查您的文件是否确实在那里。</p>
+<p>注：<a href="http://rmarkdown.rstudio.com">R Markdown官网地址http://rmarkdown.rstudio.com</a><br />
+以上内容参考文献<a href="https://happygitwithr.com/">happy-git-with-R</a></p>
+</div>
+<div id="可能遇到的问题" class="section level3" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> 可能遇到的问题</h3>
+<p>1.错误: LaTeX failed to compile R.tex.</p>
+<p>解决办法：<a href="https://yihui.org/tinytex/r/#debugging%20for%20debugging%20tips.">链接https://yihui.org/tinytex/r/#debugging for debugging tips.</a>—有时候是插入的图片问题</p>
+<p>2.导入GitHub中的URL时，出现‘…Connection was reset, errno 10054’错误时</p>
+<p>解决办法：<code>git config --global http.sslVerify</code> “false”即解除ssl验证，再次git即可</p>
+<p>3.第一次点选Knit PDF（或Knit HTML)报错Knit PDF : pandoc document conversion failed with error 43</p>
+<p>解决办法：可以通过安装 github 上最新的版本解决：<br />
+<code>install.packages(“devtools”)</code><br />
+如果以前没有安装 devtools 包<br />
+<code>devtools::install_github(“rstudio/rmarkdown”)</code></p>
+<p>4.错误：PDF中文问题</p>
+<p>latex_engine: xelatex（尝试加上这句话）</p>
+<p>5.错误：导入GitHub中的URL时，出现‘…Connection was reset, errno 10054’错误</p>
+<p>解决办法：git bash里面<code>git config --global http.sslVerify "false"</code>即解除ssl验证，再次git</p>
+<p><em>针对上面的错误，注意：可以多多尝试</em></p>
+<p>方法一：用压缩的方式进行下载<br />
+<code>git config --global --add core.compression -1</code></p>
+<p>方法二：.增大缓存大小<br />
+524288000表示增至500兆，1048576000表示增至1G<br />
+<code>git config --global http.postBuffer 524288000</code></p>
+<p>方法三：利用ssh下载<br />
+<code>git clone git://github.com/XX/XXXX.git</code></p>
+<p>方法四：安全设置问题<br />
+<code>git config http.sslVerify "false"</code></p>
+<hr />
+</div>
+</div>
+<div id="熟悉rmarkdown利用rmarkdown制作简历" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> 熟悉Rmarkdown（利用Rmarkdown制作简历）</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">一些简历资源</th>
+<th align="left">链接</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">简历学习模板1</td>
+<td align="left"><a href="https://github.com/geekcompany/DeerResume">https://github.com/geekcompany/DeerResume</a></td>
+</tr>
+<tr class="even">
+<td align="left">简历学习模板2</td>
+<td align="left"><a href="https://github.com/geekcompany/ResumeSample">https://github.com/geekcompany/ResumeSample</a></td>
+</tr>
+<tr class="odd">
+<td align="left">在线MarkDown简历书写工具 冷熊简历</td>
+<td align="left"><a href="http://link.ftqq.com/0rsRL">http://link.ftqq.com/0rsRL</a></td>
+</tr>
+<tr class="even">
+<td align="left">教学：《如何写好技术简历》</td>
+<td align="left"><a href="http://link.ftqq.com/KWkVX">http://link.ftqq.com/KWkVX</a></td>
+</tr>
+<tr class="odd">
+<td align="left">简历例句</td>
+<td align="left"><a href="https://github.com/resumejob/awesome-resume">https://github.com/resumejob/awesome-resume</a></td>
+</tr>
+<tr class="even">
+<td align="left">大厂高频面经面试题</td>
+<td align="left"><a href="https://osjobs.net/topk/">https://osjobs.net/topk/</a></td>
+</tr>
+<tr class="odd">
+<td align="left">雨果主题简历制作模板</td>
+<td align="left"><a href="https://wowchemy.com/hugo-themes/">https://wowchemy.com/hugo-themes/</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="ggplot2绘图入门" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> ggplot2绘图入门</h2>
+<div id="基本概念" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> 基本概念</h3>
+<ul>
+<li><p>图层（Layer）：图层可以允许用户一步步的构建图形，方便单独对图层进行修改、增加统计量、甚至改动数据。</p></li>
+<li><p>标度（Scale）：标度是一种函数，它控制了数学空间到图形元素空间的映射。一组连续数据可以映射到X轴坐标，也可以映射到一组连续的渐变色彩。一组分类数据可以映射成为不同的形状，也可以映射成为不同的大小。</p></li>
+<li><p>坐标系统（Coordinate）：坐标系统控制了图形的坐标轴并影响所有图形元素，最常用的是直角坐标轴，坐标轴可以进行变换以满足不同的需要，如对数、极坐标轴。</p></li>
+<li><p>位面（Facet）：很多时候需要将数据按某种方法分组，分别进行绘图。位面就是控制分组绘图的方法和排列形式。</p></li>
+</ul>
+</div>
+<div id="一个例子" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> 一个例子</h3>
+<p>用ggplot2包内带的汽车测试数据（mpg）来举个例子，用到的三个变量分别是发动机容量(displ)、高速公路上的每加仑行驶里数(hwy)、汽缸数目(cyl)。首先加载ggplot2包，然后用ggplot定义第一层即数据来源。其中aes参数非常关键，它将displ映射到X轴，将hwy映射到Y轴，将cyl变为分类数据后映射为不同的颜色。然后使用+号添加了两个新的图层，第二层是加上了散点，第三层是加上了loess平滑曲线。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="前期工作.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<pre><code>## Installing package into &#39;/home/leimingri/R/x86_64-pc-linux-gnu-library/4.1&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="前期工作.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-2"><a href="前期工作.html#cb4-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>mpg,<span class="fu">aes</span>(<span class="at">x=</span>displ,<span class="at">y=</span>hwy,<span class="at">colour=</span><span class="fu">factor</span>(cyl)))</span>
+<span id="cb4-3"><a href="前期工作.html#cb4-3" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>()</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>如果需要对整体数据进行平滑，可将colour参数设置在散点图层内而非第一层，这样第三层的平滑图形就不会受到colour参数的影响。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="前期工作.html#cb6-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mpg,<span class="fu">aes</span>(<span class="at">x=</span>displ,<span class="at">y=</span>hwy))</span>
+<span id="cb6-2"><a href="前期工作.html#cb6-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour=</span><span class="fu">factor</span>(cyl))) <span class="sc">+</span> <span class="fu">geom_smooth</span>()</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="相关图形" class="section level3" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> 相关图形</h3>
+<div id="图层控制与直方图" class="section level4" number="2.3.3.1">
+<h4><span class="header-section-number">2.3.3.1</span> 图层控制与直方图</h4>
+<p>第一层必须是原始数据层，其中data参数控制数据来源，注意数据形式只能是数据框格式。aes参数控制了对哪些变量进行图形映射，以及映射方式，aes是Aesthetic的缩写。<br />
+下面我们来绘制一个直方图作为示例。数据集仍采取mpg，对hwy变量绘制直方图。首先加载了扩展包，然后用ggplot函数建立了第一层，hwy数据映射到X轴上；使用+号增加了第二层，即直方图对象层。此时p被视为一种层对象，使用summary函数可得到关于它的更多信息，print(p)命令即可进行绘图。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="前期工作.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a href="前期工作.html#cb8-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mpg,<span class="fu">aes</span>(<span class="at">x =</span> hwy))</span>
+<span id="cb8-3"><a href="前期工作.html#cb8-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span>
+<span id="cb8-4"><a href="前期工作.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p)</span></code></pre></div>
+<pre><code>## data: manufacturer, model, displ, year, cyl, trans, drv, cty, hwy, fl,
+##   class [234x11]
+## mapping:  x = ~hwy
+## faceting: &lt;ggproto object: Class FacetNull, Facet, gg&gt;
+##     compute_layout: function
+##     draw_back: function
+##     draw_front: function
+##     draw_labels: function
+##     draw_panels: function
+##     finish_data: function
+##     init_scales: function
+##     map_data: function
+##     params: list
+##     setup_data: function
+##     setup_params: function
+##     shrink: TRUE
+##     train_scales: function
+##     vars: function
+##     super:  &lt;ggproto object: Class FacetNull, Facet, gg&gt;
+## -----------------------------------
+## geom_bar: na.rm = FALSE, orientation = NA
+## stat_bin: binwidth = NULL, bins = NULL, na.rm = FALSE, orientation = NA, pad = FALSE
+## position_stack</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="前期工作.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>p对象含有两层，第一层数据层描述了变量和映射方式，第二层是直方图对象（geom_histogram），geom表示几何对象，它是ggplot中重要的图层控制对象，因为它负责图形渲染的类型。geom_histogram是图形渲染类型的一种。</p>
+<p>每个geom对象都需要有数据输入，数据可以从第一层中自动读取，也可以在aes参数中直接设置。而且每个geom还默认搭配某种统计变换（stat），geom_histogram的默认统计变换是stat_bin。它负责对数据进行分组计数。</p>
+<p>下面我们尝试两种更为复杂的直方图，首先将数据按照year这个变量划分为两组，用不同的颜色绘制直方图，而且用频率而非计数来刻画Y轴，并添加密度曲线。</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="前期工作.html#cb12-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mpg,<span class="fu">aes</span>(hwy))</span>
+<span id="cb12-2"><a href="前期工作.html#cb12-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">position =</span> <span class="st">&#39;identity&#39;</span>,</span>
+<span id="cb12-3"><a href="前期工作.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">alpha=</span><span class="fl">0.5</span>,</span>
+<span id="cb12-4"><a href="前期工作.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">y =</span> ..density..,</span>
+<span id="cb12-5"><a href="前期工作.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="fu">factor</span>(year))) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="前期工作.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_density</span>(<span class="at">geom =</span> <span class="st">&#39;line&#39;</span>,</span>
+<span id="cb12-7"><a href="前期工作.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="at">position =</span> <span class="st">&#39;identity&#39;</span>,</span>
+<span id="cb12-8"><a href="前期工作.html#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">colour =</span> <span class="fu">factor</span>(year)))</span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="位置调整与条形图" class="section level4" number="2.3.3.2">
+<h4><span class="header-section-number">2.3.3.2</span> 位置调整与条形图</h4>
+<p>位置调整（Position adjustments）是针对同一图层内元素的位置进行微调的方法。它包括五种设置，分别是stack、dodge、fill、identity、jitter。</p>
+<p>我们用条形图来展示其用法，仍使用mpg数据集，其中用到的变量是class，即生产汽车的类型，以及year生产年份。下面的条形图是将各类型的汽车数量进行汇集，并以年份作为分组变量。我们首先载入扩展包，然后用频数表对数据进行大致的了解，最后绘制了四种条形图。</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="前期工作.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-2"><a href="前期工作.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(mpg,<span class="fu">table</span>(class,year))</span></code></pre></div>
+<pre><code>##             year
+## class        1999 2008
+##   2seater       2    3
+##   compact      25   22
+##   midsize      20   21
+##   minivan       6    5
+##   pickup       16   17
+##   subcompact   19   16
+##   suv          29   33</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="前期工作.html#cb16-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>mpg,<span class="fu">aes</span>(<span class="at">x=</span>class,<span class="at">fill=</span><span class="fu">factor</span>(year)))</span>
+<span id="cb16-2"><a href="前期工作.html#cb16-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">&#39;dodge&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="前期工作.html#cb17-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">&#39;stack&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="前期工作.html#cb18-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">&#39;fill&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="前期工作.html#cb19-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">&#39;identity&#39;</span>,<span class="at">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
+<p>可以看到dodge方式是将不同年份的数据并列放置；stack方式是将不同年份数据推叠放置，这也是geom_bar的默认处理方式；fill方式和stack类似，但Y轴不再是计数，而是以百分比显示；identity方式是不做任何改变直接显示出来，所以需要设置透明度才能看得清楚。</p>
+</div>
+<div id="散点图" class="section level4" number="2.3.3.3">
+<h4><span class="header-section-number">2.3.3.3</span> 散点图</h4>
+<ul>
+<li>色彩和形状的控制</li>
+</ul>
+<p>数据特征不仅可以用坐标来表示，也可以用不同的色彩或形状来表示。仍以mpg数据集为例，所用到的变量有cty（城市中行驶距离）,hwy（高速路行驶距离）,displ（排量大小）,year（生产年份）</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="前期工作.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb20-2"><a href="前期工作.html#cb20-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(cty, hwy))</span>
+<span id="cb20-3"><a href="前期工作.html#cb20-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> <span class="fu">factor</span>(year),<span class="at">shape =</span> <span class="fu">factor</span>(year), <span class="at">size =</span> displ), <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">position =</span> <span class="st">&#39;jitter&#39;</span>)</span>
+<span id="cb20-4"><a href="前期工作.html#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>我们将1999年生产车型用红色圆形表示，2008年用兰色三角形表示，排量用图形的大小表示，并且设置了透明度和jitter以避免样本点之间的重叠。可观察到2008年生产的大排量车型较多，从而油耗较高，单位油耗行驶距离较短。</p>
+<ul>
+<li>坐标的控制</li>
+</ul>
+<p>上图右上角数据点较为稀疏，这种情况下可用对数变换。为了演示ggplot2对图形坐标的控制，我们对X轴和Y轴均进行对数变换，然后对X轴的坐标显示加以限制，只显示X轴数据的均值，以及一倍标准差的坐标。</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="前期工作.html#cb21-1" aria-hidden="true" tabindex="-1"></a>cty.mean<span class="ot">=</span><span class="fu">with</span>(mpg,<span class="fu">mean</span>(cty))</span>
+<span id="cb21-2"><a href="前期工作.html#cb21-2" aria-hidden="true" tabindex="-1"></a>cty.sd<span class="ot">=</span><span class="fu">with</span>(mpg,<span class="fu">sd</span>(cty))</span>
+<span id="cb21-3"><a href="前期工作.html#cb21-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> <span class="fu">scale_x_continuous</span>(<span class="at">trans=</span><span class="st">&#39;log&#39;</span>,<span class="at">breaks=</span><span class="fu">c</span>(cty.mean<span class="sc">-</span>cty.sd,cty.mean,cty.mean<span class="sc">+</span>cty.sd), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;high&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;low&quot;</span>)) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">trans=</span><span class="st">&#39;log&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li>文字说明</li>
+</ul>
+<p>利用geom_text函数可添加文字说明以增强图形的可读性</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="前期工作.html#cb22-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x=</span>wt, <span class="at">y=</span>mpg,<span class="at">colour=</span><span class="fu">factor</span>(cyl),<span class="at">label=</span><span class="fu">rownames</span>(mtcars)))</span>
+<span id="cb22-2"><a href="前期工作.html#cb22-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">alpha=</span><span class="fl">0.8</span>)<span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>,<span class="fu">aes</span>(<span class="at">shape=</span><span class="fu">factor</span>(cyl)))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="ggplot2绘制时间序列变化图" class="section level3" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> ggplot2绘制时间序列变化图</h3>
+<p>ggplot2包也能对时间序列数据绘图，但在处理上需要有些注意的地方，可能需要注意转化成data.frame。ggplot()可以先将时间序列类型拆成数据框类型然后再绘图。</p>
+<p><a href="https://www.sodic.com.cn/datasets">数据来源：2021全球开放数据应用创新大赛https://www.sodic.com.cn/datasets</a></p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="shiny-app整体介绍.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-preparation.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
